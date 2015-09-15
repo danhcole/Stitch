@@ -1,4 +1,4 @@
-# 4115_lang
+# PLT Language Project #
 Project homepage for COMS4115 PLT language project
 
 ## Useful Links ##
