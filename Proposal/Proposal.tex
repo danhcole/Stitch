@@ -29,15 +29,6 @@
   stringstyle=\color{orange},
 }
 
-\lstdefinestyle{customasm}{
-  belowcaptionskip=1\baselineskip,
-  frame=L,
-  xleftmargin=\parindent,
-  language=[x86masm]Assembler,
-  basicstyle=\footnotesize\ttfamily,
-  commentstyle=\itshape\color{purple!40!black},
-}
-
 \lstset{escapechar=@,style=customc}
 
 \begin{document}
@@ -58,6 +49,13 @@ Most "modern" programing languages trace their origins back decades to before th
 \\[3em]
 \LARGE\textbf{Description}\\[.5em]
 \normalsize
-\$Lang is inspired by C, which has a very well known syntax, and has been one of the most widely used languages since it was released over forty years ago.  \$Lang is a general purpose language that supports all standard mathematical and logical operations.  In addition to the standard C primitive types (\verb|int, double, char|, etc.), \$Lang has native support for the \verb|string| type.  
+\$Lang is inspired by C, which has a very well known syntax, and has been one of the most widely used languages since it was released over forty years ago.  \$Lang is a general purpose language that supports all standard mathematical and logical operations.  In addition to the standard C primitive types (\verb|int, double, char|, etc.), \$Lang has native support for the \verb|string| type.  This includes concatenation, and a inbuilt length operator. 
+
+\newpage
+
+\LARGE\textbf{Examples}\\[.5em]
+\normalsize
+\lstinputlisting[language=C]
+{test.c}
 
 \end{document}
