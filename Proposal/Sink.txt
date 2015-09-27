@@ -1,4 +1,4 @@
-//comments in Sink are similar to C comments
+//comments in Stitch are similar to C comments
 //this is a single line comment
 /*
 You can also have multi-line comments
@@ -12,7 +12,7 @@ def int main() {
 
 	var string s = "This is a String\n";
 
-	var string h = "Sink also supports " + "string concatenation!";
+	var string h = "Stitch also supports " + "string concatenation!";
 
 	let double PI = 3.14; //let is used to define constants
 
