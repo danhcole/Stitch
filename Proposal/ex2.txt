@@ -1,0 +1,24 @@
+/*
+async keyword: used on function calls and on loop constructs, to
+make the loop execute asynchronously
+*/
+
+def int main() {
+	
+	var int even_sum = 0;
+	var int odd_sum = 0;
+
+	//adds up all the even numbers from 0 to 100 million
+	async for(var int i = 0; i < 100000000; i+=2) {
+		even_sum += i;
+	}
+
+	//adds up all the odd numbers from 0 to 100 million
+	async for(var int i = 1; i < 100000000; i+=2) {
+		odd_sum += i;
+	}
+
+	printf("The sum of all values is %d", even_sum + odd_sum);
+
+	return 0;
+}

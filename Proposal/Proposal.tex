@@ -19,7 +19,7 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{codeblue}{rgb}{0,0,0.6}
 \definecolor{codeorange}{rgb}{1,0.25,0}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.95}
 
 \lstdefinestyle{customc}{
   backgroundcolor=\color{backcolour},   
@@ -40,7 +40,10 @@
   tabsize=2
 }
 
-\lstset{escapechar=@,style=customc}
+\lstset{escapechar=@,style=customc,language=C}
+\lstset{
+ morekeywords={let, var, string, bool, def, async}
+}
 
 \begin{document}
 
@@ -61,14 +64,21 @@ Most "modern" programming languages trace their origins back decades to before t
 \LARGE\textbf{Description}\\[.5em]
 \normalsize
 Stitch is inspired by C, which has a very well known syntax, and has been one of the most widely used languages since it was released over forty years ago.  Stitch is a general purpose language that supports all standard mathematical and logical operations.  Like C, Stitch is strongly typed, and whitespace does not matter.\\[.5em]
-In addition to the standard C primitive types (\verb|int, double, char|, etc.), Stitch has native support for the \verb|string| type.  This includes concatenation, and a inbuilt length operator.  Stitch also has support for the \verb|boolean| type.\\[.5em]
-What sets Stitch apart is its native support for multithreading using the \verb|async| keyword.  This keyword can be applied to any function call, as well as to any loop construct.  When called in this way, functions and loops will run in their own thread. 
+In addition to the standard C primitive types (\verb|int, double, char|, etc.), Stitch has native support for the \verb|string| type.  This includes concatenation, and a inbuilt length operator.  Stitch also has support for the \verb|bool| type.\\
+
+\lstinputlisting
+{ex1.txt}
+
+What sets Stitch apart is its native support for multithreading using the \verb|async| keyword.  This keyword can be applied to any function call, as well as to any loop construct.  When called in this way, functions and loops will run in their own thread. \\
+
+\lstinputlisting
+{ex2.txt}
 
 \newpage
 
-\LARGE\textbf{Examples}\\[.5em]
+\LARGE\textbf{Example Program}\\[.5em]
 \normalsize
-\lstinputlisting[language=C]
-{Sink.txt}
+\lstinputlisting
+{ex3.txt}
 
 \end{document}
