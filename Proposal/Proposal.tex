@@ -15,6 +15,12 @@
 \newcommand{\tab} {\hspace*{2em}}
 \newcommand{\stab} {\hspace*{.75em}}
 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codeblue}{rgb}{0,0,0.6}
+\definecolor{codeorange}{rgb}{1,0.25,0}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+
 \lstdefinestyle{customc}{
   belowcaptionskip=1\baselineskip,
   breaklines=true,
@@ -23,10 +29,10 @@
   language=C,
   showstringspaces=false,
   basicstyle=\footnotesize\ttfamily,
-  keywordstyle=\bfseries\color{green!40!black},
-  commentstyle=\itshape\color{purple!40!black},
-  identifierstyle=\color{blue},
-  stringstyle=\color{orange},
+  keywordstyle=\bfseries\color{codegreen},
+  commentstyle=\itshape\color{codepurple},
+  identifierstyle=\color{codeblue},
+  stringstyle=\color{codeorange},
 }
 
 \lstset{escapechar=@,style=customc}
@@ -56,6 +62,6 @@ Most "modern" programing languages trace their origins back decades to before th
 \LARGE\textbf{Examples}\\[.5em]
 \normalsize
 \lstinputlisting[language=C]
-{test.c}
+{Sink.txt}
 
 \end{document}

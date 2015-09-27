@@ -20,8 +20,10 @@ def int main() {
 	
 }
 
+/*
 async keyword: used on function calls and on loop constructs, to
 make the loop execute asynchronously
+*/
 
 def int main() {
 	
