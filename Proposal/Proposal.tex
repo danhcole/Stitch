@@ -1,0 +1,63 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex	
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+\date{}							% Activate to display a given date or no date
+
+\newcommand{\tab} {\hspace*{2em}}
+\newcommand{\stab} {\hspace*{.75em}}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+\begin{document}
+
+\begin{center}
+\LARGE
+\$LANG Language Proposal\\[2em]
+\Large 
+Daniel Cole, Rashedul Haydar, Megan Skrypek, Tim Waterman\\
+\large dhc2131, rh2712, ms4985, tbw2105\\[2em]
+\normalsize
+September 30, 2014\\[3em]
+\end{center}
+
+\LARGE\textbf{Motivation}\\[.5em]
+\normalsize
+Most 'modern' programing languages trace their origins back decades, to before the advent of cheep, general purpose multicore CPUs.  They were designed for a distinctly mono-threaded environment.  While libraries and enhancements to mainstay languages such as C/C++ and Java have added multithreading capabilities, it remains in many ways a bolted on kludge.  Newer frameworks such as Node. js provide more integral support for asynchronous operations, they lack the depth of support and power of a fully complied language.  with \$LANG, we aim to build a language that has the power and flexibility of a fully complied C style language, while having native threading support for modern multithreaded applications.
+\\[3em]
+\LARGE\textbf{Description}\\[.5em]
+\normalsize
+\$Lang is inspired by C, which has a very well known syntax, and has been one of the most widely used languages since it was released over forty years ago.  \$Lang is a general purpose language that supports all standard mathematical and logical operations.  In addition to the standard C primitive types (\verb|int, double, char|, etc.), \$Lang has native support for the \verb|string| type.  
+
+\end{document}
