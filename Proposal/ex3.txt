@@ -26,8 +26,8 @@ def int main() {
 	printf("Please enter your username: \n");
 	scanf("%s", user_name);
 
-	/*Since IO operations are slow and block, this async keyword
-	can be use to allow concurrent processing while waiting for 
+	/*Since IO operations are slow and blocking, this async keyword
+	can be used to allow concurrent processing while waiting for 
 	these user-dependent functions to finish
 	*/
 
