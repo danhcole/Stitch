@@ -20,6 +20,12 @@
 - think about a simple program
 - compile it w/ pthreads
 - make sure we're all on the same page
+- Example programs:
+	-Two matrices filled with random numbers, then multiplied together.
+	-Reading from a file.
+
+Things to bring up for next meeting: 
+	File I/O, writing to buffer, pointer stuff
 
 #Reference manuel
 - what does it mean to put async infront of a loop
