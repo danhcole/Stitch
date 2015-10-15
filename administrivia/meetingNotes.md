@@ -1,4 +1,18 @@
-#Big challange - what can I do in parallel?
+#10/15
+
+####To Ask:
+-Big question: Should we do positive or negative constraints, maybe a combination? How do we start to implement constraints in our language?
+-Can/should we handle I/O with multithreading? Reading is possible, but writing is not(?).
+-What other applications are there besides matrix manipulation that we can do with multithreading?
+-Start on the parser?  Where to start - basic math ops, etc. out of the way?
+
+####Our next steps: 
+-Take the pthread code and write same version in our language.
+-Come up with a “Hello world” program for our language.
+
+#10/6
+
+###Big challange - what can I do in parallel?
 
 ####Q: How does marking a loop async work
 - encapsulate and spawn a thread
