@@ -24,6 +24,8 @@ int main() {
     //i here is an instance variable that will be used inside the 
     //for loop, which will hold the value of the array cell at that
     //specific iteration
+    
+    /* is 'item' typed, what if the array contains pointers, do we allow only certain arrays? When do we check?*/
 
     for each item in a do {
         item = item + 7;
@@ -44,9 +46,22 @@ int main() {
         }
     }
 
+   /* I like the idea of row/column, would it work something like... */
+   int array a =  {<1, 2, 3>
+                   <4, 5, 6>
+                   <7, 8, 9>};
+                   
+   a.column[0];               // [1, 4, 7]
+   a.row[1];                  //[1, 2, 3]
+   a.row[2].column[2];        //9
+   a.column[0] * a.row[0];    //30
+   
+   /* not sure about the matrix def. syntax, may get complex; also how do you do n-dimentional arrays? */
+   
+
     //one last thing...
     int array r; //is a row
     int array c; is a "column";
 
     int dot = r * c; //if we make arrays primitive, * can be defined as the
-                     //DOT product of the arrays
+                     //DOT product of the arrays  /* love this - Dan */
