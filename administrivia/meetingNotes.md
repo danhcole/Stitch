@@ -1,5 +1,30 @@
 #10/15
 
+#### for next time (10/20 - 2:45)
+- settle on grammer/ syntax
+- have 3 small programs
+
+#### restriction of loops - black- and white- list.  Start with realy simple loop primitive that we know how to translate (blacklist everything), whitelist stuff we can do.  
+- ex. for loop w/ step
+- const. vs. var index increment
+ - do you have to know stride at compile time
+ - cover matrix manipulation -> maybe more
+- reading / writing(?) multiplexing -> how do you split data stream
+- who's responsable for knowing the size of the array
+ - for (i in row of array) -> do this
+- gaussian elimination, invert a matrix, any scientific computing, etc. 
+ - steal example from openMP
+- hello world -> +1 to every element in an array
+- better array syntax then C (ex. add array literal)
+
+#### next deliverable - lang. ref. manual
+- should be exhaustive and well defined (allowed and not allowed).
+- correct and unambiguous grammar
+- working scanner and parser
+- if we go after parallel array ops -> need ints, floating point, don't need strings, etc.
+ - bools
+- instead of 'async' keyword, have special for loop?
+
 ####To Ask:
 - Big question: Should we do positive or negative constraints, maybe a combination? How do we start to implement constraints in our language?
 - Can/should we handle I/O with multithreading? Reading is possible, but writing is not(?).
