@@ -11,3 +11,4 @@
 
 ##Dan
 - pretty print code examples
+- get started on parser & scanner
