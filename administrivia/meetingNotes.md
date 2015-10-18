@@ -1,3 +1,12 @@
+#### to ask
+- spawn n threads, or cap threads to proc count, maintain a pool of items to process
+- disallow async IO or let me be on the programmer (training wheels?)
+- higher dimentional arrays?
+	- row/column -> how do we generalize?
+	- nth (3th, 4th);
+	- how to declare?
+- explicit type decleration for loops -> probably!
+
 #10/15
 
 #### for next time (10/20 - 2:45)
