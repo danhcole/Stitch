@@ -6,18 +6,18 @@
 int main() {
 
     //new addition
-    for each ... in ... do {
+    foreach ... in ... {
 
     }
 
-    The for each..in..do keyword set will denote a special type
+    The for each..in.. keyword set will denote a special type
     of for loop. Similar to a foreach loop in Java, this loop
     will iterate through the item and apply what's in the closure.
 
     //potential array syntax; not finalized
     int array a = 1,2,3,4,5;
 
-    for each i in a do {
+    foreach i in a do {
         i = i + 2;
     }
     //the code above would add two to every element in the array
@@ -27,7 +27,7 @@ int main() {
     
     /* is 'item' typed, what if the array contains pointers, do we allow only certain arrays? When do we check?*/
 
-    for each item in a do {
+    foreach item in a {
         item = item + 7;
     }
     //the name in between each and in can change
@@ -37,9 +37,9 @@ int main() {
     //and the columns of a multidimensional array
     //for example:
 
-    for each row in a do {
+    foreach row in a {
 
-        for each column in a do {
+        foreach column in a {
 
             //need a syntactic way to access individual pieces
             //haven't gotten that far yet
