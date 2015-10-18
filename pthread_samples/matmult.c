@@ -2,25 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int SIZE = 3;
-int A[SIZE][SIZE] = {1,2,3,4,5,6,7,8,9} //first argument to multiply
-int B[SIZE][SIZE] = {9,8,7,6,5,4,3,2,1} //second argument to multiply
-int R[SIZE][SIZE]; //result matrix
+const int SIZE = 10000;
 
-void *multiply(void *sector) { //each thread operates on a single sector of the matrices
+int a[SIZE];
+int c[SIZE];
 
-    int sec = (int *)sector;
+void *addNtoAll(void *index) { //each thread operates on a single sector of the matrices
 
-//do multiplication here, using sector the determine the row & column
+    int count = (int *)index;
 
-    int i = sec;
+    int i;
+    c[count] = a[count] + 1;
 
-    for(i = 0; i < SIZE; i++) {
-
-        C[sec][sec] = A[sec][i] * B[i][sec];
     }
-
-    return 0;
 }
 
 
@@ -28,14 +22,14 @@ int main(int argc, char **argv) {
 
 
     //it's like deadpool, but with threads
-    pthread_t *threadpool = malloc(SIZE *SIZE * sizeof(pthread_t));
+    pthread_t *threadpool = malloc(SIZE * sizeof(pthread_t));
 
     if (threadpool == NULL) {
         perror("Malloc failed\n");
         exit(1);
     }
 
-    for(i = 0; i < SIZE * SIZE; i++) {
+    for(i = 0; i < SIZE; i++) {
         
         int e = pthread_create(&threadpool[i], NULL, multiply, (void *)i);
         if (e != 0) {

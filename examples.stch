@@ -60,7 +60,7 @@ async foreach i in c{
 
 3) async IO
 
-char ** group = {"Dan", "Rashedul", "Tim", "Megan"};
+char *array group = {"Dan", "Rashedul", "Tim", "Megan"};
 
 char *name;
 
