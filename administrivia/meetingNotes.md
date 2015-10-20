@@ -1,3 +1,25 @@
+#10/20
+
+#### todo
+- take matrix multiplication and make it work
+- put in our language, so we know exactly what is what
+- manually code in c w/ pthreads
+- start w/ matrix multiplication
+- when it comes to complier, start w/ add one
+- LRM needs to be almost done (parser/scanner simultaniously)
+- complete and formal spec
+
+#### foreach in
+- problems: no concept of location, need to know the nearest neigbor?
+- limit two dimentions
+- other idea -> foreach a(i,j) [a = matrix, (i,j) = (row, columns)]
+
+#### dot product
+- not an overloaded function -> must be user defined
+
+#### matrix
+- take a look at matlab, see how it does things -> how can we add async to this.
+
 #### to ask
 - spawn n threads, or cap threads to proc count, maintain a pool of items to process
 - disallow async IO or let me be on the programmer (training wheels?)
