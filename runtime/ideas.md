@@ -12,7 +12,8 @@ struct Matrix{
   mat[][];
   column[];
   row[];
-  pos;
+  curRow;
+  curCol;
   rowLen;
   colLen;
   stride;
@@ -31,3 +32,4 @@ struct Matrix{
   - 1D matrix (ie array)
   - 1D matrix (vertical)
     - can we optimize this into an array?
+
