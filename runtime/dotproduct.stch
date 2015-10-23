@@ -1,0 +1,18 @@
+//simple dot product of two vectors in Stitch
+
+int array a = {1, 2, 3, 4};
+int array b = {10, 10, 10, 10};
+int array c[4];
+int acc;
+
+c = a .* b; //multi-threaded
+
+//c = [10, 20, 30, 40]
+
+stitch i from 0 to lengthof(c) by 1{
+
+  acc = acc + c[i];
+  
+} 
+
+//acc = 100
