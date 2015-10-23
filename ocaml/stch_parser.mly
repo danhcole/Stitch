@@ -1,0 +1,18 @@
+%{ open Ast }%
+
+%token SEMI SQUOTE DQUOTE LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
+%token COMMA TIMES DIVIDE ADD INCREMENT SUBTRACT MOD
+%token ACCESS ASSIGN EQUAL NEGATE NE
+%token AND OR BAND BOR BNOT LSHIFT RSHIFT
+%token GT LE LT LE
+%token IF ELSE WHILE FOR BREAK RETURN
+%token CONST VOID
+%token <int>INT 
+%token <float> FLOAT 
+%token <string> ID
+%token EOF
+
+%nonassoc ELSE
+%right ASSIGN
+%left EQUAL NE
+%left 
