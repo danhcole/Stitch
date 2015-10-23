@@ -10,7 +10,7 @@ c = a .* b; //multi-threaded
 //c = [10, 20, 30, 40]
 
 stitch i from 0 to lengthof(c) by 1{ //also multi-threaded
-
+  
   acc = acc + c[i];
   
 } 
