@@ -7,16 +7,11 @@
 
 untyped concept for matrix stuct:
 ```
-struct Matrix{
+struct Array{
 
-  mat[][];
-  column[];
-  row[];
-  curRow;
-  curCol;
-  rowLen;
-  colLen;
-  stride;
+  void *ptr;
+  char *type;
+  size_t length;
 
 };
 ```
