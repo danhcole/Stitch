@@ -36,10 +36,14 @@ rule token = parse
 	| ">="						{ GE }
 	| '<'						{ LT }
 	| "<="						{ LE }
-	| "if"						{ IF }x
+	| "if"						{ IF }
 	| "else"					{ ELSE }
 	| "while"					{ WHILE }
 	| "for"						{ FOR }
+	| "stitch"					{ STITCH }
+	| "from"					{ FROM }
+	| "to"						{ TO }
+	| "by"						{ BY }
 	| "break"					{ BREAK }
 	| "return"					{ RETURN }
 	| "const"					{ CONST }
@@ -47,9 +51,9 @@ rule token = parse
 	| "int"						{ INT }
 	| "float"					{ FLOAT }
 	| "char"					{ CHAR }
-	| "async"					{ ASYNC }
-	| '-'?['0' - '9']+ as litr		{ INT(int_of_string intr) }
-	| '-'?['0'-'9']'.'['0'-'9']* as litr { FLOAT(float_of_string intr) } (* fix - DHC*)
+	| "array"					{ ARRAY }
+	| '-'?['0' - '9']+ as litr		{ INT(int_of_string litr) }
+	| '-'?['0'-'9']'.'['0'-'9']* as litr { FLOAT(float_of_string litr) } (* fix - DHC*)
 	| ['a'-'z' 'A'-'Z' '_']['a'-'z' 'A'-'Z' '0'-'9' '_']* as litr { ID(litr) }
 	| eof { EOF }
 	| _ as char { raise (Failure("illegal character " ^ Char.escaped char))}
