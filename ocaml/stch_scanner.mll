@@ -52,8 +52,9 @@ rule token = parse
 	| "float"					{ FLOAT }
 	| "char"					{ CHAR }
 	| "array"					{ ARRAY }
-	| '-'?['0' - '9']+ as litr		{ INT(int_of_string litr) }
-	| '-'?['0'-'9']'.'['0'-'9']* as litr { FLOAT(float_of_string litr) } (* fix - DHC*)
+	| "struct"					{ STRUCT }
+	| '-'?['0' - '9']+ as litr				{ INT(int_of_string litr) }
+	| '-'?['0'-'9']?'.'['0'-'9']* as litr 	{ FLOAT(float_of_string litr) }
 	| ['a'-'z' 'A'-'Z' '_']['a'-'z' 'A'-'Z' '0'-'9' '_']* as litr { ID(litr) }
 	| eof { EOF }
 	| _ as char { raise (Failure("illegal character " ^ Char.escaped char))}
