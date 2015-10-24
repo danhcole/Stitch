@@ -2,24 +2,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int SIZE = 10000;
+const int SIZE = 30;
 
 struct rangeInfo {
 
     int begin;
     int end;
     int stepSize;
+    int increment;
 
 };
 
 int a[SIZE];
 int c[SIZE];
 
+void printArray(int *a, int n) {
+
+    int i;
+    for(i = 0; i < n; i++) {
+        printf("%d ", a[i]);
+    }
+
+    printf("\n");
+}
+
+void populateArray(int *a, int n) {
+
+    srand(time(NULL)); //seed the RNG
+
+    int i;
+    for(i = 0; i < n; i++) {
+        
+        a[i] = rand() % 100;
+    }
+}
+
+
 void *addNtoAll(void *info) { //each thread operates on a single sector of the matrices
 
     struct rangeInfo *myInfo = (struct rangeInfo *)info;
 
-    printf("Hello from thread with range %d to %d\n", myInfo->begin, myInfo->end);
+    //printf("Hello from thread with range %d to %d\n", myInfo->begin, myInfo->end);
+
+    int i;
+    for(i = myInfo->begin; i < myInfo->end; i += myInfo->stepSize) {
+
+        c[i] = a[i] + myInfo->increment;
+    }
 
     return (void *)0;
 }
@@ -27,7 +56,19 @@ void *addNtoAll(void *info) { //each thread operates on a single sector of the m
 
 int main(int argc, char **argv) {
 
+    if (argc != 2) {
+        fprintf(stderr ,"Usage: addToEach <number>\n");
+        exit(1);
+    }
+
+    int incr;
+    sscanf(argv[1], "%d", &incr);
+
     int numThreads = 4;
+
+    populateArray(a, SIZE);
+    printf("Initial array:\n\n");
+    printArray(a, SIZE);
 
     //it's like deadpool, but with threads
     pthread_t *threadpool = malloc(numThreads * sizeof(pthread_t));
@@ -45,8 +86,9 @@ int main(int argc, char **argv) {
     for(i = 0; i < SIZE; i += SIZE/numThreads) {
 
         info[thread].begin = i;
-        info[thread].end = i + SIZE/numThreads - 1;
+        info[thread].end = i + SIZE/numThreads;
         info[thread].stepSize = 1;
+        info[thread].increment = incr;
         
         int e = pthread_create(&threadpool[thread], NULL, addNtoAll, &info[thread]);
         if (e != 0) {
@@ -62,6 +104,9 @@ int main(int argc, char **argv) {
     for(i = 0; i < numThreads; i++) {
         pthread_join(threadpool[i], NULL);
     }
+
+    printf("Final array:\n\n");
+    printArray(c, SIZE);
 
     return 0;
 }

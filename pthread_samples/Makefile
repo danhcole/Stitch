@@ -1,10 +1,10 @@
-matmult: matmult.o
-	gcc -g -Wall -pthread matmult.o -o matmult
+addToEach: addN.o
+	gcc -g -Wall -pthread addN.o -o addToEach
 
-matmult.o:
-	gcc -g -c -Wall -pthread matmult.c
+addN.o:
+	gcc -g -c -Wall -pthread addN.c
 
 .PHONY: clean
 
 clean:
-	rm -f *.o matmult
+	rm -f *.o addToEach
