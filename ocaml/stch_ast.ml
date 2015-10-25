@@ -1,6 +1,11 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
           | Or | And | Bor | Band | Lshift | Rshift
 
+type vdecl = {
+  vtype     :string;
+  vname     :string;
+}
+
 type expr =
     Int of int
   | Float of float
@@ -8,7 +13,7 @@ type expr =
   | Id of string
   | Binop of expr * op * expr
   | Bnot of expr
-  | Assign of string * expr
+  | Assign of vdecl * expr
   | Access of string * string
   | Increment of expr
   | Decrement of expr
@@ -26,11 +31,6 @@ type stmt =
   | Stitch of expr * expr * expr * expr * stmt
   | Break
 
-type vdecl = {
-  vtype     :string;
-  vname     :string;
-}
-
 type func_decl = {
     fname : string;
     formals : string list;
@@ -40,7 +40,7 @@ type func_decl = {
 
 type program = string list * func_decl list
 
-
+let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname 
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l
@@ -57,7 +57,7 @@ let rec string_of_expr = function
       | Lshift -> "<<" | Rshift -> ">>" | Mod -> "%" ) ^ " " ^
       string_of_expr e2
   | Bnot(e) -> "~" ^ string_of_expr e
-  | Assign(v, e) -> v ^ " = " ^ string_of_expr e
+  | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e
   | Access(v1, v2) -> v1 ^ "." ^ v2
   | Increment(e) -> string_of_expr e ^ "++"
   | Decrement(e) -> string_of_expr e ^ "--"
@@ -83,11 +83,9 @@ let rec string_of_stmt = function
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " " ^ string_of_stmt s
   | Break -> ""
 
-let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n"
-
 let string_of_fdecl fdecl =
   fdecl.fname ^ "(" ^ String.concat ", " fdecl.formals ^ ")\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+  String.concat "" (List.map string_of_vdecl fdecl.locals) ^ ";\n" ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
