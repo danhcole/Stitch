@@ -24,15 +24,23 @@ type stmt =
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | Stitch of expr * expr * expr * expr * stmt
+  | Break
+
+type vdecl = {
+  vtype     :string;
+  vname     :string;
+}
 
 type func_decl = {
     fname : string;
     formals : string list;
-    locals : string list;
+    locals : vdecl list;
     body : stmt list;
   }
 
 type program = string list * func_decl list
+
+
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l
@@ -73,8 +81,9 @@ let rec string_of_stmt = function
   | Stitch(e1,e2,e3,e4,s) ->
       "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " " ^ string_of_stmt s
+  | Break -> ""
 
-let string_of_vdecl id = "int " ^ id ^ ";\n"
+let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n"
 
 let string_of_fdecl fdecl =
   fdecl.fname ^ "(" ^ String.concat ", " fdecl.formals ^ ")\n{\n" ^
