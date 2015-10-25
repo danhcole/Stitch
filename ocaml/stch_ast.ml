@@ -49,7 +49,7 @@ let rec string_of_expr = function
       string_of_expr e2
   | Bnot(e) -> "~" ^ string_of_expr e
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
-  | Access(v, e) -> v ^ "." ^ string_of_expr e
+  | Access(v, e) -> v ^ "." ^ e
   | Increment(e) -> string_of_expr e ^ "++"
   | Decrement(e) -> string_of_expr e ^ "--"
   | Negate(e) -> "!" ^ string_of_expr e
