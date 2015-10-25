@@ -1,15 +1,17 @@
-type op = ADD | SUBTRACT | TIMES | DIVIDE | MOD | EQUAL | NE | LT | LE | GT | GE 
-          | OR | AND | BOR | BAND | LSHIFT | RSHIFT | BNOT 
+type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
+          | Or | And | Bor | Band | Lshift | Rshift | Bnot 
 
 type expr =
-    Literal of int
+    Int of int
+  | Float of float
+  | Char of char
   | Id of string
   | Binop of expr * op * expr
-  | ASSIGN of string * expr
-  | ACCESS of string * string
-  | INCREMENT of string
-  | DECREMENT of string
-  | NEGATE of string
+  | Assign of string * expr
+  | Access of string * string
+  | Increment of string
+  | Decrement of string
+  | Negate of string
   | Call of string * expr list
   | Noexpr
 
@@ -31,22 +33,24 @@ type func_decl = {
 type program = string list * func_decl list
 
 let rec string_of_expr = function
-    Literal(l) -> string_of_int l
+    Int(l) -> string_of_int l
+  | Float(l) -> string_of_float l
+  | Char(l) -> String.make 1 l
   | Id(s) -> s
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^
       (match o with
-	ADD -> "+" | SUBTRACT -> "-" | TIMES -> "*" | DIVIDE -> "/"
-      | EQUAL -> "==" | NE -> "!="
-      | LT -> "<" | LE -> "<=" | GT -> ">" | GE -> ">="
-      | OR -> "||" | AND -> "&&" | BOR -> "|" | BAND -> "&" 
-      | LSHIFT -> "<<" | RSHIFT -> ">>" | BNOT -> "~" | MOD -> "%" ) ^ " " ^
+	Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
+      | Equal -> "==" | Ne -> "!="
+      | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
+      | Or -> "||" | And -> "&&" | Bor -> "|" | Band -> "&" 
+      | Lshift -> "<<" | Rshift -> ">>" | Bnot -> "~" | Mod -> "%" ) ^ " " ^
       string_of_expr e2
-  | ASSIGN(v, e) -> v ^ " = " ^ string_of_expr e
-  | ACCESS(v, e) -> v ^ "." ^ e
-  | INCREMENT(v) -> v ^ "++"
-  | DECREMENT(v) -> v ^ "--"
-  | NEGATE(v) -> "!" ^ v
+  | Assign(v, e) -> v ^ " = " ^ string_of_expr e
+  | Access(v, e) -> v ^ "." ^ e
+  | Increment(v) -> v ^ "++"
+  | Decrement(v) -> v ^ "--"
+  | Negate(v) -> "!" ^ v
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
@@ -60,7 +64,7 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
       string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->
-      "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
+      "fOr (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
 
