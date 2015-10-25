@@ -1,5 +1,4 @@
-%{ open Ast }%
-
+%{ open stch_ast %}
 %token SEMI SQUOTE DQUOTE LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
 %token COMMA TIMES DIVIDE ADD INCREMENT SUBTRACT MOD
 %token ACCESS ASSIGN EQUAL NEGATE NE
@@ -14,10 +13,23 @@
 
 %nonassoc ELSE
 %right ASSIGN
+%left OR
+%left AND
+%left BOR 
+%left BAND
 %left EQUAL NE
 %left LT GT LE GE
+%left LSHIFT RSHIFT
 %left ADD SUBTRACT
-%left TIMES DIVIDE
+%left TIMES DIVIDE MOD
+%right BNOT NEGATE
+%left ACCESS INCREMENT DECREMENT
+%start program
+%type <stch_ast.program> program
 
 %%
+
+program:
+	{EOF}
+
 
