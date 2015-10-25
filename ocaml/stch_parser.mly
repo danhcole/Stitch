@@ -15,4 +15,9 @@
 %nonassoc ELSE
 %right ASSIGN
 %left EQUAL NE
-%left 
+%left LT GT LE GE
+%left ADD SUBTRACT
+%left TIMES DIVIDE
+
+%%
+
