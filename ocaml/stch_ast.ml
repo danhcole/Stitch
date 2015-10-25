@@ -7,11 +7,12 @@ type expr =
   | Char of char
   | Id of string
   | Binop of expr * op * expr
+  | Bnot of expr
   | Assign of string * expr
   | Access of string * string
-  | Increment of string
-  | Decrement of string
-  | Negate of string
+  | Increment of expr
+  | Decrement of expr
+  | Negate of expr
   | Call of string * expr list
   | Noexpr
 
@@ -44,13 +45,14 @@ let rec string_of_expr = function
       | Equal -> "==" | Ne -> "!="
       | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
       | Or -> "||" | And -> "&&" | Bor -> "|" | Band -> "&" 
-      | Lshift -> "<<" | Rshift -> ">>" | Bnot -> "~" | Mod -> "%" ) ^ " " ^
+      | Lshift -> "<<" | Rshift -> ">>" | Mod -> "%" ) ^ " " ^
       string_of_expr e2
+  | Bnot(e) -> "~" ^ string_of_expr e
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
-  | Access(v, e) -> v ^ "." ^ e
-  | Increment(v) -> v ^ "++"
-  | Decrement(v) -> v ^ "--"
-  | Negate(v) -> "!" ^ v
+  | Access(v, e) -> v ^ "." ^ string_of_expr e
+  | Increment(e) -> string_of_expr e ^ "++"
+  | Decrement(e) -> string_of_expr e ^ "--"
+  | Negate(e) -> "!" ^ string_of_expr e
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
