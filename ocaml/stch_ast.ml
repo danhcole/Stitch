@@ -1,10 +1,15 @@
-type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq
+type op = ADD | SUBTRACT | TIMES | DIVIDE | MOD | EQUAL | NE | LT | LE | GT | GE 
+          | OR | AND | BOR | BAND | LSHIFT | RSHIFT | BNOT 
 
 type expr =
     Literal of int
   | Id of string
   | Binop of expr * op * expr
-  | Assign of string * expr
+  | ASSIGN of string * expr
+  | ACCESS of string * string
+  | INCREMENT of string
+  | DECREMENT of string
+  | NEGATE of string
   | Call of string * expr list
   | Noexpr
 
@@ -31,11 +36,17 @@ let rec string_of_expr = function
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^
       (match o with
-	Add -> "+" | Sub -> "-" | Mult -> "*" | Div -> "/"
-      | Equal -> "==" | Neq -> "!="
-      | Less -> "<" | Leq -> "<=" | Greater -> ">" | Geq -> ">=") ^ " " ^
+	ADD -> "+" | SUBTRACT -> "-" | TIMES -> "*" | DIVIDE -> "/"
+      | EQUAL -> "==" | NE -> "!="
+      | LT -> "<" | LE -> "<=" | GT -> ">" | GE -> ">="
+      | OR -> "||" | AND -> "&&" | BOR -> "|" | BAND -> "&" 
+      | LSHIFT -> "<<" | RSHIFT -> ">>" | BNOT -> "~" | MOD -> "%" ) ^ " " ^
       string_of_expr e2
-  | Assign(v, e) -> v ^ " = " ^ string_of_expr e
+  | ASSIGN(v, e) -> v ^ " = " ^ string_of_expr e
+  | ACCESS(v, e) -> v ^ "." ^ e
+  | INCREMENT(v) -> v ^ "++"
+  | DECREMENT(v) -> v ^ "--"
+  | NEGATE(v) -> "!" ^ v
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
