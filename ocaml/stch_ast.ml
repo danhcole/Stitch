@@ -1,5 +1,5 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
-          | Or | And | Bor | Band | Lshift | Rshift | Bnot 
+          | Or | And | Bor | Band | Lshift | Rshift
 
 type expr =
     Int of int
