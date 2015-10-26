@@ -1,6 +1,11 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
           | Or | And | Bor | Band | Lshift | Rshift
 
+type vdecl = {
+  vtype     :string;
+  vname     :string;
+}
+
 type expr =
     Int of int
   | Float of float
@@ -23,15 +28,19 @@ type stmt =
   | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
   | While of expr * stmt
+  | Stitch of expr * expr * expr * expr * stmt
+  | Break
 
 type func_decl = {
     fname : string;
     formals : string list;
-    locals : string list;
+    locals : vdecl list;
     body : stmt list;
   }
 
 type program = string list * func_decl list
+
+
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l
@@ -49,7 +58,7 @@ let rec string_of_expr = function
       string_of_expr e2
   | Bnot(e) -> "~" ^ string_of_expr e
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
-  | Access(v, e) -> v ^ "." ^ e
+  | Access(v1, v2) -> v1 ^ "." ^ v2
   | Increment(e) -> string_of_expr e ^ "++"
   | Decrement(e) -> string_of_expr e ^ "--"
   | Negate(e) -> "!" ^ string_of_expr e
@@ -66,11 +75,15 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
       string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->
-      "fOr (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
+      "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
+  | Stitch(e1,e2,e3,e4,s) ->
+      "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
+        string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " " ^ string_of_stmt s
+  | Break -> ""
 
-let string_of_vdecl id = "int " ^ id ^ ";\n"
+let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n"
 
 let string_of_fdecl fdecl =
   fdecl.fname ^ "(" ^ String.concat ", " fdecl.formals ^ ")\n{\n" ^
