@@ -1,4 +1,6 @@
 #include <pthread.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 struct rangeInfo {
 
@@ -9,10 +11,11 @@ struct rangeInfo {
 
 };
 
-int array a = {1, 2, 3, 4};
-int array b = {10, 10, 10, 10};
-int array c[4];
+int a[] = {1, 2, 3, 4};
+int b[] = {10, 10, 10, 10};
+int c[] = {0, 0, 0, 0};
 int acc;
+int SIZE = 4;
 
 void *mult(void *info) { //each thread operates on a single sector of the matrices
 
@@ -49,6 +52,11 @@ int main(){
 
     struct rangeInfo *info = malloc(sizeof(struct rangeInfo) * numThreads);
 
+    int j;
+    for (j = 0; j < 4; j++){
+    	fprintf(stderr, "%d ", c[j]);
+    }
+    fprintf(stderr, "\n");
 
     int i;
     int thread = 0;
@@ -65,7 +73,7 @@ int main(){
         }
 
         info[thread].stepSize = 1;
-        info[thread].increment = incr;
+        info[thread].increment = 1;
         
         int e = pthread_create(&threadpool[thread], NULL, mult, &info[thread]);
         if (e != 0) {
@@ -97,7 +105,7 @@ int main(){
         }
 
         info[thread].stepSize = 1;
-        info[thread].increment = incr;
+        info[thread].increment = 1;
         
         int e = pthread_create(&threadpool[thread], NULL, add, &info[thread]);
         if (e != 0) {
@@ -114,4 +122,10 @@ int main(){
         pthread_join(threadpool[i], NULL);
     }
 
+    for (j = 0; j < 4; j++){
+    	fprintf(stderr, "%d ", c[j]);
+    }
+    fprintf(stderr, "\n");
+
+    return 0;
 }
