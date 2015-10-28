@@ -1,0 +1,9 @@
+#gitignore
+#4115_lang
+#Stitch Language
+
+.DS_Store
+*.aux
+*.log
+*.synctex.gz
+*.dSYM
