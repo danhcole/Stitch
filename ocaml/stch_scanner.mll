@@ -48,12 +48,12 @@ rule token = parse
 	| "break"					{ BREAK }
 	| "return"					{ RETURN }
 	| "const"					{ CONST }
-	| "void"					{ VOID }
-	| "int"						{ INT }
-	| "float"					{ FLOAT }
-	| "char"					{ CHAR }
-	| "array"					{ ARRAY }
-	| "struct"					{ STRUCT }
+	| "void"					{ _VOID_ }
+	| "int"						{ _INT_ }
+	| "float"					{ _FLOAT_ }
+	| "char"					{ _CHAR_ }
+	| "array"					{ _ARRAY_ }
+	| "struct"					{ _STRUCT_ }
 	| ['-' '+']?['0' - '9']+ as i_litr				{ INT(int_of_string i_litr) }
 	| ['-' '+']?['0'-'9']?'.'['0'-'9']* as f_litr 	{ FLOAT(float_of_string f_litr) }
 	| '''([^''']  as ch_litr)'''					{ CHAR(ch_litr) }
