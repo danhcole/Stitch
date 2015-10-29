@@ -1,3 +1,14 @@
+#10/27
+
+#### questions
+
+how do we access local variables in the c version of the stitch loops?
+- maybe build a struct and stuff all the variables into there
+
+need to deal with accumulators
+- have some way to declare a variable 'thread-local' 
+- then have an accumulator function
+
 #10/20
 
 #### todo

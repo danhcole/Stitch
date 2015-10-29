@@ -2,52 +2,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int SIZE = 32;
+const int SIZE = 3;
+pthread_mutex_t lock;
 
 struct rangeInfo {
 
     int begin;
     int end;
     int stepSize;
-    int increment;
+    int cols;
 
 };
 
-int a[SIZE];
-int c[SIZE];
+int a[SIZE][SIZE];
+int b[SIZE][SIZE];
+int c[SIZE][SIZE];
 
-void printArray(int *a, int n) {
+void printArray(int a[][SIZE], int rows, int cols) {
 
     int i;
-    for(i = 0; i < n; i++) {
-        printf("%d ", a[i]);
+    int j;
+    for(i = 0; i < rows; i++) {
+
+        for(j = 0; j < cols; j++) {
+
+              printf("%d ", a[i][j]);
+        }
+
+        printf("\n");
     }
 
     printf("\n");
 }
 
-void populateArray(int *a, int n) {
+void populateArray(int a[][SIZE], int rows, int cols) {
 
     srand(time(NULL)); //seed the RNG
 
     int i;
-    for(i = 0; i < n; i++) {
-        
-        a[i] = rand() % 100;
+    int j;
+    for(i = 0; i < rows; i++) {
+
+        for(j = 0; j < cols; j++) {
+
+            printf("Assigning to [%d][%d]\n", i, j);
+
+              a[i][j] = rand() % 10;
+              b[i][j] = rand() % 10;
+        }
     }
 }
 
 
-void *addNtoAll(void *info) { //each thread operates on a single sector of the matrices
+void *multiply(void *info) { //each thread operates on a single sector of the matrices
 
     struct rangeInfo *myInfo = (struct rangeInfo *)info;
 
     printf("Hello from thread with range %d to %d\n", myInfo->begin, myInfo->end);
 
     int i;
+    int j, k;
     for(i = myInfo->begin; i < myInfo->end; i += myInfo->stepSize) {
 
-        c[i] = a[i] + myInfo->increment;
+        for(j = 0; j < SIZE; j++) {
+
+            for(k = 0; k < SIZE; k++) {
+
+                pthread_mutex_lock(&lock);
+                c[i][j] += a[i][k] * b[k][j];
+                pthread_mutex_unlock(&lock);
+            }
+        }
+
+
     }
 
     return (void *)0;
@@ -56,25 +83,26 @@ void *addNtoAll(void *info) { //each thread operates on a single sector of the m
 
 int main(int argc, char **argv) {
 
-    if (argc != 2) {
-        fprintf(stderr ,"Usage: addToEach <number>\n");
-        exit(1);
-    }
+    int numThreads = 2;
 
-    int incr;
-    sscanf(argv[1], "%d", &incr);
-
-    int numThreads = 4;
-
-    populateArray(a, SIZE);
+    populateArray(a, SIZE, SIZE);
     printf("Initial array:\n\n");
-    printArray(a, SIZE);
+    printArray(a, SIZE, SIZE);
+
+    printf("Initial array:\n\n");
+    printArray(b, SIZE, SIZE);
+
 
     //it's like deadpool, but with threads
     pthread_t *threadpool = malloc(numThreads * sizeof(pthread_t));
 
     if (threadpool == NULL) {
-        perror("Malloc failed\n");
+        fprintf(stderr, "Malloc failed\n");
+        exit(1);
+    }
+
+    if (pthread_mutex_init(&lock, NULL) != 0) {
+        fprintf(stderr, "Mutex failed\n");
         exit(1);
     }
 
@@ -86,18 +114,17 @@ int main(int argc, char **argv) {
     for(i = 0; i < SIZE; i += SIZE/numThreads) {
 
         info[thread].begin = i;
+
         if((i + 2*(SIZE/numThreads)) > SIZE) {
             info[thread].end = SIZE;
-            i = SIZE;
         }
         else {
             info[thread].end = i + SIZE/numThreads;
         }
-
         info[thread].stepSize = 1;
-        info[thread].increment = incr;
+        info[thread].cols = SIZE;
         
-        int e = pthread_create(&threadpool[thread], NULL, addNtoAll, &info[thread]);
+        int e = pthread_create(&threadpool[thread], NULL, multiply, &info[thread]);
         if (e != 0) {
             perror("Cannot create thread!\n");
             free(threadpool); //error, free the threadpool
@@ -113,7 +140,7 @@ int main(int argc, char **argv) {
     }
 
     printf("Final array:\n\n");
-    printArray(c, SIZE);
+    printArray(c, SIZE, SIZE);
 
     return 0;
 }
