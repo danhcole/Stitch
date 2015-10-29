@@ -41,17 +41,18 @@ decls:
 | decls fdecl { fst $1, ($2 :: snd $1) }
 
 fdecl:
-	type_name ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
-	{ { ftype = $1;
-		fname = $2;
-		formals = $4;
-		locals = List.rev $7;
-		body = List.rev $8; } }
+	ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+	{ { //ftype = $1;
+		fname = $1;
+		formals = $3;
+		locals = List.rev $6;
+		body = List.rev $7; } }
 
-type_name:
+/*type_name:
 INT		{"int"}
 | FLOAT	{"float"}
 | CHAR	{"char"}
+*/
 
 formals_opt:
 	/* nothing */	{ [] }
@@ -66,9 +67,7 @@ vdecl_list:
 | vdecl_list vdecl	{$2 ::$1}
 
 vdecl:
-	type_name ID SEMI 
-	{{	vtype =$1
-		vname = $2} }
+	INT ID SEMI		{ $2 } 
 
 stmt_list:
 /*nothing*/			{ [] }
@@ -126,13 +125,14 @@ INT			{ Int($1) }
 /*Miscellanenous*/
 | ID ACCESS ID			{ Access($1, $3) }
 | ID ASSIGN expr		{ Assign($1, $3) }
-| ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+/*| ID LPAREN actuals_opt RPAREN { Call($1, $3) }*/
 | LPAREN expr RPAREN	{ $2 } 
 
-actuals_opt:
-/*nothing*/		{ [] }
+/*actuals_opt:
+nothing		{ [] }
 | actuals_list	{ List.rev $1 }
 
 actuals_list:
 expr			{ [$1] }
 |actuals_list COMMA expr	{$3 :: $1 }
+*/
