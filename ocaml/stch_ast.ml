@@ -18,7 +18,6 @@ type expr =
   | Increment of expr
   | Decrement of expr
   | Negate of expr
-  | Call of string * expr list
   | Noexpr
 
 type stmt =
@@ -40,8 +39,6 @@ type func_decl = {
 
 type program = string list * func_decl list
 
-
-
 let rec string_of_expr = function
     Int(l) -> string_of_int l
   | Float(l) -> string_of_float l
@@ -62,8 +59,6 @@ let rec string_of_expr = function
   | Increment(e) -> string_of_expr e ^ "++"
   | Decrement(e) -> string_of_expr e ^ "--"
   | Negate(e) -> "!" ^ string_of_expr e
-  | Call(f, el) ->
-      f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
 
 let rec string_of_stmt = function
