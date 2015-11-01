@@ -57,9 +57,9 @@ _INT_			{ "int" }
 | _CHAR_ _ARRAY_	{ "char array" }
 
 array_opt:
-	/* nothing */	{ [] }
-	| LSQUARE INT RSQUARE { $2 }
-
+	/* nothing */			{ -1 }
+	| LSQUARE INT RSQUARE	{ $2 }
+	| LSQUARE RSQUARE		{ -1 }
 
 formals_opt:
 	/* nothing */	{ [] }
@@ -108,6 +108,8 @@ INT			{ Int($1) }
 | FLOAT		{ Float($1) }
 | CHAR		{ Char($1) }
 | ID		{ Id($1) }
+/*Array*/
+| LSQUARE array_list_opt RSQUARE { $2 }
 /*Arithmetic*/
 | expr ADD expr			{ Binop($1, Add,   $3) }
 | expr SUBTRACT  expr	{ Binop($1, Subtract,   $3) }
@@ -140,11 +142,10 @@ INT			{ Int($1) }
 /*| ID LPAREN actuals_opt RPAREN { Call($1, $3) }*/
 | LPAREN expr RPAREN	{ $2 } 
 
-/*actuals_opt:
-nothing		{ [] }
-| actuals_list	{ List.rev $1 }
+array_list_opt:
+/*nothing*/		{ [] }
+| array_list	{ List.rev $1 }
 
-actuals_list:
+array_list:
 expr			{ [$1] }
-|actuals_list COMMA expr	{$3 :: $1 }
-*/
+|array_list COMMA expr	{$3 :: $1 }
