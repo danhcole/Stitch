@@ -49,9 +49,16 @@ fdecl:
 		body = List.rev $8; } }
 
 type_name:
-_INT_		{"int"}
-| _FLOAT_	{"float"}
-| _CHAR_	{"char"}
+_INT_			{ "int" }
+| _FLOAT_		{ "float" }
+| _CHAR_ 		{ "char" }
+| _INT_ _ARRAY_  	{ "int array" }
+| _FLOAT_ _ARRAY_	{ "float array" }
+| _CHAR_ _ARRAY_	{ "char array" }
+
+array_opt:
+	/* nothing */	{ [] }
+	| LBRACK _INT_ RBRCK { $2 }
 
 
 formals_opt:
@@ -67,7 +74,12 @@ vdecl_list:
 | vdecl_list vdecl	{$2 ::$1}
 
 vdecl:
-	type_name ID SEMI		{ $2 } 
+	type_name ID array_opt SEMI
+	{{
+		vdecl_type 	= $1;
+		vdecl_name	= $2;
+		array_size	= $3;
+	}}
 
 stmt_list:
 /*nothing*/			{ [] }
