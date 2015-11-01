@@ -58,7 +58,7 @@ _INT_			{ "int" }
 
 array_opt:
 	/* nothing */	{ [] }
-	| LBRACK _INT_ RBRCK { $2 }
+	| LSQUARE INT RSQUARE { $2 }
 
 
 formals_opt:
