@@ -1,3 +1,23 @@
+#4/3
+
+#### todo
+
+Runtime
+- get end state program written in Stitch (goal of what we want to write)
+- should be able to code PRNG
+- goal -> Stitch compiler should generate C code that *always* compiles
+
+Testing
+- start setting up regression testing suite
+- come up with tests
+
+LRM
+- too many operators
+- put grammar in, not just examples
+- get rid of sizeof(), all bit operations
+- be more formal (K&R style)
+- be explicit regarding typechecking (esp. in array decl)
+
 #10/27
 
 #### questions
