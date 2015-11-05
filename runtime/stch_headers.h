@@ -45,4 +45,16 @@ struct rangeInfo {
 
 };
 
+/*
+************************
+* Function definitions *
+************************
+*/
+
+void stch_print(const char* s);
+void stch_error(const char* e);
+void stch_read(const int fd, void* dest);
+void stch_write(const int fd, void* source);
+int  stch_open(const char* source);
+
 #endif
