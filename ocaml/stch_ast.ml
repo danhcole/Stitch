@@ -15,8 +15,6 @@ type expr =
   | Bnot of expr
   | Assign of string * expr
   | Access of string * string
-  | Increment of expr
-  | Decrement of expr
   | Negate of expr
   | Noexpr
 
@@ -50,14 +48,10 @@ let rec string_of_expr = function
 	Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
       | Equal -> "==" | Ne -> "!="
       | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
-      | Or -> "||" | And -> "&&" | Bor -> "|" | Band -> "&" 
-      | Lshift -> "<<" | Rshift -> ">>" | Mod -> "%" ) ^ " " ^
+      | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_expr e2
-  | Bnot(e) -> "~" ^ string_of_expr e
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
   | Access(v1, v2) -> v1 ^ "." ^ v2
-  | Increment(e) -> string_of_expr e ^ "++"
-  | Decrement(e) -> string_of_expr e ^ "--"
   | Negate(e) -> "!" ^ string_of_expr e
   | Noexpr -> ""
 
