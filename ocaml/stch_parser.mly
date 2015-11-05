@@ -1,8 +1,8 @@
 %{ open stch_ast %}
 %token SEMI SQUOTE DQUOTE LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
-%token COMMA TIMES DIVIDE ADD INCREMENT SUBTRACT MOD
+%token COMMA TIMES DIVIDE ADD SUBTRACT MOD
 %token ACCESS ASSIGN EQUAL NEGATE NE
-%token AND OR BAND BOR BNOT LSHIFT RSHIFT
+%token AND OR
 %token GT LE LT LE
 %token FROM TO BY
 %token IF ELSE WHILE FOR STITCH BREAK RETURN _VOID_ _INT_ _FLOAT_ _CHAR_ _ARRAY_ _STRUCT_
@@ -18,15 +18,13 @@
 %right ASSIGN
 %left OR
 %left AND
-%left BOR 
-%left BAND
 %left EQUAL NE
 %left LT GT LE GE
-%left LSHIFT RSHIFT
 %left ADD SUBTRACT
 %left TIMES DIVIDE MOD
 %right BNOT NEGATE
-%left ACCESS INCREMENT DECREMENT
+%left ACCESS
+
 %start program
 %type <stch_ast.program> program
 
@@ -116,8 +114,6 @@ INT			{ Int($1) }
 | expr TIMES  expr		{ Binop($1, Times,  $3) }
 | expr DIVIDE expr		{ Binop($1, Divide,   $3) }
 | expr MOD expr			{ Binop($1, Mod, $3) }
-| expr INCREMENT		{ Increment($1) }
-| expr DECREMENT		{ Decrement($1) }
 /*Comparison*/
 | expr EQUAL expr		{ Binop($1, Equal, $3) }
 | expr NE    expr		{ Binop($1, Ne,   $3) }
@@ -128,14 +124,8 @@ INT			{ Int($1) }
 /*Logical*/
 | expr OR expr			{ Binop($1, Or, $3) }
 | expr AND expr			{ Binop($1, And, $3) }
-/*Binary*/
-| expr BAND expr		{ Binop($1, Band, $3) }
-| expr BOR expr			{ Binop($1, Bor, $3) }
-| expr LSHIFT expr		{ Binop($1, Lshift, $3) }
-| expr RSHIFT expr		{ Binop($1, Rshift, $3) }
 /*Unary*/
 | NEGATE expr			{ Negate($2)}
-| BNOT expr				{ Bnot($2) }
 /*Miscellanenous*/
 | ID ACCESS ID			{ Access($1, $3) }
 | ID ASSIGN expr		{ Assign($1, $3) }
