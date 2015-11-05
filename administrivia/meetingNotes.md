@@ -6,6 +6,8 @@ Runtime
 - get end state program written in Stitch (goal of what we want to write)
 - should be able to code PRNG
 - goal -> Stitch compiler should generate C code that *always* compiles
+- write stitch loops in Stitch, and write the equivalent C code to see how that would work.
+- start coding our program that we’d like to show off for the final project. Use that as a goal to build our compiler.
 
 Testing
 - start setting up regression testing suite
@@ -16,7 +18,14 @@ LRM
 - put grammar in, not just examples
 - get rid of sizeof(), all bit operations
 - be more formal (K&R style)
-- be explicit regarding typechecking (esp. in array decl)
+- be explicit regarding typechecking (esp. in array decl), note: Can’t do type checking in the grammar, has to be done in the “static-semantic pass” phase.
+
+####Notes/Questions to be addressed
+- can you return, break from a stitch loop?
+- turning local variables into global variables, would not be able to do recursive calls then.
+	- possibly use a struct to pass the local variables.
+- should be able to code a random number generator function in Stitch.
+
 
 #10/27
 
