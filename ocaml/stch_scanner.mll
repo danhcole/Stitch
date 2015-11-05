@@ -17,8 +17,6 @@ rule token = parse
 	| '*'						{ TIMES }
 	| '/'						{ DIVIDE }
 	| '+'						{ ADD }
-	| "++"						{ INCREMENT }
-	| "--"						{ DECREMENT }
 	| '-'						{ SUBTRACT }
 	| '%'						{ MOD }
 	| '.'						{ ACCESS }
@@ -28,11 +26,6 @@ rule token = parse
 	| "!="						{ NE }
 	| "&&"						{ AND }
 	| "||"						{ OR }
-	| '&'						{ BAND }
-	| '|'						{ BOR }
-	| '~'						{ BNOT }
-	| "<<"						{ LSHIFT }
-	| ">>"						{ RSHIFT }
 	| '>'						{ GT }
 	| ">="						{ GE }
 	| '<'						{ LT }
