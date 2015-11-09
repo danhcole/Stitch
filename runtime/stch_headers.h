@@ -11,7 +11,7 @@
 * Includes *
 ************
 */
-#include <stdout.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
@@ -64,21 +64,21 @@ typedef struct stch_array{
 */
 
 //open()
-int  stch_open(const char* source);
-//write()
-int  stch_write(const int fd, stch_array* source);
-//read()
-int  stch_read(const int fd, stch_array* dest);
+// int  stch_open(const char* source);
+// //write()
+// int  stch_write(const int fd, stch_array* source);
+// //read()
+// int  stch_read(const int fd, stch_array* dest);
 //print()
 void stch_print(const char* s);
-//error()
-void stch_error(const char* e);
-//lengthof()
-int  stch_length(const stch_array* a);
-//exit()
-void stch_exit(int e);
-//cut()
-void stch_cut(int e);
+// //error()
+// void stch_error(const char* e);
+// //lengthof()
+// int  stch_length(const stch_array* a);
+// //exit()
+// void stch_exit(int e);
+// //cut()
+// void stch_cut(int e);
 
 
 #endif

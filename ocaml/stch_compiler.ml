@@ -1,5 +1,5 @@
 (* Stitch Compiler *)
 
 let addheader = 
-  print ("testout")
+  print_endline ("testout")
   ;;
