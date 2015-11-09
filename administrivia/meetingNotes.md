@@ -1,3 +1,26 @@
+#4/10
+
+#### questions
+
+Runtime
+- how to handle in-scope, non-global variables in a stitch loop
+	- when do these come up except accumulators
+	- only a problem when writing too, when does this happen other than accumulators
+	- is this just an undefined behavior
+	- throw them all into globals
+		- namespace issues 
+		- keep id's from using underscore, reserve that for psudo-globals
+	- store in a struct
+		- void pointer vs typed pointers -> how to deal with structs
+		- compiler keeps track of which array element is which variable
+		- still have concurency issues, but when
+- accumulators (possible solutions)
+	- openMP solutionish
+		- have accumulate function that must be called before using an accumulator in a Stitch loop
+		- gets passed a operator flag (for +, -, etc.), and a variable
+		- when Stitch loop runs, it creates a local copy of the accumulator variable
+		- when the loop ends, before returning, the accumulators are harmonized
+
 #4/3
 
 #### todo
