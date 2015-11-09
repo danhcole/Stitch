@@ -32,6 +32,9 @@
 //hold local variables to pass from the stitch loop into a thread
 //need to figure this out...
 struct stchLocalVars{
+    
+    void *vars;
+    int  n;
 
 };
 
@@ -42,6 +45,7 @@ struct rangeInfo {
     int end;
     int stepSize;
     int cols;
+    struct stchLocalVars *locals;
 
 };
 
