@@ -9,3 +9,8 @@
 *.dSYM
 /pthread_samples/bin/**
 *.swp
+*.cmo
+*.cmi
+*parser.ml*
+*scanner.ml
+*_gen.txt

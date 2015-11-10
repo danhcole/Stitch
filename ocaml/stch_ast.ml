@@ -4,7 +4,7 @@ type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge
 type vdecl = {
   vdecl_type     : string;
   vdecl_name     : string;
-  array_size     : int;
+(*   array_size     : int; *)
 }
 
 type expr =

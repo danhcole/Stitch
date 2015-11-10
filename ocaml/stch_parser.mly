@@ -4,13 +4,14 @@
 %token COMMA TIMES DIVIDE ADD SUBTRACT MOD
 %token ACCESS ASSIGN EQUAL NEGATE NE
 %token AND OR
-%token GT LE LT LE
+%token GT GE LT LE
 %token FROM TO BY
 %token IF ELSE WHILE FOR STITCH BREAK RETURN TVOIDT TINTT TFLOATT TCHART TARRAYT TSTRUCTT
 %token CONST VOID
 %token <int>INT
 %token <char>CHAR
 %token <float> FLOAT 
+%token <string> STRING
 %token <string> ID
 %token EOF
 
@@ -77,7 +78,7 @@ vdecl:
 	{{
 		vdecl_type 	= $1;
 		vdecl_name	= $2;
-		array_size	= $3;
+		(*array_size	= $3;*)
 	}}
 
 stmt_list:
@@ -108,7 +109,7 @@ INT			{ Int($1) }
 | CHAR		{ Char($1) }
 | ID		{ Id($1) }
 /*Array*/
-| LSQUARE array_list_opt RSQUARE { $2 }
+/*| LSQUARE expr_list_opt RSQUARE { $2 }*/
 /*Arithmetic*/
 | expr ADD expr			{ Binop($1, Add,   $3) }
 | expr SUBTRACT  expr	{ Binop($1, Subtract,   $3) }
@@ -133,10 +134,10 @@ INT			{ Int($1) }
 /*| ID LPAREN actuals_opt RPAREN { Call($1, $3) }*/
 | LPAREN expr RPAREN	{ $2 } 
 
-array_list_opt:
-/*nothing*/		{ [] }
-| array_list	{ List.rev $1 }
+/*expr_list_opt:
+nothing		{ [] }
+| expr_list	{ List.rev $1 }
 
-array_list:
-expr			{ [$1] }
-|array_list COMMA expr	{$3 :: $1 }
+expr_list:
+  expr					{ [$1] }
+| expr_list COMMA expr	{$3 :: $1 }*/

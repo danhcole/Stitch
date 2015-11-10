@@ -2,7 +2,7 @@
 
 int main(){
 
-	stch_print("hello world");
+	stch_print("hello, world");
 
 	return 0;
 }
