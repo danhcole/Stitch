@@ -1,8 +1,0 @@
-#!/bin/sh
-#Stich complier toolchain
-
-FILENAME=`echo $1 | cut -d'.' -f1`
-
-echo "----Stitch Compiler Toolchain----"
-stch_compiler $1
-gcc -g -Wall $FILENAME.stc -o $FILENAME
