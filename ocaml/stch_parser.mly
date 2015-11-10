@@ -27,7 +27,7 @@
 %left ACCESS
 
 %start program
-%type <stch_ast.program> program
+%type <Stch_ast.program> program
 
 %%
 
@@ -69,11 +69,11 @@ formal_list:
 | formal_list COMMA ID	{ $3 :: $1 }
 
 vdecl_list:
-/*nothing*/			{ [] }
-| vdecl_list vdecl	{$2 ::$1}
+| vdecl SEMI			{ [$1] }
+| vdecl_list vdecl SEMI {$2 :: $1}
 
 vdecl:
-	type_name ID array_opt SEMI
+	type_name ID array_opt
 	{{
 		vdecl_type 	= $1;
 		vdecl_name	= $2;
