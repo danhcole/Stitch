@@ -28,7 +28,7 @@ type stmt =
   | Stitch of expr * expr * expr * expr * stmt
   | Break
 
-type func_decl = {
+type fdecl = {
     ftype : string;
     fname : string;
     formals : string list;
@@ -36,7 +36,7 @@ type func_decl = {
     body : stmt list;
   }
 
-type program = string list * func_decl list
+type program = vdecl list * fdecl list
 
 (*
 let rec string_of_expr = function

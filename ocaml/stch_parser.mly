@@ -69,7 +69,7 @@ formal_list:
 | formal_list COMMA ID	{ $3 :: $1 }
 
 vdecl_list:
-| vdecl SEMI			{ [$1] }
+  vdecl SEMI			{ [$1] }
 | vdecl_list vdecl SEMI {$2 :: $1}
 
 vdecl:
@@ -88,8 +88,8 @@ stmt:
 	expr SEMI	{ Expr($1) }
 | RETURN expr SEMI { Return($2) }
 | LBRACE stmt_list RBRACE { Block(List.rev $2) }
-| IF LPAREN expr RPAREN stmt %prec NOELSE	{ IF($3, $5, Block([])) }
-| IF LPAREN expr RPAREN stmt ELSE stmt		{ IF($3, $5, $7) }
+| IF LPAREN expr RPAREN stmt %prec NOELSE	{ If($3, $5, Block([])) }
+| IF LPAREN expr RPAREN stmt ELSE stmt		{ If($3, $5, $7) }
 | FOR LPAREN expr_opt SEMI expr_opt SEMI expr_opt RPAREN stmt
 	{ For($3,$5,$7,$9) }
 | WHILE LPAREN expr RPAREN stmt				{While($3, $5) }
