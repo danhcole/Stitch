@@ -1,7 +1,0 @@
-main(){
-
-  char a[20];
-  a = "hello world";
-  printf(a);
-
-}
