@@ -1,7 +1,7 @@
 (* Stitch Compiler *)
 
-open stch_ast
-(* 
-let addheader = 
-  print_endline ("testout")
-  ;; *)
+open Stch_ast
+
+let rec expr = function 
+Literal i -> print(i)
+;;

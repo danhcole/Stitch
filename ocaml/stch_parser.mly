@@ -5,7 +5,7 @@
 %token AND OR
 %token GT LE LT LE
 %token FROM TO BY
-%token IF ELSE WHILE FOR STITCH BREAK RETURN _VOID_ _INT_ _FLOAT_ _CHAR_ _ARRAY_ _STRUCT_
+%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOIDT TINTT TFLOATT TCHART TARRAYT TSTRUCTT
 %token CONST VOID
 %token <int>INT
 %token <char>CHAR
@@ -47,12 +47,12 @@ fdecl:
 		body = List.rev $8; } }
 
 type_name:
-_INT_			{ "int" }
-| _FLOAT_		{ "float" }
-| _CHAR_ 		{ "char" }
-| _INT_ _ARRAY_  	{ "int array" }
-| _FLOAT_ _ARRAY_	{ "float array" }
-| _CHAR_ _ARRAY_	{ "char array" }
+TINTT			{ "int" }
+| TFLOATT		{ "float" }
+| TCHART 		{ "char" }
+| TINTT TARRAYT  	{ "int array" }
+| TFLOATT TARRAYT	{ "float array" }
+| TCHART TARRAYT	{ "char array" }
 
 array_opt:
 	/* nothing */			{ -1 }
@@ -64,7 +64,7 @@ formals_opt:
 | formal_list		{ List.rev $1 }
 
 formal_list:
-	ID					{ [$1] }
+  ID					{ [$1] }
 | formal_list COMMA ID	{ $3 :: $1 }
 
 vdecl_list:

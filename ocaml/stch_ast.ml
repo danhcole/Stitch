@@ -1,5 +1,5 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
-          | Or | And | Bor | Band | Lshift | Rshift
+          | Or | And
 
 type vdecl = {
   vtype     :string;
@@ -12,7 +12,6 @@ type expr =
   | Char of char
   | Id of string
   | Binop of expr * op * expr
-  | Bnot of expr
   | Assign of string * expr
   | Access of string * string
   | Negate of expr
