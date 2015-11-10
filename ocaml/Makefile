@@ -20,19 +20,23 @@ stch_parser.ml stch_parser.mli: stch_parser.mly
 .PHONY: clean
 clean:
 	rm -f stitch stch_parser.ml stch_parser.mli stch_scanner.ml \
-	    *.cmo *.cmi *.out *.diff
+	    *.cmo *.cmi *.out *.diff *.output
 
 .PHONY: all
 all: clean stitch
 
-stch_ast.cmo:
-stch_ast.cmx:
-stch_compiler.cmo: ast.cmo
-stch_compiler.cmx: ast.cmx
-stitch.cmo: stch_scanner.cmo stch_parser.cmi stch_compiler.cmo ast.cmo
-stitch.cmx: stch_scanner.cmo stch_parser.cmx stch_compiler.cmx ast.cmx
-stch_parser.cmo: stch_ast.cmo stch_parser.cmi
-stch_parser.cmx: stch_ast.cmx stch_parser.cmi
-stch_scanner.cmo: stch_parser.cmi
-stch_scanner.cmx: stch_parser.cmx
-stch_parser.cmi: stch_ast.cmo
+#stch_ast.cmo:
+#stch_ast.cmx:
+#stch_compiler.cmo: ast.cmo
+#stch_compiler.cmx: ast.cmx
+#stitch.cmo: stch_scanner.cmo stch_parser.cmi stch_compiler.cmo ast.cmo
+#stitch.cmx: stch_scanner.cmo stch_parser.cmx stch_compiler.cmx ast.cmx
+#stch_parser.cmo: stch_ast.cmo stch_parser.cmi
+#stch_parser.cmx: stch_ast.cmx stch_parser.cmi
+#stch_scanner.cmo: stch_parser.cmi
+#stch_scanner.cmx: stch_parser.cmx
+#stch_parser.cmi: stch_ast.cmo
+stch_ast.cmo :
+stch_ast.cmx :
+stch_compiler.cmo : stch_ast.cmo
+stch_compiler.cmx : stch_ast.cmx

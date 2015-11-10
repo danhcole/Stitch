@@ -1,4 +1,5 @@
-%{ open stch_ast %}
+%{ open Stch_ast %}
+
 %token SEMI SQUOTE DQUOTE LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
 %token COMMA TIMES DIVIDE ADD SUBTRACT MOD
 %token ACCESS ASSIGN EQUAL NEGATE NE
@@ -39,7 +40,7 @@ decls:
 | decls fdecl { fst $1, ($2 :: snd $1) }
 
 fdecl:
-	type_name ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+	type_name ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE 
 	{ { ftype = $1;
 		fname = $2;
 		formals = $4;
