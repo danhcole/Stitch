@@ -8,7 +8,15 @@ OUTPUT="./test_log.txt"
 
 for test in $TESTS
 do
+	echo "Starting Test $test"
+	echo "==================="
+	echo "Starting Test $test" >> $OUTPUT
+	echo "===================" >> $OUTPUT
 	ROOT=`basename $test | cut -d'.' -f1`
 	$SINGER $test
-	diff $test $TARGETS/$ROOT\_target.c > OUTPUT
+	echo "DIFFing results"
+	echo "==============="
+	echo "DIFFing results" >> $OUTPUT
+	echo "===============" >> $OUTPUT
+	diff $test $TARGETS/$ROOT\_target.c >> $OUTPUT
 done
