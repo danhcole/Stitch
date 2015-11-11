@@ -20,8 +20,9 @@ Runtime
 		- gets passed a operator flag (for +, -, etc.), and a variable
 		- when Stitch loop runs, it creates a local copy of the accumulator variable
 		- when the loop ends, before returning, the accumulators are harmonized
-		- 
-###Notes
+
+
+#### Notes
 - openMP distinguishes between shared and thread local variables
 - label variables to clarify thread local vs shared variables
 - with shared memory model: undefined behavior is ok
