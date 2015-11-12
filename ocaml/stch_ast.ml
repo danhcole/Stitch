@@ -38,7 +38,7 @@ type fdecl = {
 
 type program = vdecl list * fdecl list
 
-(*
+
 let rec string_of_expr = function
     Int(l) -> string_of_int l
   | Float(l) -> string_of_float l
@@ -74,7 +74,7 @@ let rec string_of_stmt = function
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " " ^ string_of_stmt s
   | Break -> ""
 
-let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name ^ " " ^ vdecl.array_size ^ ";\n"
+let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name ^ (* " " ^ vdecl.array_size ^ *) ";\n"
 
 let string_of_fdecl fdecl =
   fdecl.fname ^ "(" ^ String.concat ", " fdecl.formals ^ ")\n{\n" ^
@@ -85,4 +85,4 @@ let string_of_fdecl fdecl =
 let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
   String.concat "\n" (List.map string_of_fdecl funcs)
-*)
+

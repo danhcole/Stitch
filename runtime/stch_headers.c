@@ -22,7 +22,7 @@ void stch_print(const char* s){
 	printf("%s\n", s);
 }
 // //error()
-// void stch_error(const char* e){
+// void stch_error(const char* e){s
 // 	fprintf(stderr, "%s\n", e);
 // }
 // //lengthof()
