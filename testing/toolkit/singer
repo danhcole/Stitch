@@ -4,5 +4,5 @@
 FILENAME=`basename $1 | cut -d'.' -f1`
 
 echo "----Stitch Compiler Toolchain----"
-stitch $1
-gcc -g -Wall $FILENAME.c -L../runtime -lstch_headers -o ./$FILENAME
+./stitch $1
+gcc -g -Wall $FILENAME.stch.c -L../runtime -lstch_header

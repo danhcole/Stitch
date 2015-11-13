@@ -47,7 +47,7 @@ let rec string_of_expr = function
   | Float(l) -> string_of_float l
   | Char(l) -> String.make 1 l
   | Id(s) -> s
-  | String(s) -> s
+  | String(s) -> "\"" ^ s ^ "\""
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^
       (match o with
@@ -58,7 +58,7 @@ let rec string_of_expr = function
       string_of_expr e2
   | Access(v1, v2) -> v1 ^ "." ^ v2
   | Negate(e) -> "!" ^ string_of_expr e
-  | Call(f, el) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | Call(f, el) -> (match f with "print" -> "stch_print" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
 
 let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name ^ (* " " ^ vdecl.array_size ^ *) ";\n"
