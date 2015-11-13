@@ -33,15 +33,17 @@
 %%
 
 program:
-	decls EOF {$1}
+	/*decls EOF {$1}*/		{ [], [] }
+	| program vdecl SEMI	{ ($2 :: fst $1), snd $1 }
+	| program fdecl 		{ fst $1, ($2 :: snd $1) }
 
-decls:
-/*nothing*/ { [], [] }
+/*decls:
+nothing { [], [] }
 | decls vdecl { ($2 :: fst $1), snd $1}
-| decls fdecl { fst $1, ($2 :: snd $1) }
+| decls fdecl { fst $1, ($2 :: snd $1) }*/
 
 fdecl:
-	type_name ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE 
+	type_name ID LPAREN formals_opt RPAREN LBRACE vdecl_opt stmt_list RBRACE 
 	{ { ftype = $1;
 		fname = $2;
 		formals = $4;
@@ -52,9 +54,6 @@ type_name:
 TINTT			{ "int" }
 | TFLOATT		{ "float" }
 | TCHART 		{ "char" }
-| TINTT TARRAYT  	{ "int array" }
-| TFLOATT TARRAYT	{ "float array" }
-| TCHART TARRAYT	{ "char array" }
 
 /*array_opt:
 	 nothing 			{ -1 }
@@ -68,6 +67,10 @@ formals_opt:
 formal_list:
   ID					{ [$1] }
 | formal_list COMMA ID	{ $3 :: $1 }
+
+vdecl_opt:
+	/* nothing */	{ [] }
+| vdecl_list		{ List.rev $1 }
 
 vdecl_list:
   vdecl SEMI			{ [$1] }
@@ -109,6 +112,7 @@ INT			{ Int($1) }
 | FLOAT		{ Float($1) }
 | CHAR		{ Char($1) }
 | ID		{ Id($1) }
+| STRING 	{ String($1) }
 /*Array*/
 /*| LSQUARE expr_list_opt RSQUARE { $2 }*/
 /*Arithmetic*/
