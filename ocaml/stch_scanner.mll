@@ -19,7 +19,6 @@ rule token = parse
 	| '+'						{ ADD }
 	| '-'						{ SUBTRACT }
 	| '%'						{ MOD }
-	| '.'						{ ACCESS }
 	| '='						{ ASSIGN }
 	| "=="						{ EQUAL }
 	| '!'						{ NEGATE }
@@ -46,7 +45,6 @@ rule token = parse
 	| "float"					{ TFLOATT }
 	| "char"					{ TCHART }
 	| "array"					{ TARRAYT }
-	| "struct"					{ TSTRUCTT }
 	| ['-' '+']?['0' - '9']+ as i_litr				{ INT(int_of_string i_litr) }
 	| ['-' '+']?['0'-'9']?'.'['0'-'9']* as f_litr 	{ FLOAT(float_of_string f_litr) }
 	| '''([^''']  as ch_litr)'''					{ CHAR(ch_litr) }

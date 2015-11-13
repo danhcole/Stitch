@@ -14,7 +14,6 @@ type expr =
   | Id of string
   | String of string
   | Binop of expr * op * expr
-  | Access of string * string
   | Negate of expr
   | Call of string * expr list
   | Noexpr
@@ -35,7 +34,6 @@ type fdecl = {
     ftype : string;
     fname : string;
     formals : vdecl list;
-    locals : vdecl list;
     body : stmt list;
   }
 
@@ -56,7 +54,6 @@ let rec string_of_expr = function
       | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_expr e2
-  | Access(v1, v2) -> v1 ^ "." ^ v2
   | Negate(e) -> "!" ^ string_of_expr e
   | Call(f, el) -> (match f with "print" -> "stch_print" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
@@ -84,7 +81,6 @@ let rec string_of_stmt = function
 
 let string_of_fdecl fdecl =
   fdecl.ftype ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_vdecl fdecl.formals) ^ ")\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
