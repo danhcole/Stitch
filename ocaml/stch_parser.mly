@@ -115,7 +115,7 @@ INT			{ Int($1) }
 | ID		{ Id($1) }
 | STRING 	{ String($1) }
 /*Array*/
-/*| LSQUARE expr_list_opt RSQUARE { $2 }*/
+/*TODO*/
 /*Arithmetic*/
 | expr ADD expr			{ Binop($1, Add,   $3) }
 | expr SUBTRACT  expr	{ Binop($1, Subtract,   $3) }
