@@ -1,0 +1,10 @@
+int main() {
+	int a;
+	a = 0;
+	int b;
+	b = 0;
+	for (b; b < 5; b = b + 1){
+	a = a + 1;
+	}
+	return a;
+}
