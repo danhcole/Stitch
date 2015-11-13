@@ -1,0 +1,8 @@
+//Tests an expression in parens by itself
+
+int main() {
+
+	a(5+ 2);
+
+	return 0;
+}
