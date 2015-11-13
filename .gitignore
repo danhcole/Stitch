@@ -14,3 +14,5 @@
 *parser.ml*
 *scanner.ml
 *_gen.txt
+stitch
+*.output

@@ -56,10 +56,10 @@ TINTT			{ "int" }
 | TFLOATT TARRAYT	{ "float array" }
 | TCHART TARRAYT	{ "char array" }
 
-array_opt:
-	/* nothing */			{ -1 }
+/*array_opt:
+	 nothing 			{ -1 }
 	| LSQUARE INT RSQUARE	{ $2 }
-	| LSQUARE RSQUARE		{ -1 }
+	| LSQUARE RSQUARE		{ -1 }*/
 
 formals_opt:
 	/* nothing */	{ [] }
@@ -74,7 +74,7 @@ vdecl_list:
 | vdecl_list vdecl SEMI {$2 :: $1}
 
 vdecl:
-	type_name ID array_opt
+	type_name ID
 	{{
 		vdecl_type 	= $1;
 		vdecl_name	= $2;
@@ -86,17 +86,18 @@ stmt_list:
 | stmt_list stmt	{ $2 :: $1 }
 
 stmt:
-	expr SEMI	{ Expr($1) }
-| RETURN expr SEMI { Return($2) }
-| LBRACE stmt_list RBRACE { Block(List.rev $2) }
-| IF LPAREN expr RPAREN stmt %prec NOELSE	{ If($3, $5, Block([])) }
-| IF LPAREN expr RPAREN stmt ELSE stmt		{ If($3, $5, $7) }
+  expr SEMI										{ Expr($1) }
+| vdecl SEMI									{ Vdecl($1) }
+| RETURN expr SEMI 								{ Return($2) }
+| LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
+| IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }
+| IF LPAREN expr RPAREN stmt ELSE stmt			{ If($3, $5, $7) }
 | FOR LPAREN expr_opt SEMI expr_opt SEMI expr_opt RPAREN stmt
 	{ For($3,$5,$7,$9) }
-| WHILE LPAREN expr RPAREN stmt				{While($3, $5) }
+| WHILE LPAREN expr RPAREN stmt					{While($3, $5) }
 | STITCH expr FROM expr TO expr BY expr stmt	{Stitch($2,$4,$6,$8,$9)}
-| BREAK SEMI	{Break}
-
+| expr ASSIGN expr SEMI							{ Assign($1, $3) }
+| BREAK SEMI									{Break}
 
 expr_opt:
 /*nothing*/		{ Noexpr }
@@ -130,7 +131,6 @@ INT			{ Int($1) }
 | NEGATE expr			{ Negate($2)}
 /*Miscellanenous*/
 | ID ACCESS ID			{ Access($1, $3) }
-| ID ASSIGN expr		{ Assign($1, $3) }
 /*| ID LPAREN actuals_opt RPAREN { Call($1, $3) }*/
 | LPAREN expr RPAREN	{ $2 } 
 

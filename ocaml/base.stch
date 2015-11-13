@@ -1,3 +1,4 @@
-main(){
-        "stitch";
+int main(){
+        int a;
+        a = 3;
 }

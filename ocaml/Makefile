@@ -9,7 +9,7 @@ stch_scanner.ml: stch_scanner.mll
 	ocamllex stch_scanner.mll
 
 stch_parser.ml stch_parser.mli: stch_parser.mly
-	$(YACC) stch_parser.mly
+	$(YACC) -v stch_parser.mly
 
 %.cmo: %.ml
 	ocamlc -c $<
