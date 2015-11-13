@@ -1,3 +1,5 @@
+/*Variable declaration followed by function call, returning value*/
+
 int foo() {
 	return 5;
 }

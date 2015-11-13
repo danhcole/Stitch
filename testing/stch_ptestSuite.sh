@@ -21,6 +21,7 @@ echo "Declaration Tests"
 for test in $DECTESTS
 do 
 	echo "Starting test $test"
+	echo $(head -n 1 $test)
 	$STITCH $test 
 	echo "\n"
 done
@@ -30,6 +31,7 @@ echo "Function Tests"
 for test in $FUNCTESTS
 do 
 	echo "Starting test $test"
+	echo $(head -n 1 $test)
 	$STITCH $test
 	echo "\n"
 done
@@ -37,6 +39,7 @@ done
 for test in $LOOPTESTS
 do 
 	echo "Starting test $test"
+	echo $(head -n 1 $test)
 	$STITCH $test
 	echo "\n"
 done

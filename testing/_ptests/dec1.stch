@@ -1,3 +1,5 @@
+/*Standard variable declaration*/
+
 int main(){
 	int a;
 }

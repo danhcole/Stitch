@@ -1,0 +1,17 @@
+//While loop with conditional
+
+int main() {
+	
+	int a;
+	int b;
+	a = 1;
+	b = 5;
+
+	while(a < 4) {
+
+	a = b;
+
+	}
+
+	return 0;
+}

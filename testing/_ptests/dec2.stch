@@ -1,3 +1,5 @@
+/*Variable dec followed by assignment*/
+
 int main(){
 	int a;
 	a = 5;

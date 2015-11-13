@@ -1,3 +1,5 @@
+/*Multiple functions, one called from other*/
+
 int foo() {
 	return 0;
 }

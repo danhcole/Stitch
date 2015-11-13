@@ -1,3 +1,5 @@
+/*Integer by itself as a declaration*/
+
 int main(){
 	5;
 }

@@ -1,3 +1,5 @@
+/*Function that returns 0, no args*/
+
 int foo() {
 	return 0;
 }

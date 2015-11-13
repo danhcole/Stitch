@@ -1,3 +1,5 @@
+/*Return variable from a function*/
+
 int main () {
 	int a;
 	a = 5;

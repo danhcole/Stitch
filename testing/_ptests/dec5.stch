@@ -1,3 +1,5 @@
+/*Variable decs followed by assignments*/
+
 int main() {
 	int a;
 	a = 2;
