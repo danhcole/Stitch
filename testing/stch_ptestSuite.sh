@@ -7,7 +7,13 @@ DECTESTS="./_ptests/dec*"
 FUNCTESTS="./_ptests/fun*"
 LOOPTESTS="./_ptests/loop*"
 
-echo "Starting Stitch parese test suite"
+echo "Making the compiler..."
+cd ../ocaml
+make all > /dev/null 
+cd ../testing
+
+
+echo "Starting Stitch parse test suite"
 echo "\n"
 
 echo "Declaration Tests"
