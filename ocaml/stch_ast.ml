@@ -33,7 +33,7 @@ type stmt =
 type fdecl = {
     ftype : string;
     fname : string;
-    formals : string list;
+    formals : vdecl list;
     locals : vdecl list;
     body : stmt list;
   }
@@ -81,7 +81,7 @@ let rec string_of_stmt = function
   | Break -> ""
 
 let string_of_fdecl fdecl =
-  fdecl.ftype ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " fdecl.formals ^ ")\n{\n" ^
+  fdecl.ftype ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_vdecl fdecl.formals) ^ ")\n{\n" ^
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"

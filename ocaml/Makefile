@@ -25,17 +25,6 @@ clean:
 .PHONY: all
 all: clean stitch
 
-#stch_ast.cmo:
-#stch_ast.cmx:
-#stch_compiler.cmo: ast.cmo
-#stch_compiler.cmx: ast.cmx
-#stitch.cmo: stch_scanner.cmo stch_parser.cmi stch_compiler.cmo ast.cmo
-#stitch.cmx: stch_scanner.cmo stch_parser.cmx stch_compiler.cmx ast.cmx
-#stch_parser.cmo: stch_ast.cmo stch_parser.cmi
-#stch_parser.cmx: stch_ast.cmx stch_parser.cmi
-#stch_scanner.cmo: stch_parser.cmi
-#stch_scanner.cmx: stch_parser.cmx
-#stch_parser.cmi: stch_ast.cmo
 stch_ast.cmo :
 stch_ast.cmx :
 stch_compiler.cmo : stch_ast.cmo
