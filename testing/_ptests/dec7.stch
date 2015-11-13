@@ -1,8 +1,8 @@
-//Tests an expression in parens by itself
+//Tests expr followed by parens
 
 int main() {
 
-	a(5+ 2);
+	a;(5 + 5);
 
 	return 0;
 }
