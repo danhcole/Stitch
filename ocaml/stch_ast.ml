@@ -12,6 +12,7 @@ type expr =
   | Float of float
   | Char of char
   | Id of string
+  | String of string
   | Binop of expr * op * expr
   | Access of string * string
   | Negate of expr
@@ -45,6 +46,7 @@ let rec string_of_expr = function
   | Float(l) -> string_of_float l
   | Char(l) -> String.make 1 l
   | Id(s) -> s
+  | String(s) -> s
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^
       (match o with
