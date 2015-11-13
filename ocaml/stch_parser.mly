@@ -136,13 +136,13 @@ INT			{ Int($1) }
 | NEGATE expr			{ Negate($2)}
 /*Miscellanenous*/
 | ID ACCESS ID			{ Access($1, $3) }
-/*| ID LPAREN actuals_opt RPAREN { Call($1, $3) }*/
+| ID LPAREN actuals_opt RPAREN { Call($1, $3) }
 | LPAREN expr RPAREN	{ $2 } 
 
-/*expr_list_opt:
-nothing		{ [] }
-| expr_list	{ List.rev $1 }
+actuals_opt:
+  /*nothing*/	{ [] }
+| actuals_list	{ List.rev $1 }
 
-expr_list:
-  expr					{ [$1] }
-| expr_list COMMA expr	{$3 :: $1 }*/
+actuals_list:
+  expr						{ [$1] }
+| actuals_list COMMA expr	{$3 :: $1 }

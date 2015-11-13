@@ -16,6 +16,7 @@ type expr =
   | Binop of expr * op * expr
   | Access of string * string
   | Negate of expr
+  | Call of string * expr list
   | Noexpr
 
 type stmt =
@@ -57,6 +58,7 @@ let rec string_of_expr = function
       string_of_expr e2
   | Access(v1, v2) -> v1 ^ "." ^ v2
   | Negate(e) -> "!" ^ string_of_expr e
+  | Call(f, el) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
 
 let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name ^ (* " " ^ vdecl.array_size ^ *) ";\n"
