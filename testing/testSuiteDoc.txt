@@ -1,0 +1,43 @@
+stch_ptestSuite.sh tests the parser:
+	continues if success
+	prints fatal error message if fails
+
+
+_ptests:
+
+	Declarations:
+
+		dec1
+			variable declaration
+		dec2
+			variable declaration, asignment
+		dec3
+			variable declaration + assignment
+		dec4
+			int literal
+		dec5
+			multiple discontiguous variable assignments and declarations
+		dec6
+			string literal
+
+	Functions:
+
+		func1
+			foo() that returns 0
+		func2
+			main function calls foo()
+		func3
+			void foo() called after variable declarations
+		func4
+			foo returns an int with gets assigned in main
+		func5
+			main returns a variable
+
+	Loops:
+
+		loop1
+			simple if else loop
+		loop2
+			if else loop with variable assignments inside, returns variable
+		loop3
+			for loop with incrementing variable, returns variable
