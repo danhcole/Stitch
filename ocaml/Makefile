@@ -20,7 +20,7 @@ stch_parser.ml stch_parser.mli: stch_parser.mly
 .PHONY: clean
 clean:
 	rm -f stitch stch_parser.ml stch_parser.mli stch_scanner.ml \
-	    *.cmo *.cmi *.out *.diff *.output stitch
+	    *.cmo *.cmi *.out *.diff *.output stitch *.dSYM
 
 .PHONY: all
 all: clean stitch
