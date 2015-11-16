@@ -6,7 +6,7 @@
 %token AND OR
 %token GT GE LT LE
 %token FROM TO BY
-%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOIDT TINTT TFLOATT TCHART TARRAYT TSTRUCTT
+%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOIDT TINTT TFLOATT TCHART TARRAYT
 %token CONST VOID
 %token <int>INT
 %token <char>CHAR
@@ -24,7 +24,7 @@
 %left LT GT LE GE
 %left ADD SUBTRACT
 %left TIMES DIVIDE MOD
-%right BNOT NEGATE
+%right NEGATE
 
 %start program
 %type <Stch_ast.program> program
@@ -78,10 +78,11 @@ stmt:
 | IF LPAREN expr RPAREN stmt ELSE stmt			{ If($3, $5, $7) }
 | FOR LPAREN expr_opt SEMI expr_opt SEMI expr_opt RPAREN stmt
 	{ For($3,$5,$7,$9) }
-| WHILE LPAREN expr RPAREN stmt					{While($3, $5) }
-| STITCH expr FROM expr TO expr BY expr stmt	{Stitch($2,$4,$6,$8,$9)}
-| expr ASSIGN expr SEMI							{ Assign($1, $3) }
-| BREAK SEMI									{Break}
+| WHILE LPAREN expr RPAREN stmt					{ While($3, $5) }
+| STITCH expr FROM expr TO expr BY expr stmt	{ Stitch($2,$4,$6,$8,$9) }
+| vdecl ASSIGN expr SEMI						{ Assign($1, $3) }
+| ID ASSIGN expr SEMI							{ Assign2($1, $3) } 
+| BREAK SEMI									{ Break }
 
 expr_opt:
 /*nothing*/		{ Noexpr }

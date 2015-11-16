@@ -27,7 +27,8 @@ type stmt =
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | Stitch of expr * expr * expr * expr * stmt
-  | Assign of expr * expr
+  | Assign of vdecl * expr
+  | Assign2 of string * expr
   | Break
 
 type fdecl = {
@@ -76,8 +77,9 @@ let rec string_of_stmt = function
   | Stitch(e1,e2,e3,e4,s) ->
       "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " " ^ string_of_stmt s
-  | Assign(v, e) -> string_of_expr v ^ " = " ^ string_of_expr e ^ ";\n"
-  | Break -> ""
+  | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
+  | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
+  | Break -> "break;"
 
 let string_of_fdecl fdecl =
   fdecl.ftype ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_vdecl fdecl.formals) ^ ")\n{\n" ^
