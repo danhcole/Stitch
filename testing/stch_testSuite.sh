@@ -37,9 +37,16 @@ function checkComp {
 	fi
 }
 
+#---------------------------------#
+#SCRIPT STARTS HERE               #
+#---------------------------------#
+
+#Make the compiler if it isn't already made
 clear
-echo "Starting Stitch test suite"
-echo "\n\n"
+echo "Making the compiler..."
+cd ../ocaml
+make all > /dev/null 
+cd ../testing
 
 for test in $TESTS
 do
