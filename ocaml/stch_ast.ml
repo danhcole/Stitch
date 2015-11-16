@@ -56,7 +56,7 @@ let rec string_of_expr = function
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_expr e2
   | Negate(e) -> "!" ^ string_of_expr e
-  | Call(f, el) -> (match f with "print" -> "stch_print" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
 
 let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name ^ (* " " ^ vdecl.array_size ^ *) ";\n"
