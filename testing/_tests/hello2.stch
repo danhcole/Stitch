@@ -1,7 +1,0 @@
-int main(){
-
-  char a[20];
-  a = "hello, world";
-  print(a);
-
-}
