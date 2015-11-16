@@ -52,12 +52,12 @@ do
 	mv ./$ROOT $BIN
 	echo "\nDIFFing Generated Code" 2>&1 | tee -a $LOG
 	echo "===============" 2>&1 | tee -a $LOG
-	diff $TARGETS/$ROOT.stch.c $TARGETS/$ROOT\_target.c
+	diff -w $TARGETS/$ROOT.stch.c $TARGETS/$ROOT\_target.c
 	echoResult $? 
 	$BIN/$ROOT > $OUTPUTS/$ROOT\_gen.txt
 	echo "\nDIFFing Output"  2>&1 | tee -a $LOG
 	echo "==============="  2>&1 | tee -a $LOG
-	diff $OUTPUTS/$ROOT\_gen.txt $OUTPUTS/$ROOT\_out.txt
+	diff -w $OUTPUTS/$ROOT\_gen.txt $OUTPUTS/$ROOT\_out.txt
 	echoResult $? 
 	echo "\n\n" 2>&1 | tee -a $LOG
 done

@@ -3,5 +3,7 @@
 
 int main()
 {
-printf("hello, world");
+int a;
+a = 39 + 3;
+printf("%d\n", a);
 }

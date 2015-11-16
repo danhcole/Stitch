@@ -1,0 +1,27 @@
+int main()
+{
+  print("%d\n", 1 + 2);
+  print("%d\n", 1 - 2);
+  print("%d\n", 1 * 2);
+  print("%d\n", 100 / 2);
+  print("%d\n", 99);
+  print("%d\n", 1 == 2);
+  print("%d\n", 1 == 1);
+  print("%d\n", 99);
+  print("%d\n", 1 != 2);
+  print("%d\n", 1 != 1);
+  print("%d\n", 99);
+  print("%d\n", 1 < 2);
+  print("%d\n", 2 < 1);
+  print("%d\n", 99);
+  print("%d\n", 1 <= 2);
+  print("%d\n", 1 <= 1);
+  print("%d\n", 2 <= 1);
+  print("%d\n", 99);
+  print("%d\n", 1 > 2);
+  print("%d\n", 2 > 1);
+  print("%d\n", 99);
+  print("%d\n", 1 >= 2);
+  print("%d\n", 1 >= 1);
+  print("%d\n", 2 >= 1);
+}
