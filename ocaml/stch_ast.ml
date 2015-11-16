@@ -59,7 +59,7 @@ let rec string_of_expr = function
   | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Noexpr -> ""
 
-let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name ^ (* " " ^ vdecl.array_size ^ *) "\n"
+let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
 
 let rec string_of_stmt = function
     Block(stmts) ->
