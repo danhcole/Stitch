@@ -1,3 +1,11 @@
+#11/17
+
+#### demo
+
+- don't diff against C code, only output
+- as we develop, we shouldn't have to modify the test cases (in c) or the output
+- negative testing as well
+
 #11/10
 
 #### questions
@@ -15,7 +23,7 @@ Runtime
 		- compiler keeps track of which array element is which variable
 		- still have concurency issues, but when
 - accumulators (possible solutions)
-	- openMP solutionish
+	- openMP solutionis
 		- have accumulate function that must be called before using an accumulator in a Stitch loop
 		- gets passed a operator flag (for +, -, etc.), and a variable
 		- when Stitch loop runs, it creates a local copy of the accumulator variable
