@@ -37,9 +37,9 @@ function checkComp {
 	fi
 }
 
-#---------------------------------#
-#SCRIPT STARTS HERE               #
-#---------------------------------#
+######################
+# SCRIPT STARTS HERE #
+######################
 
 #Make the compiler if it isn't already made
 clear

@@ -1,0 +1,22 @@
+//Collatz Function
+
+int main() {
+	
+	int x;
+	x = 7859;
+
+	while(x != 1){
+		x = c(x);
+		print("%d\n", x);
+	}
+
+	return 0;
+}
+
+int c(int a) {
+	
+	if(a%2){
+		return 3 * a + 1;
+	}
+	return a/2;
+}
