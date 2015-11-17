@@ -5,6 +5,11 @@
 - don't diff against C code, only output
 - as we develop, we shouldn't have to modify the test cases (in c) or the output
 - negative testing as well
+- do semantic analysis before C code generation
+#### to do
+
+- divide up features amongst ourselves that are independent of each other
+- build C ast (call it cast)
 
 #11/10
 
