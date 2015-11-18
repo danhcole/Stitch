@@ -76,7 +76,7 @@ let rec string_of_stmt = function
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
   | Stitch(e1,e2,e3,e4,s) ->
       "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
-        string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " " ^ string_of_stmt s
+        string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
   | Break -> "break;"

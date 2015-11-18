@@ -5,6 +5,7 @@ rule token = parse
 	| "//"						{ sline_comment lexbuf }
 	| "/*"						{ block_comment lexbuf }
 	| ';'						{ SEMI }
+	| ':'						{ COLON }
 	| '''						{ SQUOTE }
 	| '"'						{ DQUOTE }
 	| '('						{ LPAREN }

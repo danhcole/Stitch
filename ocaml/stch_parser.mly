@@ -1,6 +1,6 @@
 %{ open Stch_ast %}
 
-%token SEMI SQUOTE DQUOTE LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
+%token SEMI SQUOTE DQUOTE COLON LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
 %token COMMA TIMES DIVIDE ADD SUBTRACT MOD
 %token ASSIGN EQUAL NEGATE NE
 %token AND OR
@@ -79,7 +79,8 @@ stmt:
 | FOR LPAREN expr_opt SEMI expr_opt SEMI expr_opt RPAREN stmt
 	{ For($3,$5,$7,$9) }
 | WHILE LPAREN expr RPAREN stmt					{ While($3, $5) }
-| STITCH expr FROM expr TO expr BY expr stmt	{ Stitch($2,$4,$6,$8,$9) }
+| STITCH expr FROM expr TO expr BY expr COLON stmt	
+	{ Stitch($2,$4,$6,$8,$10) }
 | vdecl ASSIGN expr SEMI						{ Assign($1, $3) }
 | ID ASSIGN expr SEMI							{ Assign2($1, $3) } 
 | BREAK SEMI									{ Break }
