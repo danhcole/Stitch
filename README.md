@@ -1,8 +1,8 @@
 # PLT Language Project 
 Project homepage for COMS4115 PLT language project
 
-## Next Meeting - 5:30 - CS Lounge - 10/29
-## Next Checkin - 2:45  - Edwards' Office - 11/3
+## Next Meeting - 5:30 - CLIC Lab - 11/19
+## Next Checkin - 2:45  - Edwards' Office - 11/24
 
 ## Useful Links ##
 [PLT Class Homepage](http://www.cs.columbia.edu/~sedwards/classes/2015/4115-fall/index.html)
