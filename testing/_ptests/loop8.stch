@@ -1,0 +1,10 @@
+//Testing a for loop with argument 3 only
+
+int main() {
+	
+	int x = 0;
+
+	for(;;x = x + 1) {
+
+	}
+}
