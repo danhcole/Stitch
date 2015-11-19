@@ -57,10 +57,6 @@ do
 	checkComp $?
 	mv ./\_tests/$ROOT.stch.c ./\_targets
 	mv ./$ROOT $BIN
-	echo "\nDIFFing Generated Code" 2>&1 | tee -a $LOG
-	echo "===============" 2>&1 | tee -a $LOG
-	diff -w $TARGETS/$ROOT.stch.c $TARGETS/$ROOT\_target.c
-	echoResult $? 
 	$BIN/$ROOT > $OUTPUTS/$ROOT\_gen.txt
 	echo "\nDIFFing Output"  2>&1 | tee -a $LOG
 	echo "==============="  2>&1 | tee -a $LOG
