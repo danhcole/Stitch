@@ -18,3 +18,5 @@ stitch
 *.output
 *_log.txt
 *.stch.c
+*.o
+/testing/_bin/**
