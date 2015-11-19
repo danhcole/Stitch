@@ -16,6 +16,7 @@ type expr =
   | Binop of expr * op * expr
   | Negate of expr
   | Call of string * expr list
+  | Assign2 of string * expr
   | Noexpr
 
 type stmt =
@@ -28,7 +29,6 @@ type stmt =
   | While of expr * stmt
   | Stitch of expr * expr * expr * expr * stmt
   | Assign of vdecl * expr
-  | Assign2 of string * expr
   | Break
 
 type fdecl = {
@@ -57,6 +57,7 @@ let rec string_of_expr = function
       string_of_expr e2
   | Negate(e) -> "!" ^ string_of_expr e
   | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
   | Noexpr -> ""
 
 let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
@@ -78,7 +79,6 @@ let rec string_of_stmt = function
       "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
-  | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
   | Break -> "break;"
 
 let string_of_fdecl fdecl =

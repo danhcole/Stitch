@@ -72,7 +72,7 @@ stmt_list:
 stmt:
   expr SEMI										{ Expr($1) }
 | vdecl SEMI									{ Vdecl($1) }
-| RETURN expr SEMI 								{ Return($2) }
+| RETURN expr_opt SEMI 							{ Return($2) }
 | LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
 | IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }
 | IF LPAREN expr RPAREN stmt ELSE stmt			{ If($3, $5, $7) }
@@ -82,7 +82,6 @@ stmt:
 | STITCH expr FROM expr TO expr BY expr COLON stmt	
 	{ Stitch($2,$4,$6,$8,$10) }
 | vdecl ASSIGN expr SEMI						{ Assign($1, $3) }
-| ID ASSIGN expr SEMI							{ Assign2($1, $3) } 
 | BREAK SEMI									{ Break }
 
 expr_opt:
@@ -119,6 +118,8 @@ expr:
 /*Miscellanenous*/
 | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
 | LPAREN expr RPAREN	{ $2 } 
+| ID ASSIGN expr		{ Assign2($1, $3) } 
+
 
 actuals_opt:
   /*nothing*/	{ [] }
