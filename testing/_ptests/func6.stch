@@ -1,0 +1,10 @@
+/*Return nothing from a function*/
+
+void foo(){
+	return;
+}
+
+int main () {
+	foo();
+	return 0;
+}
