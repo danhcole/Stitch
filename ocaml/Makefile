@@ -36,3 +36,4 @@ stch_scanner.cmx : stch_parser.cmx
 stitch.cmo :
 stitch.cmx :
 stch_parser.cmi : stch_ast.cmo
+stch_cast.cmi : stch_ast.cmo

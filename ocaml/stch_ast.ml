@@ -1,8 +1,9 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
           | Or | And
+type dataType = Tint | Tfloat | Tchar | Tvoid
 
 type vdecl = {
-  vdecl_type     : string;
+  vdecl_type     : dataType;
   vdecl_name     : string;
 (*   array_size     : int; *)
 }
@@ -32,19 +33,19 @@ type stmt =
   | Break
 
 type fdecl = {
-    ftype : string;
-    fname : string;
-    formals : vdecl list;
+    fdecl_type : dataType;
+    fdecl_name : string;
+    fdecl_formals : vdecl list;
     body : stmt list;
   }
 
 type program = vdecl list * fdecl list
 
-(* type datatype =
-  | Int
-  | Float
-  | Char
-  | Void *)
+let string_of_dataType = function
+  Tint -> "int"
+  | Tfloat -> "float"
+  | Tchar -> "char"
+  | Tvoid -> "void"
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l
@@ -65,13 +66,13 @@ let rec string_of_expr = function
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
   | Noexpr -> ""
 
-let string_of_vdecl vdecl = vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
+let string_of_vdecl vdecl = string_of_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
 
 let rec string_of_stmt = function
     Block(stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
   | Expr(expr) -> string_of_expr expr ^ ";\n";
-  | Vdecl(v) -> v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
+  | Vdecl(v) -> string_of_dataType v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
   | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n";
   | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
   | If(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
@@ -87,7 +88,7 @@ let rec string_of_stmt = function
   | Break -> "break;"
 
 let string_of_fdecl fdecl =
-  fdecl.ftype ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_vdecl fdecl.formals) ^ ")\n{\n" ^
+  string_of_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ String.concat ", " (List.map string_of_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 

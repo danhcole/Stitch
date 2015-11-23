@@ -6,7 +6,7 @@
 %token AND OR
 %token GT GE LT LE
 %token FROM TO BY
-%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOIDT TINTT TFLOATT TCHART TARRAYT
+%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOID TINT TFLOAT TCHAR TARRAY
 %token CONST VOID
 %token <int>INT
 %token <char>CHAR
@@ -38,16 +38,16 @@ program:
 
 fdecl:
 	type_name ID LPAREN formals_opt RPAREN LBRACE stmt_list RBRACE 
-	{ { ftype = $1;
-		fname = $2;
-		formals = $4;
+	{ { fdecl_type = $1;
+		fdecl_name = $2;
+		fdecl_formals = $4;
 		body = List.rev $7; } }
 
 type_name:
-TINTT			{ "int" }
-| TFLOATT		{ "float" }
-| TCHART 		{ "char" }
-| TVOIDT 		{ "void" }
+TINT			{ Tint }
+| TFLOAT		{ Tfloat }
+| TCHAR 		{ Tchar }
+| TVOID 		{ Tvoid }
 
 formals_opt:
 	/* nothing */	{ [] }
