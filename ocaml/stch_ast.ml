@@ -40,6 +40,11 @@ type fdecl = {
 
 type program = vdecl list * fdecl list
 
+(* type datatype =
+  | Int
+  | Float
+  | Char
+  | Void *)
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l
