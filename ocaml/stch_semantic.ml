@@ -36,4 +36,18 @@ let rec check_expr (e: expr) (env: env) : (Stch_cast.c_expr * Stch_ast.dataType)
 		and (rhs, t2) = check_expr rhs env in
 
 		match o with
-		
+		  Add -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Subtract -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Times -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Divide -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Mod -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Equal -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Ne -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Lt -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Le -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Gt -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Ge -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| Or -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+		| And -> C_Binop(lhs, o, rhs), check_binop lhs, rhs, o
+
+	and check_assign
