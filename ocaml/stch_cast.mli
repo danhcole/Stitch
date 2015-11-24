@@ -1,7 +1,7 @@
 open Stch_ast
 
 type c_expr =
-	C_Int of int
+	  C_Int of int
   | C_Float of float
   | C_Char of char
   | C_Id of string
