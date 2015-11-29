@@ -95,7 +95,41 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			C_Block(scope', ss)
 	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(e,t)
 	| Return(e) -> check_return e env
-	| If(p, s) -> 
+	| If(e, s1, s2) -> check_if e s1 s2 env
+	| For(e1, e2, s) -> check_for e1 e2 s env
+	| While(e, s) -> check_while e s env
+	| Stitch(e1, e2, e3, e4, s) -> C_Stitch(e1, e2, e3, e4, s)
+	(* | Assign(v, e) -> check_var_decl v e env *)
+	| Break -> C_Break
+
+	and check_return (e: expr) (env: stch_env) =
+		if env.in_func then
+		let (e,t) = check_expr e env in
+			if t = env.retType then
+				C_Return(e, t)
+			else
+				raise (Error("Incompatable return type. Expected type " ^ string_of_dataType env.retType ^ ", found type " ^ string_of_dataType t))
+		else
+			raise (Error("Invalid 'return' call"))
+
+	and check_while (e: expr) (s: stmt) (env: stch_env) =
+		let (e,t) = check_expr e env in
+		if t = Bool then
+			let s' = check_stmt s env in C_While(e,s')
+		else
+			raise (Error("Invalid 'while' expression"))
+
+let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
+	if env.in_func then
+		raise (Error ("Cannot declare a funtion within another function"))
+	else
+		let env' = { env with scope = {parent = Some(env.scope); vars = [];}
+		ret_type = func.fdecl_type; in_func = true} in
+		let formals = (List.rev (List.map (fun x -> check_formals x env') func.formals)) in
+		let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = func.fdecl_formals; Stch_cast.body = (List.map (fun x -> check_stmt x env') func.body );} in
+		env.funcs <- f::env.funcs; f 
+
+
 
 
 
