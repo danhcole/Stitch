@@ -98,18 +98,18 @@ expr:
 /*Array*/
 /*TODO*/
 /*Arithmetic*/
-| expr ADD 		expr	{ Binop($1, Add,   $3) }
-| expr SUBTRACT expr	{ Binop($1, Subtract,   $3) }
-| expr TIMES  	expr	{ Binop($1, Times,  $3) }
-| expr DIVIDE 	expr	{ Binop($1, Divide,   $3) }
+| expr ADD 		expr	{ Binop($1, Add, $3) }
+| expr SUBTRACT expr	{ Binop($1, Subtract, $3) }
+| expr TIMES  	expr	{ Binop($1, Times, $3) }
+| expr DIVIDE 	expr	{ Binop($1, Divide, $3) }
 | expr MOD 		expr	{ Binop($1, Mod, $3) }
 /*Comparison*/
 | expr EQUAL expr		{ Binop($1, Equal, $3) }
-| expr NE    expr		{ Binop($1, Ne,   $3) }
-| expr LT  	 expr		{ Binop($1, Lt,  $3) }
-| expr LE    expr		{ Binop($1, Le,   $3) }
-| expr GT    expr		{ Binop($1, Gt,  $3) }
-| expr GE    expr		{ Binop($1, Ge,   $3) }
+| expr NE    expr		{ Binop($1, Ne, $3) }
+| expr LT  	 expr		{ Binop($1, Lt, $3) }
+| expr LE    expr		{ Binop($1, Le, $3) }
+| expr GT    expr		{ Binop($1, Gt, $3) }
+| expr GE    expr		{ Binop($1, Ge, $3) }
 /*Logical*/
 | expr OR expr			{ Binop($1, Or, $3) }
 | expr AND expr			{ Binop($1, And, $3) }

@@ -42,7 +42,7 @@ type c_fdecl = {
     body 			: stmt list;
   }
 
-type env = {
+type stch_env = {
 	mutable funcs: c_fdecl list;
 	scope: symTable;
 	retType: dataType;
