@@ -129,7 +129,11 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 		let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = func.fdecl_formals; Stch_cast.body = (List.map (fun x -> check_stmt x env') func.body );} in
 		env.funcs <- f::env.funcs; f 
 
+let init_env : (stch_env) = 
+	let init_funcs = [] in (* Need to add builtin functions here *)
+	let init_scope = { parent = None; vars = []; } in
+	{ funcs = init_funcs; scope = init_scope; retType = Void; in_func = false; }
 
-
-
-
+let check_prog (prog: Stch_ast.program) : (Stch_cast.c_prgram) = 
+	let env = init_env in 
+	{ Stch_cast.stms = (List.map (fun x -> check_stmt x env)); Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs); Stch_cast.syms = env.scope}
