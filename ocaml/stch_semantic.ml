@@ -1,13 +1,13 @@
 open Stch_ast
 open Stch_cast
-exception error of string
+exception Error of string
 
 let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ Stch_ast.dataType typ ^ " " ^ name ^ "]") syms.vars) ^ "\n"
-	int print_endline str
+	in print_endline str
 
 let rec find_variable (scope: symTable) name = 
 	try
-		List.find (fun (_, s, _) -> s = name scope.vars
+		List.find (fun (_, s, _) -> s = name ) scope.vars
 	with Not_found -> match scope.parent with
 	Some(parent) -> find_variable parent name
 	| _ -> raise (Error("Bad ID " ^ name))
@@ -71,9 +71,9 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			match func_rets with
 				[] -> raise (Error("Signature mismatch on function call " ^ f))
 				| hd::tl -> let formals = hd.fdecl_formals in
-								let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl)) ->
+								let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
 								let opt_typ = snd opt in
-								let formal_type = (c_vdecl.vdecl_type in
+								let formal_type = c_vdecl.vdecl_type in
 									if opt_typ = formal_type then
 										fst opt
 									else

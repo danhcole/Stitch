@@ -33,6 +33,8 @@ stch_parser.cmo : stch_ast.cmo stch_parser.cmi
 stch_parser.cmx : stch_ast.cmx stch_parser.cmi
 stch_scanner.cmo : stch_parser.cmi
 stch_scanner.cmx : stch_parser.cmx
+stch_semantic.cmo : stch_cast.cmi stch_ast.cmo
+stch_semantic.cmx : stch_cast.cmi stch_ast.cmx
 stitch.cmo :
 stitch.cmx :
 stch_parser.cmi : stch_ast.cmo
