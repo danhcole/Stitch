@@ -1,0 +1,9 @@
+int main() {
+	
+	char z = 'z';
+	
+	printf("%c\n",z);
+	
+	return 0;
+
+}
