@@ -5,5 +5,9 @@ int main() {
 	printf("%d\n",x);
 	printf("%.1f\n",y);
 
+	if (x != y) {
+		printf("false\n");
+	}
+
 	return 0;
 }

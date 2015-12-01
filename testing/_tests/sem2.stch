@@ -4,6 +4,10 @@ int main() {
 	
 	printf("%c\n",z);
 	
+	char y = z;
+
+	printf("%c\n",y);
+
 	return 0;
 
 }
