@@ -50,7 +50,7 @@ let string_of_dataType = function
 let rec string_of_expr = function
     Int(l) -> string_of_int l
   | Float(l) -> string_of_float l
-  | Char(l) -> String.make 1 l
+  | Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
   | Id(s) -> s
   | String(s) -> "\"" ^ s ^ "\""
   | Binop(e1, o, e2) ->
