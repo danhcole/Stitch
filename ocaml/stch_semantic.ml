@@ -3,7 +3,7 @@ open Stch_cast
 exception Error of string
 
 (* symbol table -> string *)
-let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ Stch_ast.dataType typ ^ " " ^ name ^ "]") syms.vars) ^ "\n"
+let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ Stch_ast.string_of_dataType typ ^ " " ^ name ^ "]") syms.vars) ^ "\n"
 	in print_endline str
 
 (* find a variable (and associated type) in the symbol table *)
@@ -15,7 +15,7 @@ let rec find_variable (scope: symTable) name =
 	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *)
 
 (* type check binary operations *)
-(* for now, Stitch does not support type coercion, so biops must be int/int or flt/flt  *)
+(* for now, Stitch does not support type coercion, so binops must be int/int or flt/flt  *)
 let check_binop (lhs: dataType) (rhs: dataType) (env: stch_env) =
 	match (lhs, rhs) with
 	  (Int, Int) 		-> Int
@@ -116,7 +116,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	(* | Assign(v, e) -> check_var_decl v e env *)
 	| Break -> C_Break
 
-	(* typecheck return (not return type, but keywork 'return') *)
+	(* typecheck return (not return type, but keyword 'return') *)
 	and check_return (e: expr) (env: stch_env) =
 		if env.in_func then
 		let (e,t) = check_expr e env in
@@ -135,10 +135,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 			raise (Error("Invalid 'while' expression"))
 
-(* typecheck a function decleration *)
+(* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 	if env.in_func then
-		raise (Error ("Cannot declare a funtion within another function"))
+		raise (Error ("Cannot declare a function within another function"))
 	else
 		let env' = { env with scope = {parent = Some(env.scope); vars = [];}
 		ret_type = func.fdecl_type; in_func = true} in

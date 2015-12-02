@@ -74,8 +74,8 @@ arraydecl:
 		}}
 /*
 array_init:
-	| LBRACE actuals_list RBRACE						{ List.rev $2 }
-	| array_init COMMA LBRACE actuals_list RBRACE    { $4 :: $1 }
+	| LBRACE actuals_opt RBRACE						{ List.rev $2 }
+	| array_init COMMA LBRACE actuals_opt RBRACE    { $4 :: $1 }
 */
 stmt_list:
 /*nothing*/			{ [] }
