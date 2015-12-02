@@ -1,0 +1,8 @@
+/*Testing access operation*/
+
+int main() {
+	
+	int a;
+
+	a.element;
+}

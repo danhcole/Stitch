@@ -19,6 +19,7 @@ type expr =
   | Call of string * expr list
   | Assign2 of string * expr
   | Array_Item_Assign of string * int * expr
+  | Access of string * string
   | Noexpr
 
 type arraydecl = {
@@ -76,6 +77,7 @@ let rec string_of_expr = function
   | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
   | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_expr e ^ ";\n"
+  | Access(f, s) -> f ^ "." ^ s 
   | Noexpr -> ""
 
 let string_of_vdecl vdecl = string_of_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)

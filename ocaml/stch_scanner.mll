@@ -20,6 +20,7 @@ rule token = parse
 	| '+'						{ ADD }
 	| '-'						{ SUBTRACT }
 	| '%'						{ MOD }
+	| '.'						{ ACCESS }
 	| '='						{ ASSIGN }
 	| "=="						{ EQUAL }
 	| '!'						{ NEGATE }
@@ -30,6 +31,7 @@ rule token = parse
 	| ">="						{ GE }
 	| '<'						{ LT }
 	| "<="						{ LE }
+	| "struct"					{ STRUCT }
 	| "if"						{ IF }
 	| "else"					{ ELSE }
 	| "while"					{ WHILE }
