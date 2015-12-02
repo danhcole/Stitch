@@ -18,6 +18,7 @@ type expr =
   | Negate of expr
   | Call of string * expr list
   | Assign2 of string * expr
+  | Array_Item_Assign of string * int * expr
   | Noexpr
 
 type arraydecl = {
@@ -38,6 +39,7 @@ type stmt =
   | Stitch of expr * expr * expr * expr * stmt
   | Assign of vdecl * expr
   | ArrayDecl of arraydecl
+  (*| ArrayAssign of arraydecl * expr list *)
   | Break
 
 type fdecl = {
@@ -73,9 +75,13 @@ let rec string_of_expr = function
   | Negate(e) -> "!" ^ string_of_expr e
   | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
+  | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_expr e ^ ";\n"
   | Noexpr -> ""
 
 let string_of_vdecl vdecl = string_of_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
+
+let string_of_arraydecl arraydecl = string_of_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
+    string_of_expr arraydecl.arraydecl_size ^ "]"
 
 let rec string_of_stmt = function
     Block(stmts) ->
@@ -94,8 +100,8 @@ let rec string_of_stmt = function
       "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
-  | ArrayDecl(arraydecl) -> string_of_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
-    string_of_expr arraydecl.arraydecl_size ^ "];\n"
+  | ArrayDecl(a) -> string_of_arraydecl a ^ ";\n"
+  (*| ArrayAssign(arraydecl, el) -> "arraydecl;\n" *)
   | Break -> "break;"
 
 let string_of_fdecl fdecl =

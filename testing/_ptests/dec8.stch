@@ -6,6 +6,9 @@ int main() {
 
 	float f[];
 
+	//this should also work
+	a[4] = 7;
+
 	return 0;
 
 }

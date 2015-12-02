@@ -74,7 +74,7 @@ arraydecl:
 		}}
 /*
 array_init:
-	| LBRACE actuals_list RBRACE						{ [$2] }
+	| LBRACE actuals_list RBRACE						{ List.rev $2 }
 	| array_init COMMA LBRACE actuals_list RBRACE    { $4 :: $1 }
 */
 stmt_list:
@@ -85,6 +85,7 @@ stmt:
   expr SEMI										{ Expr($1) }
 | vdecl SEMI									{ Vdecl($1) }
 | arraydecl SEMI								{ ArrayDecl($1) }
+/*| arraydecl ASSIGN array_init SEMI				{ ArrayAssign($1, $3) }*/
 | RETURN expr_opt SEMI 							{ Return($2) }
 | LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
 | IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }
@@ -109,6 +110,7 @@ expr:
 | ID		{ Id($1) }
 | STRING 	{ String($1) }
 /*Array*/
+| ID LSQUARE INT RSQUARE ASSIGN expr 		{ Array_Item_Assign($1, $3, $6) }
 /*TODO*/
 /*Arithmetic*/
 | expr ADD 		expr	{ Binop($1, Add, $3) }
