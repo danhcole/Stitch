@@ -12,7 +12,7 @@ let rec find_variable (scope: symTable) name =
 		List.find (fun (_, s, _) -> s = name ) scope.vars
 	with Not_found -> match scope.parent with
 	Some(parent) -> find_variable parent name
-	| _ -> raise (Error("Bad ID " ^ name))
+	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *)
 
 (* type check binary operations *)
 (* for now, Stitch does not support type coercion, so biops must be int/int or flt/flt  *)
@@ -152,7 +152,7 @@ let init_env : (stch_env) =
 	let init_scope = { parent = None; vars = []; } in
 	{ funcs = init_funcs; scope = init_scope; retType = Void; in_func = false; }
 
-(* check the program *)
+(* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_prgram) = 
 	let env = init_env in 
 	{ Stch_cast.stms = (List.map (fun x -> check_stmt x env)); Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs); Stch_cast.syms = env.scope}
