@@ -65,6 +65,18 @@ vdecl:
 		(*array_size	= $3;*)
 	}}
 
+arraydecl:
+	type_name ID LSQUARE expr_opt RSQUARE
+	{{
+		arraydecl_type = $1;
+		arraydecl_name = $2;
+		arraydecl_size = $4;
+		}}
+/*
+array_init:
+	| LBRACE actuals_list RBRACE						{ [$2] }
+	| array_init COMMA LBRACE actuals_list RBRACE    { $4 :: $1 }
+*/
 stmt_list:
 /*nothing*/			{ [] }
 | stmt_list stmt	{ $2 :: $1 }
@@ -72,6 +84,7 @@ stmt_list:
 stmt:
   expr SEMI										{ Expr($1) }
 | vdecl SEMI									{ Vdecl($1) }
+| arraydecl SEMI								{ ArrayDecl($1) }
 | RETURN expr_opt SEMI 							{ Return($2) }
 | LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
 | IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }

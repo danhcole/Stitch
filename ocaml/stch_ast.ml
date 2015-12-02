@@ -20,6 +20,13 @@ type expr =
   | Assign2 of string * expr
   | Noexpr
 
+type arraydecl = {
+    arraydecl_type : dataType;
+    arraydecl_name : string;
+    arraydecl_size : expr;
+
+  }
+
 type stmt =
     Block of stmt list
   | Vdecl of vdecl
@@ -30,6 +37,7 @@ type stmt =
   | While of expr * stmt
   | Stitch of expr * expr * expr * expr * stmt
   | Assign of vdecl * expr
+  | ArrayDecl of arraydecl
   | Break
 
 type fdecl = {
@@ -38,6 +46,7 @@ type fdecl = {
     fdecl_formals : vdecl list;
     body : stmt list;
   }
+
 
 type program = vdecl list * fdecl list
 
@@ -85,6 +94,8 @@ let rec string_of_stmt = function
       "stitch " ^ string_of_expr e1 ^ " from " ^ string_of_expr e2 ^ " to " ^
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
+  | ArrayDecl(arraydecl) -> string_of_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
+    string_of_expr arraydecl.arraydecl_size ^ "];\n"
   | Break -> "break;"
 
 let string_of_fdecl fdecl =

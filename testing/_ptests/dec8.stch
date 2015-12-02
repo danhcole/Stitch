@@ -1,0 +1,11 @@
+// Testing arrays, both should work
+
+int main() {
+	
+	int a[5 + 2];
+
+	float f[];
+
+	return 0;
+
+}
