@@ -152,9 +152,7 @@ let check_vdecl (decl: vdecl) (env: stch_env) =
 			raise (Error("Variable already declared"))
 		else
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			C_Vdecl(decl)
-
-
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in C_Vdecl(v)
 
 let check_formals (decl: vdecl) (env: stch_env) = 
 	match decl.vdecl_type with
