@@ -160,7 +160,7 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 		let env' = { env with scope = {parent = Some(env.scope); vars = [];};
 		retType = func.fdecl_type; in_func = true} in
 		let fdecl_formals = (List.rev (List.map (fun x -> check_formals x env') func.fdecl_formals)) in
-		let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = func.fdecl_formals; Stch_cast.body = (List.map (fun x -> check_stmt x env') func.body );} in
+let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = ( List.map (fun x -> check_formals x env') func.fdecl_formals ); Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
 		env.funcs <- f::env.funcs; f 
 
 (* typecheck the ast env *)

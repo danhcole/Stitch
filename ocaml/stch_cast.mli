@@ -40,8 +40,8 @@ type c_stmt =
 type c_fdecl = {
     fdecl_type 		: dataType;
     fdecl_name 		: string;
-    fdecl_formals 	: vdecl list;
-    body 			: stmt list;
+    fdecl_formals 	: c_vdecl list;
+    body 			: c_stmt list;
   }
 
 type stch_env = {
