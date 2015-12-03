@@ -37,6 +37,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	(* | Call(f, b) -> check_call f b env *)
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Noexpr -> C_Noexpr, Tvoid
+	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
 
 	(* check the binop return type*)
 	and binop_ret (lhs: expr) (o: op) (rhs: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) =
@@ -115,6 +116,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	(* stmt assign needs to be fixed *)
 	(* | Assign(v, e) -> check_var_decl v e env *)
 	| Break -> C_Break
+	| _ -> C_Break (* can remove when everything else is added *)
 
 	(* typecheck return (not return type, but keyword 'return') *)
 	and check_return (e: expr) (env: stch_env) =
@@ -135,7 +137,13 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 			raise (Error("Invalid 'while' expression")) *)
 
-(* (* typecheck a function declaration *)
+let check_formals (decl: vdecl) (env: stch_env) = 
+	match decl.vdecl_type with
+Id(x) -> env.scope.vars <- (decl.vdecl_type, x, C_Noexpr)::env.scope.vars;
+C_VarDecl(decl.vdecl_type, C_Id(decl.vdecl_name))
+						| _ -> raise (Error("Invalid function formals"))
+
+(* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 	if env.in_func then
 		raise (Error ("Cannot declare a function within another function"))
@@ -144,7 +152,7 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 		retType = func.fdecl_type; in_func = true} in
 		let formals = (List.rev (List.map (fun x -> check_formals x env') func.formals)) in
 		let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = func.fdecl_formals; Stch_cast.body = (List.map (fun x -> check_stmt x env') func.body );} in
-		env.funcs <- f::env.funcs; f  *)
+		env.funcs <- f::env.funcs; f 
 
 (* typecheck the ast env *)
 let init_env : (stch_env) = 
@@ -152,12 +160,12 @@ let init_env : (stch_env) =
 	let init_scope = { parent = None; vars = []; } in
 	{ funcs = init_funcs; scope = init_scope; retType = Tvoid; in_func = false; }
 
-(* (* check the programc *)
+(* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
-	let env = init_env in 
+	let env = init_env in
 	{ Stch_cast.stmts = (List.map (fun x -> check_stmt x env) []);
-	Stch_cast.funcs = (prog.funcs);
-	Stch_cast.syms = env.scope } *)
+	Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs);
+	Stch_cast.syms = env.scope }
 
 
 
