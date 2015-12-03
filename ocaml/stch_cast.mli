@@ -28,7 +28,7 @@ type c_stmt =
   | C_Vdecl of c_vdecl
   | C_Expr of dataType * c_expr
   | C_Return of dataType * c_expr
-  | C_If of c_expr * Stch_ast.stmt * Stch_ast.stmt
+  | C_If of c_expr * c_stmt * c_stmt
   | C_For of c_expr * c_expr * c_expr * c_stmt
   | C_While of c_expr * c_stmt
   | C_Stitch of c_expr * c_expr * c_expr * c_expr * c_stmt

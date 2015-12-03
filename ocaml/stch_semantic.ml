@@ -110,7 +110,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| If(e, s1, s2) -> check_if e s1 s2 env
 	(* need to add check_for *)
 	(* | For(e1, e2, s) -> check_for e1 e2 s env *)
-	(* | While(e, s) -> check_while e s env *)
+	| While(e, s) -> check_while e s env
 	(* | Stitch(e1, e2, e3, e4, s) -> C_Stitch(e1, e2, e3, e4, s) *)
 	(* stmt assign needs to be fixed *)
 	(* | Assign(v, e) -> check_var_decl v e env *)
@@ -130,18 +130,19 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =
 		let (e, t) = check_expr ex en in
 			if t = Tint then
-				C_If(e, th, el)
+				let s1 = check_stmt th en in
+				let s2 = check_stmt el en in
+				C_If(e, s1, s2)
 			else
-				raise (Error("Incompatible if-clause expression"))
-
+				raise (Error("If clause has expression of type " ^ string_of_dataType t))
 
 	(* typecheck the while loop *)
-(* 	and check_while (e: expr) (s: stmt) (env: stch_env) =
+	and check_while (e: expr) (s: stmt) (env: stch_env) =
 		let (e,t) = check_expr e env in
-		if t = Bool then
+		if t = Tint then
 			let s' = check_stmt s env in C_While(e,s')
 		else
-			raise (Error("Invalid 'while' expression")) *)
+			raise (Error("Invalid 'while' expression"))
 
 (* (* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
