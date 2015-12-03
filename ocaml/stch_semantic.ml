@@ -146,11 +146,21 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 			raise (Error("Invalid 'while' expression"))
 
+let check_vdecl (decl: vdecl) (env: stch_env) = 
+	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
+		if invalid then
+			raise (Error("Variable already declared"))
+		else
+			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
+			C_Vdecl(decl)
+
+
+
 let check_formals (decl: vdecl) (env: stch_env) = 
 	match decl.vdecl_type with
 		dataType -> env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-		C_VarDecl(decl.vdecl_type, C_Id(decl.vdecl_name))
-						| _ -> raise (Error("Invalid function formals"))
+		check_vdecl(decl)
+		| _ -> raise (Error("Invalid function formals"))
 
 (* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
