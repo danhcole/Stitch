@@ -107,7 +107,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			C_Block(scope', ss)
 	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(t, e)
 	| Return(e) -> check_return e env
-	(* | If(e, s1, s2) -> check_if e s1 s2 env *)
+	| If(e, s1, s2) -> check_if e s1 s2 env
 	(* need to add check_for *)
 	(* | For(e1, e2, s) -> check_for e1 e2 s env *)
 	(* | While(e, s) -> check_while e s env *)
@@ -126,6 +126,14 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				raise (Error("Incompatable return type. Expected type " ^ string_of_dataType env.retType ^ ", found type " ^ string_of_dataType t))
 		else
 			raise (Error("Invalid 'return' call"))
+
+	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =
+		let (e, t) = check_expr ex en in
+			if t = Tint then
+				C_If(e, th, el)
+			else
+				raise (Error("Incompatible if-clause expression"))
+
 
 	(* typecheck the while loop *)
 (* 	and check_while (e: expr) (s: stmt) (env: stch_env) =
