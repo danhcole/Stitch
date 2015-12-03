@@ -14,7 +14,7 @@ type c_expr =
 
 type symTable = {
 	
-	parent: symTable;
+	parent: symTable option;
 	mutable vars: (dataType * string * c_expr) list;
 }
 
