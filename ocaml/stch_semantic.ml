@@ -110,9 +110,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| Return(e) -> check_return e env
 	| If(e, s1, s2) -> check_if e s1 s2 env
 	(* need to add check_for *)
-	(* | For(e1, e2, s) -> check_for e1 e2 s env *)
+	| For(e1, e2, e3, s) -> check_for e1 e2 e3 s env
 	| While(e, s) -> check_while e s env
-	(* | Stitch(e1, e2, e3, e4, s) -> C_Stitch(e1, e2, e3, e4, s) *)
+	| Stitch(e1, e2, e3, e4, s) -> check_stitch e1 e2 e3 e4 s env
 	(* stmt assign needs to be fixed *)
 	(* | Assign(v, e) -> check_var_decl v e env *)
 	| Break -> C_Break
@@ -129,6 +129,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 			raise (Error("Invalid 'return' call"))
 
+
+	(* Typechecking the expression of an "if" statement *)
 	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =
 		let (e, t) = check_expr ex en in
 			if t = Tint then
@@ -137,19 +139,42 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				C_If(e, s1, s2)
 			else
 				raise (Error("If clause has expression of type " ^ string_of_dataType t))
+
+
 	(* typecheck the for loop *)
 	and check_for (e1: expr) (e2: expr) (e3: expr) (st: stmt) (env: stch_env) =
 		let (ex1, t1) = check_expr e1 env in
 		let (ex2, t2) = check_expr e2 env in
 		let (ex3, t3) = check_expr e3 env in
-		if t1 <> Tint then raise (Error("First expression not of type int."))
+		if t1 <> Tint then raise (Error("For Loop: First expression not of type int."))
 		else begin
-			if t2 <> Tint then raise (Error("Second expression not of type int."))
+			if t2 <> Tint then raise (Error("For Loop: Second expression not of type int."))
 			else begin
-				if t3 <> Tint then raise (Error("Third expression not of type int."))
+				if t3 <> Tint then raise (Error("For Loop: Third expression not of type int."))
 				else begin
 					let s = check_stmt st env in
 					C_For(ex1,ex2,ex3,s)
+				end
+			end
+		end
+
+
+	(* Typechecking the expressions of a Stitch Loop *)
+	and check_stitch (e1 : expr) (e2 : expr) (e3 : expr) (e4 : expr) (st : stmt) (env : stch_env) =
+		let (ex1, t1) = check_expr e1 env in
+		let (ex2, t2) = check_expr e2 env in
+		let (ex3, t3) = check_expr e3 env in
+		let (ex4, t4) = check_expr e4 env in
+		if t1 <> Tint then raise (Error("Stitch: First expression not of type int."))
+		else begin
+			if t2 <> Tint then raise (Error("Stitch: Second expression not of type int."))
+			else begin
+				if t3 <> Tint then raise (Error("Stitch: Third expression not of type int."))
+				else begin
+					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
+					else begin
+						let s = check_stmt st env in C_Stitch(ex1, ex2, ex3, ex4, s)
+					end
 				end
 			end
 		end
@@ -197,7 +222,7 @@ let init_env : (stch_env) =
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
 { Stch_cast.stmts = match prog with 
-	[] -> raise(Error("bad") 
+	[] -> raise(Error("bad")) 
 	| (s, _) -> (List.map (fun x -> check_stmt x env) s);
 Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs);
 Stch_cast.syms = env.scope }
