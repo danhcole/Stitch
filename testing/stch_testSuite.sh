@@ -64,3 +64,6 @@ do
 	echoResult $? 
 	echo "\n\n" 2>&1 | tee -a $LOG
 done
+
+cd $OUTPUTS
+#rm *_gen.txt

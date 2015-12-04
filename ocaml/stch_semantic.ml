@@ -87,7 +87,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		if t1 = t2 then
 			C_Assign2(lhs, rhs), t2
 		else
-			raise (Error("Type mismatch on variable assignment"))
+			raise (Error("Type mismatch on variable assignment " ^ lhs ^"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
 
 	(* (* check function call *)
 	and check_call (f: string) (el: expr list) (env: stch_env) =
