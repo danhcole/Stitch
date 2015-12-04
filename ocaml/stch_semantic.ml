@@ -199,7 +199,6 @@ let check_formals (decl: vdecl) (env: stch_env) =
 	match decl.vdecl_type with
 		dataType -> env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
 			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in v
-		| _ -> raise (Error("Invalid function formals"))
 
 (* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
@@ -221,10 +220,8 @@ let init_env : (stch_env) =
 (* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
-{ Stch_cast.stmts = match prog with 
-	[] -> raise(Error("bad")) 
-	| (s, _) -> (List.map (fun x -> check_stmt x env) s);
-Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs);
+{ Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
+Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (snd prog));
 Stch_cast.syms = env.scope }
 
 
