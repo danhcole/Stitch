@@ -30,6 +30,14 @@ let check_vdecl (decl: vdecl) (env: stch_env) =
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
 			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in C_Vdecl(v)
 
+let check_vdecl_t (decl: vdecl) (env: stch_env) = 
+	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
+		if invalid then
+			raise (Error("Variable already declared"))
+		else
+			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in v, v.vdecl_type, v.vdecl_name
+
 (* type check an expression and put into c_ast *)
 let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) = 
 	match e with
@@ -39,10 +47,10 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	| Char(l) 	-> C_Char(l), Tchar
 	| Id(l) -> 
 	let var = try find_variable env.scope l
-with Not_found -> raise(Error("Undefined Identifier" ^ l))
-	in
-	let (typ, vname, _) = var in
-	C_Id(vname, typ), typ
+		with Not_found -> raise(Error("Undefined Identifier" ^ l))
+			in
+			let (typ, vname, _) = var in
+			C_Id(vname, typ), typ
 	(* | String(l) -> C_String(l), String *)
 	(* other exprs need to call their respective check functions *)
 	| Binop(lhs, o, rhs) -> binop_ret lhs o rhs env
@@ -111,6 +119,7 @@ with Not_found -> raise(Error("Undefined Identifier" ^ l))
 		with Invalid_argument(x) ->
 			raise (Error("Wrong number of args in function call " ^ f))
  *)
+
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	Block(ss) -> 
@@ -119,6 +128,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			let ss = List.map (fun s -> check_stmt s env') (List.rev ss) in
 			scope'.vars <- List.rev scope'.vars;
 			C_Block(scope', ss)
+	| Vdecl(v) -> check_vdecl v env
 	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(t, e)
 	| Return(e) -> check_return e env
 	| If(e, s1, s2) -> check_if e s1 s2 env
@@ -127,9 +137,18 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| While(e, s) -> check_while e s env
 	| Stitch(e1, e2, e3, e4, s) -> check_stitch e1 e2 e3 e4 s env
 	(* stmt assign needs to be fixed *)
-	| Assign(v, e) -> check_vdecl v env
+	| Assign(v, e) -> check_assign v e env
 	| Break -> C_Break
 	| _ -> C_Break (* can remove when everything else is added *)
+
+	(* check assign (i.e. stmt assign) *)
+	and check_assign (lhs: vdecl) (rhs: expr) (env: stch_env) = 
+		let (v, t1, _) = check_vdecl_t lhs env
+			and (rhs, t2) = check_expr rhs env in
+		if t1 = t2 then
+			C_Assign(v, rhs)
+	else
+		raise (Error("Type mismatch on variable assignment " ^ string_of_vdecl lhs))
 
 	(* typecheck return (not return type, but keyword 'return') *)
 	and check_return (e: expr) (env: stch_env) =
