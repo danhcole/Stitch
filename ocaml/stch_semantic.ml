@@ -14,6 +14,11 @@ let rec find_variable (scope: symTable) name =
 	Some(parent) -> find_variable parent name
 	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *)
 
+let rec find_func (funcs: c_fdecl list) fname =
+	try
+		List.find ( fun fn -> fn.fdecl_name = fname ) funcs
+	with Not_found -> raise (Error ("Function call not recognized: " ^ fname))
+
 (* type check binary operations *)
 (* for now, Stitch does not support type coercion, so binops must be int/int or flt/flt  *)
 let check_binop (lhs: dataType) (rhs: dataType) (env: stch_env) : (Stch_ast.dataType) =
@@ -55,7 +60,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	(* other exprs need to call their respective check functions *)
 	| Binop(lhs, o, rhs) -> binop_ret lhs o rhs env
 	(* | Negate(l) -> C_Negate(l),  *)
-	(* | Call(f, b) -> check_call f b env *)
+	| Call(f, b) -> check_call f b env
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Noexpr -> C_Noexpr, Tvoid
 	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
@@ -89,17 +94,15 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		else
 			raise (Error("Type mismatch on variable assignment " ^ lhs ^"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
 
-	(* (* check function call *)
+	(* check function call *)
 	and check_call (f: string) (el: expr list) (env: stch_env) =
 		let l_expr_typ = List.map (fun e -> check_expr e env) el in
-		let func_rets = find_func env.funcs f in
-		match func_rets with
-		[] -> raise (Error("Invalid function: " ^ f))
-		| _ -> let (l_expr, fdecl) = find_func_sig f l_expr_typ func_rets in
-			C_Call(f, l_expr), fdecl.fdecl_type *)
+		let func_ret = find_func env.funcs f in
+		match func_ret with
+		_ -> C_Call(func_ret.fdecl_name, ), fdecl.fdecl_type
 
-	(* (* function signature verify *)
-	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_rets: c_fdecl list) = 
+(* 	(* function signature verify *)
+	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl list) = 
 		try
 			match func_rets with
 				[] -> raise (Error("Signature mismatch on function call " ^ f))
@@ -117,8 +120,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 								else
 									cexpr, hd
 		with Invalid_argument(x) ->
-			raise (Error("Wrong number of args in function call " ^ f))
- *)
+			raise (Error("Wrong number of args in function call " ^ f)) *)
+
 
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with

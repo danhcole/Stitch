@@ -18,8 +18,6 @@ type symTable = {
 	mutable vars: (dataType * string * c_expr) list;
 }
 
-(* and c_var_decl = C_VarDecl of dataType * c_expr *)
-
 type c_vdecl = {
 	vdecl_type : dataType;
 	vdecl_name : string;
