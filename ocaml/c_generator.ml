@@ -59,6 +59,6 @@ let string_of_c_fdecl fdecl =
   String.concat "" (List.map string_of_c_stmt fdecl.body) ^
   "}\n"
 
-let string_of_c_program (stmts, funcs) =
-  String.concat "" (List.map string_of_c_stmt stmts) ^ "\n" ^
-  String.concat "\n" (List.map string_of_c_fdecl funcs)
+let string_of_c_program (prog : Stch_cast.c_program ) =
+  String.concat "" (List.map string_of_c_stmt prog.stmts) ^ "\n" ^
+  String.concat "\n" (List.map string_of_c_fdecl prog.funcs)

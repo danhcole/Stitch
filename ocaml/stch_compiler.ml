@@ -6,4 +6,5 @@ let lexbuf = Lexing.from_channel in_channel in
 
 let program = Stch_parser.program Stch_scanner.token lexbuf in
 let finalcast =  Stch_semantic.check_prog program in
-	print_string "Compiler makes it to the end!\n"
+let outprog = C_generator.string_of_c_program finalcast in
+print_string outprog
