@@ -16,7 +16,7 @@ let rec string_of_c_expr = function
   | C_Binop(e1, o, e2) ->
       string_of_c_expr e1 ^ " " ^
       (match o with
-	Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
+	      Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
       | Equal -> "==" | Ne -> "!="
       | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
@@ -34,12 +34,12 @@ let string_of_c_vdecl vdecl = string_of_c_dataType vdecl.vdecl_type ^ " " ^ vdec
     string_of_c_expr arraydecl.arraydecl_size ^ "]" *)
 
 let rec string_of_c_stmt = function
-    Block(stmts) ->
+    C_Block(_, stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_c_stmt stmts) ^ "}\n"
-  | C_Expr(c_expr) -> string_of_c_expr c_expr ^ ";\n";
+  | C_Expr(_, e) -> string_of_c_expr e ^ ";\n";
   | C_Vdecl(v) -> string_of_c_dataType v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
-  | C_Return(c_expr) -> "return " ^ string_of_c_expr c_expr ^ ";\n";
-  | C_If(e, s, Block([])) -> "if (" ^ string_of_c_expr e ^ ")\n" ^ string_of_c_stmt s
+  | C_Return(_, c_expr) -> "return " ^ string_of_c_expr c_expr ^ ";\n";
+  | C_If(e, s, C_Block(_, [])) -> "if (" ^ string_of_c_expr e ^ ")\n" ^ string_of_c_stmt s
   | C_If(e, s1, s2) ->  "if (" ^ string_of_c_expr e ^ ")\n" ^
       string_of_c_stmt s1 ^ "else\n" ^ string_of_c_stmt s2
   | C_For(e1, e2, e3, s) ->
@@ -52,7 +52,7 @@ let rec string_of_c_stmt = function
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
 (*   | ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n" *)
   (*| ArrayAssign(arraydecl, el) -> "arraydecl;\n" *)
-  | Break -> "break;"
+  | C_Break -> "break;"
 
 let string_of_c_fdecl fdecl =
   string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ String.concat ", " (List.map string_of_c_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
