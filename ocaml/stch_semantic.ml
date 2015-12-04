@@ -137,6 +137,22 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				C_If(e, s1, s2)
 			else
 				raise (Error("If clause has expression of type " ^ string_of_dataType t))
+	(* typecheck the for loop *)
+	and check_for (e1: expr) (e2: expr) (e3: expr) (st: stmt) (env: stch_env) =
+		let (ex1, t1) = check_expr e1 env in
+		let (ex2, t2) = check_expr e2 env in
+		let (ex3, t3) = check_expr e3 env in
+		if t1 <> Tint then raise (Error("First expression not of type int."))
+		else begin
+			if t2 <> Tint then raise (Error("Second expression not of type int."))
+			else begin
+				if t3 <> Tint then raise (Error("Third expression not of type int."))
+				else begin
+					let s = check_stmt st env in
+					C_For(ex1,ex2,ex3,s)
+				end
+			end
+		end
 
 	(* typecheck the while loop *)
 	and check_while (e: expr) (s: stmt) (env: stch_env) =
