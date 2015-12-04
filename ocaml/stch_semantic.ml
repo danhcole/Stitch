@@ -157,7 +157,7 @@ let check_vdecl (decl: vdecl) (env: stch_env) =
 let check_formals (decl: vdecl) (env: stch_env) = 
 	match decl.vdecl_type with
 		dataType -> env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-		check_vdecl(decl)
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in v
 		| _ -> raise (Error("Invalid function formals"))
 
 (* typecheck a function declaration *)
@@ -167,8 +167,8 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 	else
 		let env' = { env with scope = {parent = Some(env.scope); vars = [];};
 		retType = func.fdecl_type; in_func = true} in
-		let fdecl_formals = (List.rev (List.map (fun x -> check_formals x env') func.fdecl_formals)) in
-let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = ( List.map (fun x -> check_formals x env') func.fdecl_formals ); Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
+		let f_formals = (List.rev (List.map (fun x -> check_formals x env') func.fdecl_formals)) in
+let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = f_formals; Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
 		env.funcs <- f::env.funcs; f 
 
 (* typecheck the ast env *)
@@ -180,9 +180,14 @@ let init_env : (stch_env) =
 (* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
-	{ Stch_cast.stmts = (List.map (fun x -> check_stmt x env) []);
-	Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs);
-	Stch_cast.syms = env.scope }
+{ Stch_cast.stmts = match prog with 
+	[] -> raise(Error("bad") 
+	| (s, _) -> (List.map (fun x -> check_stmt x env) s);
+Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) prog.funcs);
+Stch_cast.syms = env.scope }
+
+
+
 
 
 

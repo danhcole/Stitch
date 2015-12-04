@@ -50,8 +50,7 @@ type fdecl = {
     body : stmt list;
   }
 
-
-type program = vdecl list * fdecl list
+type program = stmt list * fdecl list
 
 let string_of_dataType = function
   Tint -> "int"
@@ -111,7 +110,7 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
-let string_of_program (vars, funcs) =
-  String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
+let string_of_program (stmts, funcs) =
+  String.concat "" (List.map string_of_stmt stmts) ^ "\n" ^
   String.concat "\n" (List.map string_of_fdecl funcs)
 

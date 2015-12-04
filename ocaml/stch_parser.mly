@@ -33,7 +33,7 @@
 
 program:
 	/*decls EOF {$1}*/		{ [], [] }
-	| program vdecl SEMI	{ ($2 :: fst $1), snd $1 }
+	| program stmt 	 SEMI	{ ($2 :: fst $1), snd $1 }
 	| program fdecl 		{ fst $1, ($2 :: snd $1) }
 
 fdecl:
@@ -74,8 +74,8 @@ arraydecl:
 		}}
 /*
 array_init:
-	| LBRACE actuals_opt RBRACE						{ List.rev $2 }
-	| array_init COMMA LBRACE actuals_opt RBRACE    { $4 :: $1 }
+	| LBRACE actuals_list RBRACE						{ List.rev $2 }
+	| array_init COMMA LBRACE actuals_list RBRACE    { $4 :: $1 }
 */
 stmt_list:
 /*nothing*/			{ [] }
