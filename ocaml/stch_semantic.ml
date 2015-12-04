@@ -98,8 +98,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	and check_call (f: string) (el: expr list) (env: stch_env) =
 		let l_expr_typ = List.map (fun e -> check_expr e env) el in
 		let func_ret = find_func env.funcs f in
-		let args_l = find_func_sig f l_expr_typ func_ret
-		C_Call(func_ret.fdecl_name, args_l), fdecl.fdecl_type
+		let args_l = find_func_sig f l_expr_typ func_ret in
+			C_Call(func_ret.fdecl_name, args_l), func_ret.fdecl_type
 
 	(* function signature verify *)
 	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl) = 
@@ -107,16 +107,16 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			let formals = func_ret.fdecl_formals in
 				let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
 					let opt_typ = snd opt in
-					let formal_type = c_vdecl.vdecl_type in
+					let formal_type = formal.vdecl_type in
 						if opt_typ = formal_type then
 							fst opt
 						else
 							C_Noexpr) opts formals in
-								let matched = List.exists (fun e -> e = C_Noexpr) cexpr in
-								if matched then
-									find_func_sig f opts tl
-								else
-									cexpr, hd
+					let matched = List.exists (fun e -> e = C_Noexpr) cexpr in
+					if matched then
+						find_func_sig f opts func_ret
+					else
+						cexpr
 		with Invalid_argument(x) ->
 			raise (Error("Wrong number of args in function call " ^ f))
 
