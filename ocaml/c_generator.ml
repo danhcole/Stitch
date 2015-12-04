@@ -11,7 +11,7 @@ let rec string_of_c_expr = function
     C_Int(l) -> string_of_int l
   | C_Float(l) -> string_of_float l
   | C_Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
-  | C_Id(s) -> s
+  | C_Id(s, t) -> s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
       string_of_c_expr e1 ^ " " ^
@@ -23,7 +23,7 @@ let rec string_of_c_expr = function
       string_of_c_expr e2
   | C_Negate(e) -> "!" ^ string_of_c_expr e
   | C_Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_c_expr el) ^ ")"
-  | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e ^ ";\n"
+  | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
   (*  Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_c_expr e ^ ";\n" *)
   (* | C_Access(f, s) -> f ^ "." ^ s  *)
   | C_Noexpr -> ""

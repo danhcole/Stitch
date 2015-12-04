@@ -22,6 +22,14 @@ let check_binop (lhs: dataType) (rhs: dataType) (env: stch_env) : (Stch_ast.data
 	| (Tfloat, Tfloat) 	-> Tfloat
 	| (_, _) -> raise (Error("Incompatable data types for binop"))
 
+let check_vdecl (decl: vdecl) (env: stch_env) = 
+	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
+		if invalid then
+			raise (Error("Variable already declared"))
+		else
+			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in C_Vdecl(v)
+
 (* type check an expression and put into c_ast *)
 let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) = 
 	match e with
@@ -29,7 +37,12 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	  Int(l) 	-> C_Int(l), Tint
 	| Float(l) 	-> C_Float(l), Tfloat
 	| Char(l) 	-> C_Char(l), Tchar
-	| Id(l) -> C_Id(l), Tint
+	| Id(l) -> 
+	let var = try find_variable env.scope l
+with Not_found -> raise(Error("Undefined Identifier" ^ l))
+	in
+	let (typ, vname, _) = var in
+	C_Id(vname, typ), typ
 	(* | String(l) -> C_String(l), String *)
 	(* other exprs need to call their respective check functions *)
 	| Binop(lhs, o, rhs) -> binop_ret lhs o rhs env
@@ -114,7 +127,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| While(e, s) -> check_while e s env
 	| Stitch(e1, e2, e3, e4, s) -> check_stitch e1 e2 e3 e4 s env
 	(* stmt assign needs to be fixed *)
-	(* | Assign(v, e) -> check_var_decl v e env *)
+	| Assign(v, e) -> check_vdecl v env
 	| Break -> C_Break
 	| _ -> C_Break (* can remove when everything else is added *)
 
@@ -186,14 +199,6 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			let s' = check_stmt s env in C_While(e,s')
 		else
 			raise (Error("Invalid 'while' expression"))
-
-let check_vdecl (decl: vdecl) (env: stch_env) = 
-	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
-		if invalid then
-			raise (Error("Variable already declared"))
-		else
-			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in C_Vdecl(v)
 
 let check_formals (decl: vdecl) (env: stch_env) = 
 	match decl.vdecl_type with
