@@ -146,11 +146,11 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		let (ex1, t1) = check_expr e1 env in
 		let (ex2, t2) = check_expr e2 env in
 		let (ex3, t3) = check_expr e3 env in
-		if t1 <> Tint then raise (Error("For Loop: First expression not of type int."))
+		if t1 <> Tint && t1 <> Tvoid then raise (Error("For Loop: First expression not of type int."))
 		else begin
-			if t2 <> Tint then raise (Error("For Loop: Second expression not of type int."))
+			if t2 <> Tint && t2 <> Tvoid then raise (Error("For Loop: Second expression not of type int."))
 			else begin
-				if t3 <> Tint then raise (Error("For Loop: Third expression not of type int."))
+				if t3 <> Tint && t3 <> Tvoid then raise (Error("For Loop: Third expression not of type int."))
 				else begin
 					let s = check_stmt st env in
 					C_For(ex1,ex2,ex3,s)
