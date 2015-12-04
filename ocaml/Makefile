@@ -1,4 +1,4 @@
-OBJS = stch_ast.cmo stch_parser.cmo stch_scanner.cmo stch_compiler.cmo stitch.cmo stch_semantic.cmo
+OBJS = stch_ast.cmo stch_parser.cmo stch_scanner.cmo stch_semantic.cmo stch_compiler.cmo stitch.cmo 
 
 YACC = ocamlyacc
 
