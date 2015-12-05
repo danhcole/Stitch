@@ -1,4 +1,4 @@
-OBJS = stch_ast.cmo stch_parser.cmo stch_scanner.cmo stch_semantic.cmo c_generator.cmo stch_compiler.cmo stitch.cmo 
+OBJS = stch_ast.cmo stch_parser.cmo stch_scanner.cmo stch_semantic.cmo c_generator.cmo stitch.cmo 
 
 YACC = ocamlyacc
 
@@ -29,8 +29,6 @@ c_generator.cmo : stch_cast.cmi stch_ast.cmo
 c_generator.cmx : stch_cast.cmi stch_ast.cmx
 stch_ast.cmo :
 stch_ast.cmx :
-stch_compiler.cmo : stch_ast.cmo
-stch_compiler.cmx : stch_ast.cmx
 stch_parser.cmo : stch_ast.cmo stch_parser.cmi
 stch_parser.cmx : stch_ast.cmx stch_parser.cmi
 stch_scanner.cmo : stch_parser.cmi

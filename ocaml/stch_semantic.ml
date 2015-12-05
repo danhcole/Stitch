@@ -237,7 +237,17 @@ let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fd
 
 (* typecheck the ast env *)
 let init_env : (stch_env) = 
-	let init_funcs = [] in (* Need to add builtin functions here *)
+	let init_funcs = [{ fdecl_type = Tvoid;
+						fdecl_name = "print";
+						fdecl_formals = [];
+						body = [];
+						};
+
+						{fdecl_type = Tvoid;
+						 fdecl_name = "open";
+						 fdecl_formals = [];
+						 body = [];
+						 };] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in
 	{ funcs = init_funcs; scope = init_scope; retType = Tvoid; in_func = false; }
 
