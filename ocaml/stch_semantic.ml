@@ -165,7 +165,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	(* Typechecking the expression of an "if" statement *)
 	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =
 		let (e, t) = check_expr ex en in
-			if t = Tint then
+			if t = Tint || t = Tfloat || t = Tchar then
 				let s1 = check_stmt th en in
 				let s2 = check_stmt el en in
 				C_If(e, s1, s2)
@@ -239,13 +239,13 @@ let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fd
 let init_env : (stch_env) = 
 	let init_funcs = [{ fdecl_type = Tvoid;
 						fdecl_name = "print";
-						fdecl_formals = [];
+						fdecl_formals = [ {vdecl_type = Tvoid; vdecl_name = "c"}; ];
 						body = [];
 						};
 
 						{fdecl_type = Tvoid;
 						 fdecl_name = "open";
-						 fdecl_formals = [];
+						 fdecl_formals = [ ];
 						 body = [];
 						 };] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in

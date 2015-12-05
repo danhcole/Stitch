@@ -6,6 +6,7 @@ let string_of_c_dataType = function
   | Tfloat -> "float"
   | Tchar -> "char"
   | Tvoid -> "void"
+  | Tstring -> "char *"
 
 let rec string_of_c_expr = function
     C_Int(l) -> string_of_int l
