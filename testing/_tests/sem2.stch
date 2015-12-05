@@ -2,11 +2,11 @@ int main() {
 	
 	char z = 'z';
 	
-	printf("%c\n",z);
+	print(z);
 	
 	char y = z;
 
-	printf("%c\n",y);
+	print(y);
 
 	return 0;
 

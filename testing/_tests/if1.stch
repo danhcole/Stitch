@@ -1,5 +1,5 @@
 int main()
 {
-  if (1) { print("%d\n", 42); }
-  print("%d\n", 17);
+  if (1) { print(42); }
+  print(17);
 }

@@ -2,5 +2,5 @@ int main()
 {
 	int a;
 	a = 39 + 3;
-	print("%d\n", a);
+	print(a);
 }

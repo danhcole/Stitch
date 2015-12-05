@@ -66,4 +66,6 @@ do
 done
 
 cd $OUTPUTS
-#rm *_gen.txt
+rm *_gen.txt
+cd ../$TARGETS
+rm *.c

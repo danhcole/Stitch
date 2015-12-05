@@ -23,7 +23,7 @@ let rec string_of_c_expr = function
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_c_expr e2
   | C_Negate(e) -> "!" ^ string_of_c_expr e
-  | C_Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_c_expr el) ^ ")"
+  | C_Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> ("\"%d\\n\", " ^ string_of_c_expr (List.hd el))::[] | _ -> List.map string_of_c_expr el) ^ ")"
   | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
   (*  Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_c_expr e ^ ";\n" *)
   (* | C_Access(f, s) -> f ^ "." ^ s  *)

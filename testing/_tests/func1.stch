@@ -12,6 +12,6 @@ int main() {
 
 void p(int a) {
 	
-	print("%d\n", a);
+	print(a);
 
 }

@@ -102,7 +102,16 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			C_Call(func_ret.fdecl_name, args_l), func_ret.fdecl_type
 
 	(* function signature verify *)
-	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl) = 
+	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl) = match f with
+		print -> let arg = List.hd opts in
+					match (snd arg) with
+					 | Tint -> (fst arg)::[]
+					 | Tfloat -> (fst arg)::[]
+					 | Tchar -> (fst arg)::[]
+					 | Tstring -> (fst arg)::[]
+					 | _ -> raise (Error("Invalid print type: " ^ string_of_dataType (snd arg))) 
+
+		| _ -> 
 		try
 			let formals = func_ret.fdecl_formals in
 				let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
@@ -125,7 +134,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	Block(ss) -> 
 		let scope' = { parent = Some(env.scope); vars = []; } in
 			let env' = { env with scope = scope' } in
-			let ss = List.map (fun s -> check_stmt s env') (List.rev ss) in
+			let ss = List.map (fun s -> check_stmt s env') ss in
 			scope'.vars <- List.rev scope'.vars;
 			C_Block(scope', ss)
 	| Vdecl(v) -> check_vdecl v env
@@ -239,7 +248,7 @@ let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fd
 let init_env : (stch_env) = 
 	let init_funcs = [{ fdecl_type = Tvoid;
 						fdecl_name = "print";
-						fdecl_formals = [ {vdecl_type = Tvoid; vdecl_name = "c"}; ];
+						fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "c"}; ];
 						body = [];
 						};
 

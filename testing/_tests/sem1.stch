@@ -2,8 +2,8 @@ int main() {
 	int x = 2;
 	float y = 3.4;
 
-	printf("%d\n",x);
-	printf("%.1f\n",y);
+	print(x);
+	print(y);
 
 	if (x != y) {
 		printf("false\n");
