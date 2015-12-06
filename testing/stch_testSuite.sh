@@ -57,7 +57,7 @@ do
 	checkComp $?
 	mv ./\_tests/$ROOT.stch.c ./\_targets
 	mv ./$ROOT $BIN
-	$BIN/$ROOT > $OUTPUTS/$ROOT\_gen.txt
+	$BIN/$ROOT > $OUTPUTS/$ROOT\_gen.txt 2>&1
 	echo "\nDIFFing Output"  2>&1 | tee -a $LOG
 	echo "==============="  2>&1 | tee -a $LOG
 	diff -w $OUTPUTS/$ROOT\_gen.txt $OUTPUTS/$ROOT\_out.txt
@@ -70,4 +70,4 @@ rm *_gen.txt
 cd ../$TARGETS
 rm *.c
 cd ../$BIN
-rm *
+rm

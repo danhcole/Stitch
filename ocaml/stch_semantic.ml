@@ -252,6 +252,12 @@ let init_env : (stch_env) =
 						body = [];
 						};
 
+						{ fdecl_type = Tvoid;
+						fdecl_name = "error";
+						fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "c"}; ];
+						body = [];
+						};
+
 						{fdecl_type = Tvoid;
 						 fdecl_name = "open";
 						 fdecl_formals = [ ];
