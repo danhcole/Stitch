@@ -50,6 +50,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	  Int(l) 	-> C_Int(l), Tint
 	| Float(l) 	-> C_Float(l), Tfloat
 	| Char(l) 	-> C_Char(l), Tchar
+	| String(l) -> C_String(l), Tstring
 	| Id(l) -> 
 	let var = try find_variable env.scope l
 		with Not_found -> raise(Error("Undefined Identifier" ^ l))
@@ -103,31 +104,30 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 
 	(* function signature verify *)
 	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl) = match f with
-		print -> let arg = List.hd opts in
-					match (snd arg) with
-					 | Tint -> (fst arg)::[]
-					 | Tfloat -> (fst arg)::[]
-					 | Tchar -> (fst arg)::[]
-					 | Tstring -> (fst arg)::[]
-					 | _ -> raise (Error("Invalid print type: " ^ string_of_dataType (snd arg))) 
+		"print" -> (let arg = List.hd opts in
+						match (snd arg) with
+						 | Tint -> (fst arg)::[]
+						 | Tfloat -> (fst arg)::[]
+						 | Tchar -> (fst arg)::[]
+						 | Tstring -> (fst arg)::[]
+						 | _ -> raise (Error("Invalid print type: " ^ string_of_dataType (snd arg))))
 
-		| _ -> 
-		try
-			let formals = func_ret.fdecl_formals in
-				let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
-					let opt_typ = snd opt in
-					let formal_type = formal.vdecl_type in
-						if opt_typ = formal_type then
-							fst opt
+		| _ -> try
+				let formals = func_ret.fdecl_formals in
+					let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
+						let opt_typ = snd opt in
+						let formal_type = formal.vdecl_type in
+							if opt_typ = formal_type then
+								fst opt
+							else
+								C_Noexpr) opts formals in
+						let matched = List.exists (fun e -> e = C_Noexpr) cexpr in
+						if matched then
+							find_func_sig f opts func_ret
 						else
-							C_Noexpr) opts formals in
-					let matched = List.exists (fun e -> e = C_Noexpr) cexpr in
-					if matched then
-						find_func_sig f opts func_ret
-					else
-						cexpr
-		with Invalid_argument(x) ->
-			raise (Error("Wrong number of args in function call " ^ f))
+							cexpr
+			with Invalid_argument(x) ->
+				raise (Error("Wrong number of args in function call " ^ f))
 
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with

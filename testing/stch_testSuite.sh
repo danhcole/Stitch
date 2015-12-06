@@ -69,3 +69,5 @@ cd $OUTPUTS
 rm *_gen.txt
 cd ../$TARGETS
 rm *.c
+cd ../$BIN
+rm *
