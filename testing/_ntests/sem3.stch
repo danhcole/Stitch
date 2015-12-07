@@ -2,7 +2,7 @@ int main() {
 
 	char a = 'A';
 
-	printf(a);
+	print(a);
 
 	int b = a;
 	

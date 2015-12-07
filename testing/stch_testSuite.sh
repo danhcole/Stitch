@@ -7,7 +7,9 @@ FAIL='\033[0;31m'		#Red color for failure
 NC='\033[0m'			#No color - to clear the color after
 
 SINGER="./toolkit/singer"
+STITCH="../ocaml/stitch"
 TESTS="./_tests/*"
+NTESTS="./_ntests/*"
 TARGETS="./_targets"
 OUTPUTS="./_outputs"
 BIN="./_bin"
@@ -21,7 +23,7 @@ function echoResult {
 		echo "TEST SCCESSFUL!" >> $LOG
 	else
 		echo "${FAIL}TEST FAILED!${NC}"
-		echo "TEST SCCESSFUL!" >> $LOG
+		echo "TEST FAILED!" >> $LOG
 	fi
 }
 
@@ -35,6 +37,13 @@ function checkComp {
 		echo "COMPILE FAILED!" >> $LOG
 		break
 	fi
+}
+
+function checkNComp {
+
+	echo "${SUCC}COMPILE FAILED!${NC}"
+	echo "COMPILE FAILED!" >> $LOG
+	break
 }
 
 ######################
@@ -65,9 +74,19 @@ do
 	echo "\n\n" 2>&1 | tee -a $LOG
 done
 
+trap checkNComp ERR
+
+for test in $NTESTS
+do
+	echo "Starting Negative Test $test" 2>&1 | tee -a $LOG
+	echo "============================" 2>&1 | tee -a $LOG
+	$STITCH $test || true
+	echo "\n\n" 2>&1 | tee -a $LOG
+done
+
 cd $OUTPUTS
 rm *_gen.txt
 cd ../$TARGETS
 rm *.c
 cd ../$BIN
-rm
+rm *

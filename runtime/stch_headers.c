@@ -17,14 +17,7 @@
 // int  stch_read(const int fd, stch_array* dest){
 // 	return read(source->data, source->length, 1, fd);
 // }
-//print()
-void stch_print(const char* s){
-	printf("%s\n", s);
-}
-// //error()
-void stch_error(const char* e){
-	fprintf(stderr, "%s\n", e);
-}
+
 //lengthof()
 int  stch_length(const stch_array* a){
 	return a->length;
