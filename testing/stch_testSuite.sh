@@ -80,7 +80,15 @@ for test in $NTESTS
 do
 	echo "Starting Negative Test $test" 2>&1 | tee -a $LOG
 	echo "============================" 2>&1 | tee -a $LOG
-	$STITCH $test || true
+	$STITCH $test 2> /dev/null || true
+	if [[ -e $test.c ]]; then
+		echo "${FAIL}TEST FAILED!${NC}"
+		echo "TEST FAILED!" >> $LOG
+		rm $test.c
+	else
+		echo "${SUCC}TEST SUCCESSFUL!${NC}"
+		echo "TEST SCCESSFUL!" >> $LOG
+	fi
 	echo "\n\n" 2>&1 | tee -a $LOG
 done
 
