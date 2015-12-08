@@ -156,6 +156,10 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			with Invalid_argument(x) ->
 				raise (Error("Wrong number of args in function call " ^ f))
 
+(* Helper function for array initialization. This function will recursively traverse a list of
+	expressions and try to type match them with the type of the array they're being added into.
+	This function is called from check_array_init further down in the code
+*)
 let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: stch_env) = 
 	match el with
 		| [] -> name
@@ -237,11 +241,19 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* first step: check that we have a valid array decl *)
 		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} env in
 		(* now that we know it's valid, check the types of the list *)
+		let s = a.arraydecl_size in 
+		let i = string_of_expr s in
+		try
+		if int_of_string i = List.length el then
 		let ret = check_init_vals a el typ env in match ret with
 			| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
 							 Stch_cast.arraydecl_type = a.arraydecl_type;
 							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
 			| _ -> raise(Error("Error parsing the list of array init args"))
+		else
+			raise(Error("Size mismatch in array initialization"))
+		with
+		| _ -> failwith "Cannot initialize array with a variable"
 		
 
 
