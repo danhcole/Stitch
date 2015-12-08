@@ -90,10 +90,13 @@ stmt_list:
 stmt:
   expr SEMI										{ Expr($1) }
 | vdecl SEMI									{ Vdecl($1) }
+/* One dimensional array stuff */
 | arraydecl SEMI								{ ArrayDecl($1) }
+| arraydecl ASSIGN LBRACE actuals_opt RBRACE SEMI
+	{ ArrayInit($1, $4) }
+/* Two dimensional array statements */
 | matrixdecl SEMI								{ MatrixDecl($1) }
-/*One dimensional array assignment*/
-| arraydecl ASSIGN LBRACE actuals_opt RBRACE SEMI				{ ArrayAssign($1, $4) }
+
 | RETURN expr_opt SEMI 							{ Return($2) }
 | LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
 | IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }
@@ -119,6 +122,7 @@ expr:
 | STRING 	{ String($1) }
 /*Array*/
 | ID LSQUARE INT RSQUARE ASSIGN expr 		{ Array_Item_Assign($1, $3, $6) }
+| ID LSQUARE INT RSQUARE					{ Array_Index_Access($1, $3) }
 /*TODO*/
 /*Arithmetic*/
 | expr ADD 		expr	{ Binop($1, Add, $3) }

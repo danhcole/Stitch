@@ -140,10 +140,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| Vdecl(v) -> check_vdecl v env
 	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(t, e)
 	| ArrayDecl(a) -> check_array_decl a env
+	| ArrayInit(a, el) -> check_array_init a el env
 	| MatrixDecl(m) -> check_matrix_decl m env
 	| Return(e) -> check_return e env
 	| If(e, s1, s2) -> check_if e s1 s2 env
-	(* need to add check_for *)
 	| For(e1, e2, e3, s) -> check_for e1 e2 e3 s env
 	| While(e, s) -> check_while e s env
 	| Stitch(e1, e2, e3, e4, s) -> check_stitch e1 e2 e3 e4 s env
@@ -191,6 +191,20 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				| Tstring -> raise (Error("Invalid array size type, expects int"))
 			(* else it's a void or an int, and it's allowed *)
 				| _ -> let v = { Stch_cast.arraydecl_type = ve.vdecl_type; Stch_cast.arraydecl_name = ve.vdecl_name; Stch_cast.arraydecl_size = a.arraydecl_size} in C_ArrayDecl(v)
+
+	(* checking the array initialization. This will be done in 3 steps
+		1. Check to see if the array can be declared as a new variable
+		2. Make sure that all the args in the list are the same type
+		3. Make sure that the type in the list matches the type
+		4. Make sure that the size of the list matches the size of the decl (low priority for now) 
+	*)
+	and check_array_init (a: arraydecl) (el: expr list) (env: stch_env) =
+		(* first step: check that we have a valid array decl *)
+		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} env in
+		(* now that we know it's valid, check the types of the list *)
+		raise(Error("Trying to finish this"))
+		
+
 
 	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
 

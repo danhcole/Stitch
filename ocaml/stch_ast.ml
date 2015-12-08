@@ -19,6 +19,7 @@ type expr =
   | Call of string * expr list
   | Assign2 of string * expr
   | Array_Item_Assign of string * int * expr
+  | Array_Index_Access of string * int
   | Access of string * string
   | Noexpr
 
@@ -48,7 +49,7 @@ type stmt =
   | Stitch of expr * expr * expr * expr * stmt
   | Assign of vdecl * expr
   | ArrayDecl of arraydecl
-  | ArrayAssign of arraydecl * expr list
+  | ArrayInit of arraydecl * expr list
   | MatrixDecl of matrixdecl
   | Break
 
@@ -85,7 +86,8 @@ let rec string_of_expr = function
   | Negate(e) -> "!" ^ string_of_expr e
   | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
-  | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_expr e ^ ";\n"
+  | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_expr e
+  | Array_Index_Access(id, index) -> id ^ "[" ^ string_of_int index ^ "]"
   | Access(f, s) -> f ^ "." ^ s 
   | Noexpr -> ""
 
@@ -115,7 +117,7 @@ let rec string_of_stmt = function
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
   | ArrayDecl(a) -> string_of_arraydecl a ^ ";\n"
-  | ArrayAssign(arraydecl, el) -> string_of_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
+  | ArrayInit(arraydecl, el) -> string_of_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
   | MatrixDecl(m) -> string_of_matrixdecl m ^ ";\n"
   | Break -> "break;"
 
