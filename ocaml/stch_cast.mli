@@ -43,6 +43,7 @@ type c_stmt =
     C_Block of symTable * c_stmt list
   | C_Vdecl of c_vdecl
   | C_ArrayDecl of c_arraydecl
+  | C_ArrayInit of c_arraydecl * expr list
   | C_MatrixDecl of c_matrixdecl
   | C_Expr of dataType * c_expr
   | C_Return of dataType * c_expr

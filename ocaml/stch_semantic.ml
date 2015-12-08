@@ -156,6 +156,15 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			with Invalid_argument(x) ->
 				raise (Error("Wrong number of args in function call " ^ f))
 
+let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: stch_env) = 
+	match el with
+		| [] -> name
+		| head::tail -> let (ex, typ) = check_expr head env in
+			(match typ with
+				| t -> check_init_vals name tail typ env
+				| _ -> raise(Error("Types of array initialization do not match")))
+
+
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	Block(ss) -> 
@@ -228,8 +237,11 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* first step: check that we have a valid array decl *)
 		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} env in
 		(* now that we know it's valid, check the types of the list *)
-		(* This will convert our list of expressions into a list of C_EXPR, TYPE tuples *)
-		raise(Error("Can't seem to get this right now"))
+		let ret = check_init_vals a el typ env in match ret with
+			| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
+							 Stch_cast.arraydecl_type = a.arraydecl_type;
+							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
+			| _ -> raise(Error("Error parsing the list of array init args"))
 		
 
 
