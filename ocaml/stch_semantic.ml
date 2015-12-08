@@ -125,6 +125,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 
 	(* function signature verify *)
 	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl) = match f with
+		(* special handling for built-in functions
+		   Not all built-ins need this (eg exit() ) *)
 		 "print" -> (let arg = List.hd opts in
 						match (snd arg) with
 						 | Tint -> (fst arg)::[]
@@ -139,6 +141,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 						 | Tchar -> (fst arg)::[]
 						 | Tstring -> (fst arg)::[]
 						 | _ -> raise (Error("Invalid error type: " ^ string_of_dataType (snd arg))))
+		(* All other functions *)
 		| _ -> try
 				let formals = func_ret.fdecl_formals in
 					let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
