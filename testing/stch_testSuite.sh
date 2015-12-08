@@ -57,6 +57,10 @@ cd ../ocaml
 make all > /dev/null 
 cd ../testing
 
+echo "******************" 2>&1 | tee -a $LOG
+echo "* Positive Tests *" 2>&1 | tee -a $LOG
+echo "******************" 2>&1 | tee -a $LOG
+
 for test in $TESTS
 do
 	echo "Starting Test $test" 2>&1 | tee -a $LOG
@@ -73,6 +77,11 @@ do
 	echoResult $? 
 	echo "\n\n" 2>&1 | tee -a $LOG
 done
+
+echo "******************" 2>&1 | tee -a $LOG
+echo "* Negative Tests *" 2>&1 | tee -a $LOG
+echo "******************" 2>&1 | tee -a $LOG
+
 
 trap checkNComp ERR
 

@@ -1,0 +1,13 @@
+int main()
+{
+	print("one");
+	//print("two");
+	print("three");
+	/*
+	  print("four");
+	  //print("four point five");
+	  print("semis are for jive turkeys")
+	  print("five");
+	*/
+	print("six");
+}

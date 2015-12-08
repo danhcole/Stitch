@@ -1,0 +1,6 @@
+int main()
+{
+  print("this should print"); //should not actually print
+  exit("bye!");
+  print("this should not");
+}

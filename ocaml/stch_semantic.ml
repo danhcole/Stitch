@@ -14,6 +14,7 @@ let rec find_variable (scope: symTable) name =
 	Some(parent) -> find_variable parent name
 	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *)
 
+(* check to see if a function has been defined *)
 let rec find_func (funcs: c_fdecl list) fname =
 	try
 		List.find ( fun fn -> fn.fdecl_name = fname ) funcs
@@ -27,6 +28,7 @@ let check_binop (lhs: dataType) (rhs: dataType) (env: stch_env) : (Stch_ast.data
 	| (Tfloat, Tfloat) 	-> Tfloat
 	| (_, _) -> raise (Error("Incompatable data types for binop"))
 
+(* check variable decleration, returns a C_Vdecl*)
 let check_vdecl (decl: vdecl) (env: stch_env) = 
 	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
 		if invalid then
@@ -35,6 +37,7 @@ let check_vdecl (decl: vdecl) (env: stch_env) =
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
 			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in C_Vdecl(v)
 
+(* same as check_vdecl, except that it returns a triple of vdecl, datatype, name *)
 let check_vdecl_t (decl: vdecl) (env: stch_env) = 
 	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
 		if invalid then
@@ -51,20 +54,28 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	| Float(l) 	-> C_Float(l), Tfloat
 	| Char(l) 	-> C_Char(l), Tchar
 	| String(l) -> C_String(l), Tstring
+	(* For ID's, check to see if the variable has been declared, if it has, get the name and type *)
 	| Id(l) -> 
-	let var = try find_variable env.scope l
-		with Not_found -> raise(Error("Undefined Identifier" ^ l))
-			in
-			let (typ, vname, _) = var in
-			C_Id(vname, typ), typ
-	(* | String(l) -> C_String(l), String *)
+		let var = try find_variable env.scope l
+			with Not_found -> raise(Error("Undefined Identifier" ^ l))
+				in
+				let (typ, vname, _) = var in
+				C_Id(vname, typ), typ
 	(* other exprs need to call their respective check functions *)
 	| Binop(lhs, o, rhs) -> binop_ret lhs o rhs env
-	(* | Negate(l) -> C_Negate(l),  *)
+	| Negate(l) -> check_negate l env
 	| Call(f, b) -> check_call f b env
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Noexpr -> C_Noexpr, Tvoid
 	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
+
+	(* check negation.  As of now, only ints and floats can be negated *)
+	and check_negate (e: expr) (env: stch_env) = 
+		let exp = check_expr e env in
+		match snd exp with
+		  Tint -> C_Negate((fst exp)), Tint
+		| Tfloat -> C_Negate((fst exp)), Tfloat
+		| _ -> raise (Error("Cannot negate type " ^ string_of_dataType (snd exp)))
 
 	(* check the binop return type*)
 	and binop_ret (lhs: expr) (o: op) (rhs: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) =
@@ -104,14 +115,20 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 
 	(* function signature verify *)
 	and find_func_sig (f: string) (opts: (c_expr * dataType) list) (func_ret: c_fdecl) = match f with
-		"print" -> (let arg = List.hd opts in
+		 "print" -> (let arg = List.hd opts in
 						match (snd arg) with
 						 | Tint -> (fst arg)::[]
 						 | Tfloat -> (fst arg)::[]
 						 | Tchar -> (fst arg)::[]
 						 | Tstring -> (fst arg)::[]
 						 | _ -> raise (Error("Invalid print type: " ^ string_of_dataType (snd arg))))
-
+		| "error" -> (let arg = List.hd opts in
+						match (snd arg) with
+						 | Tint -> (fst arg)::[]
+						 | Tfloat -> (fst arg)::[]
+						 | Tchar -> (fst arg)::[]
+						 | Tstring -> (fst arg)::[]
+						 | _ -> raise (Error("Invalid error type: " ^ string_of_dataType (snd arg))))
 		| _ -> try
 				let formals = func_ret.fdecl_formals in
 					let cexpr = List.map2 (fun (opt: c_expr * dataType) (formal: c_vdecl) ->
@@ -150,7 +167,6 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	(* stmt assign needs to be fixed *)
 	| Assign(v, e) -> check_assign v e env
 	| Break -> C_Break
-	| _ -> C_Break (* can remove when everything else is added *)
 
 	(* check assign (i.e. stmt assign) *)
 	and check_assign (lhs: vdecl) (rhs: expr) (env: stch_env) = 
@@ -315,17 +331,23 @@ let init_env : (stch_env) =
 						body = [];
 						};
 
-						{ fdecl_type = Tvoid;
-						fdecl_name = "error";
-						fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "c"}; ];
-						body = [];
+						{fdecl_type = Tvoid;
+						 fdecl_name = "error";
+						 fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "c"}; ];
+						 body = [];
+						};
+
+						{fdecl_type = Tvoid;
+						 fdecl_name = "exit";
+						 fdecl_formals = [ {vdecl_type = Tint; vdecl_name = "c"}; ];
+						 body = [];
 						};
 
 						{fdecl_type = Tvoid;
 						 fdecl_name = "open";
 						 fdecl_formals = [ ];
 						 body = [];
-						 };] in (* Need to add builtin functions here *)
+						};] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in
 	{ funcs = init_funcs; scope = init_scope; retType = Tvoid; in_func = false; }
 

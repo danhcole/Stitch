@@ -22,10 +22,6 @@
 int  stch_length(const stch_array* a){
 	return a->length;
 }
-//exit()
-void stch_exit(int e){
-	exit(e);
-}
 //cut()
 void stch_cut(void* e){
 	pthread_exit(e);
