@@ -121,8 +121,8 @@ expr:
 | ID		{ Id($1) }
 | STRING 	{ String($1) }
 /*Array*/
-| ID LSQUARE INT RSQUARE ASSIGN expr 		{ Array_Item_Assign($1, $3, $6) }
-| ID LSQUARE INT RSQUARE					{ Array_Index_Access($1, $3) }
+| ID LSQUARE expr RSQUARE ASSIGN expr 		{ Array_Item_Assign($1, $3, $6) }
+| ID LSQUARE expr RSQUARE					{ Array_Index_Access($1, $3) }
 /*TODO*/
 /*Arithmetic*/
 | expr ADD 		expr	{ Binop($1, Add, $3) }
