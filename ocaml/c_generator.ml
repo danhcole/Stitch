@@ -27,6 +27,7 @@ let rec string_of_c_expr = function
   | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
   | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
   (*  Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_c_expr e ^ ";\n" *)
+  | C_Array_Index(a, i) -> a ^ "[" ^ string_of_c_expr i ^ "]"
   (* | C_Access(f, s) -> f ^ "." ^ s  *)
   | C_Noexpr -> ""
 

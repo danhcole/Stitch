@@ -63,6 +63,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	(* | Negate(l) -> C_Negate(l),  *)
 	| Call(f, b) -> check_call f b env
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
+	| Array_Index_Access(name, index) -> check_array_index name index env
 	| Noexpr -> C_Noexpr, Tvoid
 	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
 
@@ -94,6 +95,15 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			C_Assign2(lhs, rhs), t2
 		else
 			raise (Error("Type mismatch on variable assignment " ^ lhs ^"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
+
+	(* Checking array access by index. Index should be an int, we just need to make sure that the
+		array exists. We could also conceviably rewrite this later to do bounds checking *)
+	and check_array_index (n: string) (index: expr) (env: stch_env) =
+		let var = find_variable env.scope n in
+		let (typ, vname, _) = var in
+		let (e, t) = check_expr index env in match t with
+			Tint -> C_Array_Index(vname, e), typ
+			| _ -> raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
 
 	(* check function call *)
 	and check_call (f: string) (el: expr list) (env: stch_env) =
@@ -202,7 +212,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* first step: check that we have a valid array decl *)
 		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} env in
 		(* now that we know it's valid, check the types of the list *)
-		raise(Error("Trying to finish this"))
+		(* This will convert our list of expressions into a list of C_EXPR, TYPE tuples *)
+		raise(Error("Can't seem to get this right now"))
 		
 
 

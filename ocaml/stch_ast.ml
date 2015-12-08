@@ -18,8 +18,8 @@ type expr =
   | Negate of expr
   | Call of string * expr list
   | Assign2 of string * expr
-  | Array_Item_Assign of string * int * expr
-  | Array_Index_Access of string * int
+  | Array_Item_Assign of string * expr * expr
+  | Array_Index_Access of string * expr
   | Access of string * string
   | Noexpr
 
@@ -86,8 +86,8 @@ let rec string_of_expr = function
   | Negate(e) -> "!" ^ string_of_expr e
   | Call(f, el) -> (match f with "print" -> "printf" | _ -> f) ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
-  | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_int ind ^"] = " ^ string_of_expr e
-  | Array_Index_Access(id, index) -> id ^ "[" ^ string_of_int index ^ "]"
+  | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_expr ind ^"] = " ^ string_of_expr e
+  | Array_Index_Access(id, index) -> id ^ "[" ^ string_of_expr index ^ "]"
   | Access(f, s) -> f ^ "." ^ s 
   | Noexpr -> ""
 
