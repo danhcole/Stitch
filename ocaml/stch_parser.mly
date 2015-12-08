@@ -73,6 +73,15 @@ arraydecl:
 		arraydecl_size = $4;
 		}}
 
+matrixdecl: /* two dimensional array implementation */
+	type_name ID LSQUARE expr_opt RSQUARE LSQUARE expr_opt RSQUARE
+	{{
+		matrixdecl_type = $1;
+		matrixdecl_name = $2;
+		matrixdecl_rows = $4;
+		matrixdecl_cols = $7;
+		}}
+
 
 stmt_list:
 /*nothing*/			{ [] }
@@ -82,6 +91,7 @@ stmt:
   expr SEMI										{ Expr($1) }
 | vdecl SEMI									{ Vdecl($1) }
 | arraydecl SEMI								{ ArrayDecl($1) }
+| matrixdecl SEMI								{ MatrixDecl($1) }
 /*One dimensional array assignment*/
 | arraydecl ASSIGN LBRACE actuals_opt RBRACE SEMI				{ ArrayAssign($1, $4) }
 | RETURN expr_opt SEMI 							{ Return($2) }

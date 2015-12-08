@@ -29,6 +29,14 @@ type arraydecl = {
 
   }
 
+  type matrixdecl = {
+    matrixdecl_type : dataType;
+    matrixdecl_name : string;
+    matrixdecl_rows : expr;
+    matrixdecl_cols : expr;
+
+  }
+
 type stmt =
     Block of stmt list
   | Vdecl of vdecl
@@ -41,6 +49,7 @@ type stmt =
   | Assign of vdecl * expr
   | ArrayDecl of arraydecl
   | ArrayAssign of arraydecl * expr list
+  | MatrixDecl of matrixdecl
   | Break
 
 type fdecl = {
@@ -85,6 +94,9 @@ let string_of_vdecl vdecl = string_of_dataType vdecl.vdecl_type ^ " " ^ vdecl.vd
 let string_of_arraydecl arraydecl = string_of_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
     string_of_expr arraydecl.arraydecl_size ^ "]"
 
+let string_of_matrixdecl m = string_of_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
+    string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
+
 let rec string_of_stmt = function
     Block(stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
@@ -104,6 +116,7 @@ let rec string_of_stmt = function
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
   | ArrayDecl(a) -> string_of_arraydecl a ^ ";\n"
   | ArrayAssign(arraydecl, el) -> string_of_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
+  | MatrixDecl(m) -> string_of_matrixdecl m ^ ";\n"
   | Break -> "break;"
 
 let string_of_fdecl fdecl =

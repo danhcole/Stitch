@@ -140,6 +140,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| Vdecl(v) -> check_vdecl v env
 	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(t, e)
 	| ArrayDecl(a) -> check_array_decl a env
+	| MatrixDecl(m) -> check_matrix_decl m env
 	| Return(e) -> check_return e env
 	| If(e, s1, s2) -> check_if e s1 s2 env
 	(* need to add check_for *)
@@ -190,6 +191,34 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				| Tstring -> raise (Error("Invalid array size type, expects int"))
 			(* else it's a void or an int, and it's allowed *)
 				| _ -> let v = { Stch_cast.arraydecl_type = ve.vdecl_type; Stch_cast.arraydecl_name = ve.vdecl_name; Stch_cast.arraydecl_size = a.arraydecl_size} in C_ArrayDecl(v)
+
+	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
+
+		(* create a variable declaration out of the array declaration so we can check for it *)
+		let mat = { Stch_ast.vdecl_type = m.matrixdecl_type; Stch_ast.vdecl_name = m.matrixdecl_name} in
+
+		(* check to see if the variable is not already declared *)
+		let invalid = List.exists (fun (_, s, _) -> s = mat.vdecl_name) env.scope.vars in 
+		if invalid then
+			raise (Error("Variable " ^ mat.vdecl_name ^ " already declared"))
+		else
+		(* if it isn't, put it in the scope, and make a new c_arraydecl after you typematch the size expression *)
+			env.scope.vars <- (mat.vdecl_type, mat.vdecl_name, C_Noexpr)::env.scope.vars;
+			let (row, typerow) = check_expr m.matrixdecl_rows env in
+			let (col, typecol) = check_expr m.matrixdecl_cols env in
+			match (typerow, typecol) with 
+				(Tfloat, _) -> raise (Error("Invalid matrix row type, expects int"))
+				| (Tchar, _) -> raise (Error("Invalid matrix row type, expects int"))
+				| (Tstring, _) -> raise (Error("Invalid matrix row type, expects int"))
+				| (_, Tstring) -> raise (Error("Invalid matrix col type, expects int"))
+				| (_, Tfloat) -> raise (Error("Invalid matrix col type, expects int"))
+				| (_, Tchar) -> raise (Error("Invalid matrix col type, expects int"))
+				| (Tint, Tvoid) -> raise (Error("Invalid matrix row type, expects int"))
+				| (Tvoid, Tint) -> raise (Error("Invalid matrix row type, expects int"))
+			(* else it's a void or an int, and it's allowed *)
+				| _ -> let v = { Stch_cast.matrixdecl_type = mat.vdecl_type; Stch_cast.matrixdecl_name = mat.vdecl_name;
+								Stch_cast.matrixdecl_rows = m.matrixdecl_rows; Stch_cast.matrixdecl_cols = m.matrixdecl_cols} in C_MatrixDecl(v)
+
 
 	(* Typechecking the expression of an "if" statement *)
 	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =

@@ -30,10 +30,19 @@ type c_arraydecl = {
     arraydecl_size : expr;
 }
 
+type c_matrixdecl = {
+    matrixdecl_type : dataType;
+    matrixdecl_name : string;
+    matrixdecl_rows : expr;
+    matrixdecl_cols : expr;
+
+  }
+
 type c_stmt =
     C_Block of symTable * c_stmt list
   | C_Vdecl of c_vdecl
   | C_ArrayDecl of c_arraydecl
+  | C_MatrixDecl of c_matrixdecl
   | C_Expr of dataType * c_expr
   | C_Return of dataType * c_expr
   | C_If of c_expr * c_stmt * c_stmt

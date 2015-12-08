@@ -171,6 +171,9 @@ let string_of_c_vdecl vdecl = string_of_c_dataType vdecl.vdecl_type ^ " " ^ vdec
 let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
     string_of_expr arraydecl.arraydecl_size ^ "]"
 
+let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
+    string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
+
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_c_stmt stmts) ^ "}\n"
@@ -189,6 +192,7 @@ let rec string_of_c_stmt = function
         string_of_c_expr e3 ^ " by " ^ string_of_c_expr e4 ^ " : " ^ string_of_c_stmt s
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
+  | C_MatrixDecl(m) -> string_of_c_matrixdecl m ^ ";\n"
   (*| ArrayAssign(arraydecl, el) -> "arraydecl;\n" *)
   | C_Break -> "break;"
 
