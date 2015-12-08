@@ -69,10 +69,6 @@ int  stch_open(const char* source);
 int  stch_write(const int fd, stch_array* source);
 // //read()
 int  stch_read(const int fd, stch_array* dest);
-//print()
-void stch_print(const char* s);
-// //error()
-void stch_error(const char* e);
 // //lengthof()
 int  stch_length(const stch_array* a);
 // //exit()
