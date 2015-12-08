@@ -102,7 +102,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		let var = find_variable env.scope n in
 		let (typ, vname, _) = var in
 		let (e, t) = check_expr index env in match t with
-			Tint -> C_Array_Index(vname, e), typ
+			Tint -> C_Array_Index(vname, e, typ), typ
 			| _ -> raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
 
 	(* check function call *)
