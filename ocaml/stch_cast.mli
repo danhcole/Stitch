@@ -23,9 +23,17 @@ type c_vdecl = {
 	vdecl_name : string;
 }
 
+type c_arraydecl = {
+
+    arraydecl_type : dataType;
+    arraydecl_name : string;
+    arraydecl_size : expr;
+}
+
 type c_stmt =
     C_Block of symTable * c_stmt list
   | C_Vdecl of c_vdecl
+  | C_ArrayDecl of c_arraydecl
   | C_Expr of dataType * c_expr
   | C_Return of dataType * c_expr
   | C_If of c_expr * c_stmt * c_stmt

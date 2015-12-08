@@ -139,6 +139,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			C_Block(scope', ss)
 	| Vdecl(v) -> check_vdecl v env
 	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(t, e)
+	| ArrayDecl(a) -> check_array_decl a env
 	| Return(e) -> check_return e env
 	| If(e, s1, s2) -> check_if e s1 s2 env
 	(* need to add check_for *)
@@ -170,6 +171,25 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 			raise (Error("Invalid 'return' call"))
 
+	and check_array_decl (a: arraydecl) (env : stch_env) =
+
+		(* create a variable declaration out of the array declaration so we can check for it *)
+		let ve = { Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} in
+
+		(* check to see if the variable is not already declared *)
+		let invalid = List.exists (fun (_, s, _) -> s = ve.vdecl_name) env.scope.vars in 
+		if invalid then
+			raise (Error("Variable " ^ ve.vdecl_name ^ " already declared"))
+		else
+		(* if it isn't, put it in the scope, and make a new c_arraydecl after you typematch the size expression *)
+			env.scope.vars <- (ve.vdecl_type, ve.vdecl_name, C_Noexpr)::env.scope.vars;
+			let (ex, typ) = check_expr a.arraydecl_size env in
+			match typ with 
+				Tfloat -> raise (Error("Invalid array size type, expects int"))
+				| Tchar -> raise (Error("Invalid array size type, expects int"))
+				| Tstring -> raise (Error("Invalid array size type, expects int"))
+			(* else it's a void or an int, and it's allowed *)
+				| _ -> let v = { Stch_cast.arraydecl_type = ve.vdecl_type; Stch_cast.arraydecl_name = ve.vdecl_name; Stch_cast.arraydecl_size = a.arraydecl_size} in C_ArrayDecl(v)
 
 	(* Typechecking the expression of an "if" statement *)
 	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =

@@ -9,6 +9,8 @@ int main() {
 	//this should also work
 	a[4] = 7;
 
+	int b[4] = {5, 4, 3, 2};
+
 	return 0;
 
 }

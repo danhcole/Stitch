@@ -40,7 +40,7 @@ type stmt =
   | Stitch of expr * expr * expr * expr * stmt
   | Assign of vdecl * expr
   | ArrayDecl of arraydecl
-  (*| ArrayAssign of arraydecl * expr list *)
+  | ArrayAssign of arraydecl * expr list
   | Break
 
 type fdecl = {
@@ -103,7 +103,7 @@ let rec string_of_stmt = function
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
   | ArrayDecl(a) -> string_of_arraydecl a ^ ";\n"
-  (*| ArrayAssign(arraydecl, el) -> "arraydecl;\n" *)
+  | ArrayAssign(arraydecl, el) -> string_of_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
   | Break -> "break;"
 
 let string_of_fdecl fdecl =

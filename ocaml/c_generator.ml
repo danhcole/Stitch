@@ -168,8 +168,8 @@ let rec string_of_c_expr = function
 
 let string_of_c_vdecl vdecl = string_of_c_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
 
-(* let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
-    string_of_c_expr arraydecl.arraydecl_size ^ "]" *)
+let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
+    string_of_expr arraydecl.arraydecl_size ^ "]"
 
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
@@ -188,7 +188,7 @@ let rec string_of_c_stmt = function
       "stitch " ^ string_of_c_expr e1 ^ " from " ^ string_of_c_expr e2 ^ " to " ^
         string_of_c_expr e3 ^ " by " ^ string_of_c_expr e4 ^ " : " ^ string_of_c_stmt s
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
-(*   | ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n" *)
+  | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   (*| ArrayAssign(arraydecl, el) -> "arraydecl;\n" *)
   | C_Break -> "break;"
 

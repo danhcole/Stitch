@@ -72,11 +72,8 @@ arraydecl:
 		arraydecl_name = $2;
 		arraydecl_size = $4;
 		}}
-/*
-array_init:
-	| LBRACE actuals_list RBRACE						{ List.rev $2 }
-	| array_init COMMA LBRACE actuals_list RBRACE    { $4 :: $1 }
-*/
+
+
 stmt_list:
 /*nothing*/			{ [] }
 | stmt_list stmt	{ $2 :: $1 }
@@ -85,7 +82,8 @@ stmt:
   expr SEMI										{ Expr($1) }
 | vdecl SEMI									{ Vdecl($1) }
 | arraydecl SEMI								{ ArrayDecl($1) }
-/*| arraydecl ASSIGN array_init SEMI				{ ArrayAssign($1, $3) }*/
+/*One dimensional array assignment*/
+| arraydecl ASSIGN LBRACE actuals_opt RBRACE SEMI				{ ArrayAssign($1, $4) }
 | RETURN expr_opt SEMI 							{ Return($2) }
 | LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
 | IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }
