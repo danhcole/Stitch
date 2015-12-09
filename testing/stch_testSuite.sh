@@ -15,10 +15,14 @@ OUTPUTS="./_outputs"
 BIN="./_bin"
 LOG="./_log/`date +%h%d_%H%M%S`_test_log.txt"
 
+TCOUNT=0
+PASSCOUNT=0
+
 #print whether we succeeded or failed the test
 function echoResult {
 
 	if [ $1 -eq 0 ]; then
+		PASSCOUNT=$((PASSCOUNT + 1))
 		echo "${SUCC}TEST SUCCESSFUL!${NC}"
 		echo "TEST SCCESSFUL!" >> $LOG
 	else
@@ -63,6 +67,7 @@ echo "******************" 2>&1 | tee -a $LOG
 
 for test in $TESTS
 do
+	TCOUNT=$((TCOUNT + 1))
 	echo "Starting Test $test" 2>&1 | tee -a $LOG
 	echo "===================" 2>&1 | tee -a $LOG
 	ROOT=`basename $test | cut -d'.' -f1`
@@ -87,6 +92,7 @@ trap checkNComp ERR
 
 for test in $NTESTS
 do
+	TCOUNT=$((TCOUNT + 1))
 	echo "Starting Negative Test $test" 2>&1 | tee -a $LOG
 	echo "============================" 2>&1 | tee -a $LOG
 	$STITCH $test 2> /dev/null || true
@@ -95,11 +101,15 @@ do
 		echo "TEST FAILED!" >> $LOG
 		rm $test.c
 	else
+		PASSCOUNT=$((PASSCOUNT + 1))
 		echo "${SUCC}TEST SUCCESSFUL!${NC}"
 		echo "TEST SCCESSFUL!" >> $LOG
 	fi
 	echo "\n\n" 2>&1 | tee -a $LOG
 done
+
+echo Passed $PASSCOUNT / $TCOUNT tests 2>&1 | tee -a $LOG
+echo "\n\n" 2>&1 | tee -a $LOG
 
 cd $OUTPUTS
 rm *_gen.txt
