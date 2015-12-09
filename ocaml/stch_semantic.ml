@@ -243,7 +243,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* now that we know it's valid, check the types of the list *)
 		let s = a.arraydecl_size in 
 		let i = string_of_expr s in
-		try
+		try (* try to match the init size with the list size. Init size must be an int constant, by C rules *)
 		if int_of_string i = List.length el then
 		let ret = check_init_vals a el typ env in match ret with
 			| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
