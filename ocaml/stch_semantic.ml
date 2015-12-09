@@ -169,6 +169,7 @@ let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: st
 		| head::tail -> let (ex, typ) = check_expr head env in
 			(match typ with
 				| t -> check_init_vals name tail typ env
+				(* Why is this ever reached?  does the type always match? *)
 				| _ -> raise(Error("Types of array initialization do not match")))
 
 
@@ -252,6 +253,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
 							 Stch_cast.arraydecl_type = a.arraydecl_type;
 							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
+			(* Why is this never reached? *)
 			| _ -> raise(Error("Error parsing the list of array init args"))
 		else
 			raise(Error("Size mismatch in array initialization"))
