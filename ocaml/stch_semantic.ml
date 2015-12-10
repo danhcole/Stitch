@@ -167,9 +167,10 @@ let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: st
 	match el with
 		| [] -> name
 		| head::tail -> let (ex, typ) = check_expr head env in
-			(match typ with
-				| t -> check_init_vals name tail typ env
-				| _ -> raise(Error("Types of array initialization do not match")))
+			if typ = t then
+				check_init_vals name tail typ env
+			else
+				raise(Error("Types of array initialization do not match"))
 
 
 (* typecheck a statement *)
@@ -248,15 +249,17 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		let i = string_of_expr s in
 		try (* try to match the init size with the list size. Init size must be an int constant, by C rules *)
 		if int_of_string i = List.length el then
-		let ret = check_init_vals a el typ env in match ret with
-			| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
+		let ret = check_init_vals a el typ env in 
+			if ret = a then
+				C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
 							 Stch_cast.arraydecl_type = a.arraydecl_type;
 							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
-			| _ -> raise(Error("Error parsing the list of array init args"))
+			else
+				raise(Error("Error parsing the list of array init args"))
 		else
 			raise(Error("Size mismatch in array initialization"))
 		with
-		| _ -> failwith "Cannot initialize array with a variable"
+		| _ -> raise(Error("Cannot initialize array with a variable")) 
 		
 
 
