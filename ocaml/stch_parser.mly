@@ -123,7 +123,12 @@ expr:
 /*Array*/
 | ID LSQUARE expr RSQUARE ASSIGN expr 		{ Array_Item_Assign($1, $3, $6) }
 | ID LSQUARE expr RSQUARE					{ Array_Index_Access($1, $3) }
-/*TODO*/
+/*Matrix */
+| ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE ASSIGN expr
+	{ Matrix_Item_Assign($1, $3, $6, $9) }
+	
+| ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE
+	{ Matrix_Index_Access($1, $3, $6) }
 /*Arithmetic*/
 | expr ADD 		expr	{ Binop($1, Add, $3) }
 | expr SUBTRACT expr	{ Binop($1, Subtract, $3) }

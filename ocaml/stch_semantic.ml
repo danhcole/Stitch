@@ -72,6 +72,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Array_Index_Access(name, index) -> check_array_index name index env
 	| Array_Item_Assign(name, index, ex) -> check_array_item_assign name index ex env
+	| Matrix_Index_Access(name, row, col) -> check_matrix_index name row col env
+	| Matrix_Item_Assign(name, row, col, ex) -> check_matrix_item_assign name row col ex env
 	| Noexpr -> C_Noexpr, Tvoid
 	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
 
@@ -122,6 +124,19 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 			Tint -> C_Array_Index(vname, e, typ), typ
 			| _ -> raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
 
+	(*  Checking matrix access by indices. They should both be ints, row and col.
+		Also we need to check that the variable exists first
+		 *)
+	and check_matrix_index (n: string) (row: expr) (col: expr) (env: stch_env) =
+		let var = find_variable env.scope n in
+		let (typ, vname, _) = var in
+		let (erow, trow) = check_expr row env in
+		let (ecol, tcol) = check_expr col env in match (trow, tcol) with
+			(Tint, Tint) -> C_Matrix_Index(vname, erow, ecol, typ), typ
+			| _ -> raise(Error("Cannot index into an array with types " ^ string_of_expr row ^ ", " ^ 
+								string_of_expr col))
+		
+
 	(* Checking the array assignment to a specific index. Will validate the lhs as a valid access, and
 		then will make sure the rhs has the proper type for assignment
 	*)
@@ -137,6 +152,20 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 						raise(Error("Type mismatch on array item assignment"))
 					else
 						C_Array_Item_Assign(vname, e, erhs), typ
+
+	and check_matrix_item_assign (name: string) (row: expr) (col: expr) (rhs: expr) (env: stch_env) =
+		let var = find_variable env.scope name in
+		let (vtyp, vname, _) = var in
+		let (erow, trow) = check_expr row env in
+		let (ecol, tcol) = check_expr col env in
+			if trow <> Tint || tcol <> Tint then
+				raise(Error("Cannot index into a matrix with non-int values"))
+			else
+				let (erhs, trhs) = check_expr rhs env in
+					if trhs <> vtyp then
+						raise(Error("Type mismatch on matrix item assignment"))
+					else
+						C_Matrix_Item_Assign(vname, erow, ecol, erhs), vtyp
 
 	(* check function call *)
 	and check_call (f: string) (el: expr list) (env: stch_env) =
@@ -258,6 +287,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				Tfloat -> raise (Error("Invalid array size type, expects int"))
 				| Tchar -> raise (Error("Invalid array size type, expects int"))
 				| Tstring -> raise (Error("Invalid array size type, expects int"))
+				| Tvoid -> raise (Error("Invalid array size type, expects int"))
 			(* else it's a void or an int, and it's allowed *)
 				| _ -> let v = { Stch_cast.arraydecl_type = ve.vdecl_type; 
 									Stch_cast.arraydecl_name = ve.vdecl_name; 

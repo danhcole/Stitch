@@ -28,6 +28,8 @@ let rec string_of_c_expr = function
   | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
   | C_Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_c_expr e
   | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
+  | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
+  | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
   (* | C_Access(f, s) -> f ^ "." ^ s  *)
   | C_Noexpr -> ""
 
@@ -42,6 +44,16 @@ let rec string_of_c_expr = function
                                     | Tchar -> ("\"%c\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
                                     | Tstring -> ("\"%s\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
                                     | Tvoid -> raise (Error("Invalid print type Void: " ^ a ^ "[" ^ string_of_c_expr i ^ "]")))
+      | C_Matrix_Index(m, r, c, t) -> (match t with
+                                     Tint -> ("\"%d\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^ 
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tfloat -> ("\"%f\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tchar -> ("\"%c\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tstring -> ("\"%s\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tvoid -> raise(Error("Invalid print type void in matrix printing")))
       | C_Id(l, t) -> (match t with
                         Tint -> ("\"%d\\n\", " ^ string_of_c_expr e)::[]
                         | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr e)::[]

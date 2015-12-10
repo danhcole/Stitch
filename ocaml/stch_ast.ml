@@ -20,6 +20,8 @@ type expr =
   | Assign2 of string * expr
   | Array_Item_Assign of string * expr * expr
   | Array_Index_Access of string * expr
+  | Matrix_Item_Assign of string * expr * expr * expr
+  | Matrix_Index_Access of string * expr * expr
   | Access of string * string
   | Noexpr
 
@@ -88,10 +90,12 @@ let rec string_of_expr = function
   | Assign2(i, e) -> i ^ " = " ^ string_of_expr e ^ ";\n"
   | Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_expr ind ^"] = " ^ string_of_expr e
   | Array_Index_Access(id, index) -> id ^ "[" ^ string_of_expr index ^ "]"
+  | Matrix_Item_Assign(id, row, col, ex) -> id ^ "[" ^ string_of_expr row ^ "][" ^ string_of_expr col ^ "] = " ^ string_of_expr ex
+  | Matrix_Index_Access(id, row, col) -> id ^ "[" ^ string_of_expr row ^ "][" ^ string_of_expr col ^ "]" 
   | Access(f, s) -> f ^ "." ^ s 
   | Noexpr -> ""
 
-let string_of_vdecl vdecl = string_of_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
+let string_of_vdecl vdecl = string_of_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name
 
 let string_of_arraydecl arraydecl = string_of_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
     string_of_expr arraydecl.arraydecl_size ^ "]"
