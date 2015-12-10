@@ -276,22 +276,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* now that we know it's valid, check the types of the list *)
 		let s = a.arraydecl_size in 
 		let i = string_of_expr s in
-<<<<<<< HEAD
 		(* try to match the init size with the list size. Init size must be an int constant, by C rules *)
 		try 
-			if int_of_string i = List.length el then
-			let ret = check_init_vals a el typ env in match ret with
-				| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
-								 Stch_cast.arraydecl_type = a.arraydecl_type;
-								 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
-				(* Why is this never reached? *)
-				| _ -> raise(Error("Error parsing the list of array init args"))
-			else
-				raise(Error("Size mismatch in array initialization"))
-			with
-			| _ -> failwith "Cannot initialize array with a variable"
-=======
-		try (* try to match the init size with the list size. Init size must be an int constant, by C rules *)
 		if int_of_string i = List.length el then
 		let ret = check_init_vals a el typ env in 
 			if ret = a then
@@ -304,9 +290,6 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			raise(Error("Size mismatch in array initialization"))
 		with
 		| _ -> raise(Error("Cannot initialize array with a variable")) 
->>>>>>> 209b7edfb790ec5b8e94cfe3e40b6c121f2e8906
-		
-
 
 	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
 
