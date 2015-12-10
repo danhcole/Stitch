@@ -3,7 +3,9 @@ open Stch_cast
 exception Error of string
 
 (* symbol table -> string *)
-let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ Stch_ast.string_of_dataType typ ^ " " ^ name ^ "]") syms.vars) ^ "\n"
+let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ 
+				String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ 
+				Stch_ast.string_of_dataType typ ^ " " ^ name ^ "]") syms.vars) ^ "\n"
 	in print_endline str
 
 (* find a variable (and associated type) in the symbol table *)
@@ -35,7 +37,8 @@ let check_vdecl (decl: vdecl) (env: stch_env) =
 			raise (Error("Variable already declared"))
 		else
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in C_Vdecl(v)
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in 
+				C_Vdecl(v)
 
 (* same as check_vdecl, except that it returns a triple of vdecl, datatype, name *)
 let check_vdecl_t (decl: vdecl) (env: stch_env) = 
@@ -44,7 +47,8 @@ let check_vdecl_t (decl: vdecl) (env: stch_env) =
 			raise (Error("Variable already declared"))
 		else
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in v, v.vdecl_type, v.vdecl_name
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in 
+				v, v.vdecl_type, v.vdecl_name
 
 (* type check an expression and put into c_ast *)
 let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) = 
@@ -105,7 +109,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		if t1 = t2 then
 			C_Assign2(lhs, rhs), t2
 		else
-			raise (Error("Type mismatch on variable assignment " ^ lhs ^"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
+			raise (Error("Type mismatch on variable assignment " ^ lhs ^ 
+				"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
 
 	(* Checking array access by index. Index should be an int, we just need to make sure that the
 		array exists. We could also conceviably rewrite this later to do bounds checking *)
@@ -211,7 +216,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			if t = env.retType then
 				C_Return(t, e)
 			else
-				raise (Error("Incompatable return type. Expected type " ^ string_of_dataType env.retType ^ ", found type " ^ string_of_dataType t))
+				raise (Error("Incompatable return type. Expected type " ^ 
+					string_of_dataType env.retType ^ 
+					", found type " ^ 
+					string_of_dataType t))
 		else
 			raise (Error("Invalid 'return' call"))
 
@@ -225,7 +233,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		if invalid then
 			raise (Error("Variable " ^ ve.vdecl_name ^ " already declared"))
 		else
-		(* if it isn't, put it in the scope, and make a new c_arraydecl after you typematch the size expression *)
+		(* if it isn't, put it in the scope, and make a new c_arraydecl 
+			after you typematch the size expression *)
 			env.scope.vars <- (ve.vdecl_type, ve.vdecl_name, C_Noexpr)::env.scope.vars;
 			let (ex, typ) = check_expr a.arraydecl_size env in
 			match typ with 
@@ -233,7 +242,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				| Tchar -> raise (Error("Invalid array size type, expects int"))
 				| Tstring -> raise (Error("Invalid array size type, expects int"))
 			(* else it's a void or an int, and it's allowed *)
-				| _ -> let v = { Stch_cast.arraydecl_type = ve.vdecl_type; Stch_cast.arraydecl_name = ve.vdecl_name; Stch_cast.arraydecl_size = a.arraydecl_size} in C_ArrayDecl(v)
+				| _ -> let v = { Stch_cast.arraydecl_type = ve.vdecl_type; 
+									Stch_cast.arraydecl_name = ve.vdecl_name; 
+									Stch_cast.arraydecl_size = a.arraydecl_size} in C_ArrayDecl(v)
 
 	(* checking the array initialization. This will be done in 3 steps
 		1. Check to see if the array can be declared as a new variable
@@ -243,22 +254,24 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	*)
 	and check_array_init (a: arraydecl) (el: expr list) (env: stch_env) =
 		(* first step: check that we have a valid array decl *)
-		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} env in
+		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; 
+											Stch_ast.vdecl_name = a.arraydecl_name} env in
 		(* now that we know it's valid, check the types of the list *)
 		let s = a.arraydecl_size in 
 		let i = string_of_expr s in
-		try (* try to match the init size with the list size. Init size must be an int constant, by C rules *)
-		if int_of_string i = List.length el then
-		let ret = check_init_vals a el typ env in match ret with
-			| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
-							 Stch_cast.arraydecl_type = a.arraydecl_type;
-							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
-			(* Why is this never reached? *)
-			| _ -> raise(Error("Error parsing the list of array init args"))
-		else
-			raise(Error("Size mismatch in array initialization"))
-		with
-		| _ -> failwith "Cannot initialize array with a variable"
+		(* try to match the init size with the list size. Init size must be an int constant, by C rules *)
+		try 
+			if int_of_string i = List.length el then
+			let ret = check_init_vals a el typ env in match ret with
+				| a -> C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
+								 Stch_cast.arraydecl_type = a.arraydecl_type;
+								 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
+				(* Why is this never reached? *)
+				| _ -> raise(Error("Error parsing the list of array init args"))
+			else
+				raise(Error("Size mismatch in array initialization"))
+			with
+			| _ -> failwith "Cannot initialize array with a variable"
 		
 
 
@@ -286,8 +299,11 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				| (Tint, Tvoid) -> raise (Error("Invalid matrix row type, expects int"))
 				| (Tvoid, Tint) -> raise (Error("Invalid matrix row type, expects int"))
 			(* else it's a void or an int, and it's allowed *)
-				| _ -> let v = { Stch_cast.matrixdecl_type = mat.vdecl_type; Stch_cast.matrixdecl_name = mat.vdecl_name;
-								Stch_cast.matrixdecl_rows = m.matrixdecl_rows; Stch_cast.matrixdecl_cols = m.matrixdecl_cols} in C_MatrixDecl(v)
+				| _ -> let v = { Stch_cast.matrixdecl_type = mat.vdecl_type; 
+								Stch_cast.matrixdecl_name = mat.vdecl_name;
+								Stch_cast.matrixdecl_rows = m.matrixdecl_rows; 
+								Stch_cast.matrixdecl_cols = m.matrixdecl_cols} in 
+									C_MatrixDecl(v)
 
 
 	(* Typechecking the expression of an "if" statement *)
@@ -360,7 +376,10 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 		let env' = { env with scope = {parent = Some(env.scope); vars = [];};
 		retType = func.fdecl_type; in_func = true} in
 		let f_formals = (List.rev (List.map (fun x -> check_formals x env') func.fdecl_formals)) in
-let f = { Stch_cast.fdecl_name = func.fdecl_name; Stch_cast.fdecl_type = func.fdecl_type; Stch_cast.fdecl_formals = f_formals; Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
+let f = { Stch_cast.fdecl_name = func.fdecl_name; 
+			Stch_cast.fdecl_type = func.fdecl_type; 
+			Stch_cast.fdecl_formals = f_formals; 
+			Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
 		env.funcs <- f::env.funcs; f 
 
 (* typecheck the ast env *)
