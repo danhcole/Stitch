@@ -16,8 +16,7 @@ type c_expr =
   | C_Matrix_Item_Assign of string * c_expr * c_expr * c_expr
   | C_Noexpr
 
-type symTable = {
-	
+type symTable = {	
 	parent: symTable option;
 	mutable vars: (dataType * string * c_expr) list;
 }
@@ -28,19 +27,26 @@ type c_vdecl = {
 }
 
 type c_arraydecl = {
-
-    arraydecl_type : dataType;
-    arraydecl_name : string;
-    arraydecl_size : expr;
+  arraydecl_type : dataType;
+  arraydecl_name : string;
+  arraydecl_size : expr;
 }
 
 type c_matrixdecl = {
-    matrixdecl_type : dataType;
-    matrixdecl_name : string;
-    matrixdecl_rows : expr;
-    matrixdecl_cols : expr;
-
+  matrixdecl_type : dataType;
+  matrixdecl_name : string;
+  matrixdecl_rows : expr;
+  matrixdecl_cols : expr;
   }
+
+type c_stitchdecl = {
+  stitchdecl_var : c_expr;
+  stitchdecl_from : c_expr;
+  stitchdecl_to : c_expr;
+  stitchdecl_by : c_expr;
+  stitchdecl_func : string;
+}
+
 
 type c_stmt =
     C_Block of symTable * c_stmt list
@@ -52,8 +58,9 @@ type c_stmt =
   | C_Return of dataType * c_expr
   | C_If of c_expr * c_stmt * c_stmt
   | C_For of c_expr * c_expr * c_expr * c_stmt
-  | C_While of c_expr * c_stmt
-  | C_Stitch of c_expr * c_expr * c_expr * c_expr * c_stmt
+  | C_While of c_expr * c_stmt 
+  (* stitch <var> from <start> to <end> by <stride>:<code>*)
+  | C_Stitch of c_stitchdecl
   | C_Assign of c_vdecl * c_expr
   | C_Break
 
