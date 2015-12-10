@@ -11,6 +11,7 @@ type c_expr =
   | C_Call of string * c_expr list
   | C_Assign2 of string * c_expr
   | C_Array_Index of string * c_expr * dataType
+  | C_Array_Item_Assign of string * c_expr * c_expr
   | C_Noexpr
 
 type symTable = {

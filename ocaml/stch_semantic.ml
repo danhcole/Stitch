@@ -67,6 +67,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	| Call(f, b) -> check_call f b env
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Array_Index_Access(name, index) -> check_array_index name index env
+	| Array_Item_Assign(name, index, ex) -> check_array_item_assign name index ex env
 	| Noexpr -> C_Noexpr, Tvoid
 	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
 
@@ -115,6 +116,22 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		let (e, t) = check_expr index env in match t with
 			Tint -> C_Array_Index(vname, e, typ), typ
 			| _ -> raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
+
+	(* Checking the array assignment to a specific index. Will validate the lhs as a valid access, and
+		then will make sure the rhs has the proper type for assignment
+	*)
+	and check_array_item_assign (name: string) (index: expr) (rhs: expr) (env: stch_env) =
+		let var = find_variable env.scope name in
+		let (typ, vname, _) = var in
+		let (e, t) = check_expr index env in
+			if t <> Tint then
+				raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
+			else
+				let (erhs, trhs) = check_expr rhs env in
+					if trhs <> typ then
+						raise(Error("Type mismatch on array item assignment"))
+					else
+						C_Array_Item_Assign(vname, e, erhs), typ
 
 	(* check function call *)
 	and check_call (f: string) (el: expr list) (env: stch_env) =
@@ -286,6 +303,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				| (_, Tchar) -> raise (Error("Invalid matrix col type, expects int"))
 				| (Tint, Tvoid) -> raise (Error("Invalid matrix row type, expects int"))
 				| (Tvoid, Tint) -> raise (Error("Invalid matrix row type, expects int"))
+				| (Tvoid, Tvoid) -> raise (Error("Invalid matrix decl. Must be 2 ints"))
 			(* else it's a void or an int, and it's allowed *)
 				| _ -> let v = { Stch_cast.matrixdecl_type = mat.vdecl_type; Stch_cast.matrixdecl_name = mat.vdecl_name;
 								Stch_cast.matrixdecl_rows = m.matrixdecl_rows; Stch_cast.matrixdecl_cols = m.matrixdecl_cols} in C_MatrixDecl(v)
