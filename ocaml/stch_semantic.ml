@@ -37,7 +37,8 @@ let check_vdecl (decl: vdecl) (env: stch_env) =
 			raise (Error("Variable already declared"))
 		else
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in 
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; 
+						Stch_cast.vdecl_name = decl.vdecl_name } in 
 				C_Vdecl(v)
 
 (* same as check_vdecl, except that it returns a triple of vdecl, datatype, name *)
@@ -47,7 +48,8 @@ let check_vdecl_t (decl: vdecl) (env: stch_env) =
 			raise (Error("Variable already declared"))
 		else
 			env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in 
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; 
+						Stch_cast.vdecl_name = decl.vdecl_name } in 
 				v, v.vdecl_type, v.vdecl_name
 
 (* type check an expression and put into c_ast *)
@@ -272,7 +274,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	and check_array_decl (a: arraydecl) (env : stch_env) =
 
 		(* create a variable declaration out of the array declaration so we can check for it *)
-		let ve = { Stch_ast.vdecl_type = a.arraydecl_type; Stch_ast.vdecl_name = a.arraydecl_name} in
+		let ve = { Stch_ast.vdecl_type = a.arraydecl_type; 
+					Stch_ast.vdecl_name = a.arraydecl_name} in
 
 		(* check to see if the variable is not already declared *)
 		let invalid = List.exists (fun (_, s, _) -> s = ve.vdecl_name) env.scope.vars in 
@@ -324,14 +327,16 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
 
 		(* create a variable declaration out of the array declaration so we can check for it *)
-		let mat = { Stch_ast.vdecl_type = m.matrixdecl_type; Stch_ast.vdecl_name = m.matrixdecl_name} in
+		let mat = { Stch_ast.vdecl_type = m.matrixdecl_type; 
+					Stch_ast.vdecl_name = m.matrixdecl_name} in
 
 		(* check to see if the variable is not already declared *)
 		let invalid = List.exists (fun (_, s, _) -> s = mat.vdecl_name) env.scope.vars in 
 		if invalid then
 			raise (Error("Variable " ^ mat.vdecl_name ^ " already declared"))
 		else
-		(* if it isn't, put it in the scope, and make a new c_arraydecl after you typematch the size expression *)
+		(* if it isn't, put it in the scope, and make a new c_arraydecl 
+			after you typematch the size expression *)
 			env.scope.vars <- (mat.vdecl_type, mat.vdecl_name, C_Noexpr)::env.scope.vars;
 			let (row, typerow) = check_expr m.matrixdecl_rows env in
 			let (col, typecol) = check_expr m.matrixdecl_cols env in
@@ -413,7 +418,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 let check_formals (decl: vdecl) (env: stch_env) = 
 	match decl.vdecl_type with
 		dataType -> env.scope.vars <- (decl.vdecl_type, decl.vdecl_name, C_Noexpr)::env.scope.vars;
-			let v = { Stch_cast.vdecl_type = decl.vdecl_type; Stch_cast.vdecl_name = decl.vdecl_name } in v
+			let v = { Stch_cast.vdecl_type = decl.vdecl_type; 
+						Stch_cast.vdecl_name = decl.vdecl_name } in v
 
 (* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
