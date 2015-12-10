@@ -71,6 +71,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	| Call(f, b) -> check_call f b env
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Array_Index_Access(name, index) -> check_array_index name index env
+	| Array_Item_Assign(name, index, ex) -> check_array_item_assign name index ex env
 	| Noexpr -> C_Noexpr, Tvoid
 	| _ -> C_Noexpr, Tvoid  (* Can remove when everything else is added *)
 
@@ -120,6 +121,22 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		let (e, t) = check_expr index env in match t with
 			Tint -> C_Array_Index(vname, e, typ), typ
 			| _ -> raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
+
+	(* Checking the array assignment to a specific index. Will validate the lhs as a valid access, and
+		then will make sure the rhs has the proper type for assignment
+	*)
+	and check_array_item_assign (name: string) (index: expr) (rhs: expr) (env: stch_env) =
+		let var = find_variable env.scope name in
+		let (typ, vname, _) = var in
+		let (e, t) = check_expr index env in
+			if t <> Tint then
+				raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
+			else
+				let (erhs, trhs) = check_expr rhs env in
+					if trhs <> typ then
+						raise(Error("Type mismatch on array item assignment"))
+					else
+						C_Array_Item_Assign(vname, e, erhs), typ
 
 	(* check function call *)
 	and check_call (f: string) (el: expr list) (env: stch_env) =
@@ -172,10 +189,10 @@ let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: st
 	match el with
 		| [] -> name
 		| head::tail -> let (ex, typ) = check_expr head env in
-			(match typ with
-				| t -> check_init_vals name tail typ env
-				(* Why is this ever reached?  does the type always match? *)
-				| _ -> raise(Error("Types of array initialization do not match")))
+			if typ = t then
+				check_init_vals name tail typ env
+			else
+				raise(Error("Types of array initialization do not match"))
 
 
 (* typecheck a statement *)
@@ -259,6 +276,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* now that we know it's valid, check the types of the list *)
 		let s = a.arraydecl_size in 
 		let i = string_of_expr s in
+<<<<<<< HEAD
 		(* try to match the init size with the list size. Init size must be an int constant, by C rules *)
 		try 
 			if int_of_string i = List.length el then
@@ -272,6 +290,21 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				raise(Error("Size mismatch in array initialization"))
 			with
 			| _ -> failwith "Cannot initialize array with a variable"
+=======
+		try (* try to match the init size with the list size. Init size must be an int constant, by C rules *)
+		if int_of_string i = List.length el then
+		let ret = check_init_vals a el typ env in 
+			if ret = a then
+				C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
+							 Stch_cast.arraydecl_type = a.arraydecl_type;
+							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
+			else
+				raise(Error("Error parsing the list of array init args"))
+		else
+			raise(Error("Size mismatch in array initialization"))
+		with
+		| _ -> raise(Error("Cannot initialize array with a variable")) 
+>>>>>>> 209b7edfb790ec5b8e94cfe3e40b6c121f2e8906
 		
 
 
@@ -298,6 +331,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				| (_, Tchar) -> raise (Error("Invalid matrix col type, expects int"))
 				| (Tint, Tvoid) -> raise (Error("Invalid matrix row type, expects int"))
 				| (Tvoid, Tint) -> raise (Error("Invalid matrix row type, expects int"))
+				| (Tvoid, Tvoid) -> raise (Error("Invalid matrix decl. Must be 2 ints"))
 			(* else it's a void or an int, and it's allowed *)
 				| _ -> let v = { Stch_cast.matrixdecl_type = mat.vdecl_type; 
 								Stch_cast.matrixdecl_name = mat.vdecl_name;
