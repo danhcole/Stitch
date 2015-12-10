@@ -309,7 +309,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* now that we know it's valid, check the types of the list *)
 		let s = a.arraydecl_size in 
 		let i = string_of_expr s in
-		(* try to match the init size with the list size. Init size must be an int constant, by C rules *)
+		(* try to match the init size with the list size. 
+		   Init size must be an int constant, by C rules *)
 		try 
 		if int_of_string i = List.length el then
 		let ret = check_init_vals a el typ env in 
@@ -374,11 +375,14 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		let (ex1, t1) = check_expr e1 env in
 		let (ex2, t2) = check_expr e2 env in
 		let (ex3, t3) = check_expr e3 env in
-		if t1 <> Tint && t1 <> Tvoid then raise (Error("For Loop: First expression not of type int."))
+		if t1 <> Tint && t1 <> Tvoid then 
+			raise (Error("For Loop: First expression not of type int."))
 		else begin
-			if t2 <> Tint && t2 <> Tvoid then raise (Error("For Loop: Second expression not of type int."))
+			if t2 <> Tint && t2 <> Tvoid then 
+				raise (Error("For Loop: Second expression not of type int."))
 			else begin
-				if t3 <> Tint && t3 <> Tvoid then raise (Error("For Loop: Third expression not of type int."))
+				if t3 <> Tint && t3 <> Tvoid then 
+					raise (Error("For Loop: Third expression not of type int."))
 				else begin
 					let s = check_stmt st env in
 					C_For(ex1,ex2,ex3,s)
@@ -401,7 +405,17 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				else begin
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin
-						let s = check_stmt st env in C_Stitch(ex1, ex2, ex3, ex4, s)
+						let s = (check_stmt st env)::[] in 
+							let sf = { Stch_cast.fdecl_type = Tvoid;
+									   Stch_cast.fdecl_name = "temp";
+									   Stch_cast.fdecl_formals = [];
+									   Stch_cast.body = s; } in
+								let cs = { Stch_cast.stitchdecl_var = ex1;
+											Stch_cast.stitchdecl_from = ex2;
+											Stch_cast.stitchdecl_to = ex3;
+											Stch_cast.stitchdecl_by = ex4;
+											Stch_cast.stitchdecl_func = sf.fdecl_name;
+											} in C_Stitch(cs)
 					end
 				end
 			end

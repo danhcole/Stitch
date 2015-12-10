@@ -206,9 +206,12 @@ let rec string_of_c_stmt = function
       "for (" ^ string_of_c_expr e1  ^ " ; " ^ string_of_c_expr e2 ^ " ; " ^
       string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
   | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
-  | C_Stitch(e1,e2,e3,e4,s) ->
-      "stitch " ^ string_of_c_expr e1 ^ " from " ^ string_of_c_expr e2 ^ " to " ^
-        string_of_c_expr e3 ^ " by " ^ string_of_c_expr e4 ^ " : " ^ string_of_c_stmt s
+  | C_Stitch(s) ->
+      "stitch " ^ string_of_c_expr s.stitchdecl_var ^
+       " from " ^ string_of_c_expr s.stitchdecl_from ^
+        " to " ^ string_of_c_expr s.stitchdecl_to ^ 
+        " by " ^ string_of_c_expr s.stitchdecl_by ^ 
+        " : " ^ s.stitchdecl_func
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
