@@ -1,0 +1,11 @@
+//negate with float data type, should not pass
+
+int main()
+{
+	int a;
+	a = !0.7;
+	print(a);
+}
+
+/*Fatal error: exception Stch_semantic.Error("Type mismatch on variable assignment a
+Expected: int Got: float")*/

@@ -239,6 +239,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	| ArrayDecl(a) -> check_array_decl a env
 	| ArrayInit(a, el) -> check_array_init a el env
 	| MatrixDecl(m) -> check_matrix_decl m env
+	| MatrixInit(mdecl, el) -> check_matrix_init mdecl el env
 	| Return(e) -> check_return e env
 	| If(e, s1, s2) -> check_if e s1 s2 env
 	| For(e1, e2, e3, s) -> check_for e1 e2 e3 s env
@@ -324,6 +325,18 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			raise(Error("Size mismatch in array initialization"))
 		with
 		| _ -> raise(Error("Cannot initialize array with a variable")) 
+
+	and check_matrix_init (m: matrixdecl) (el: expr list list) (env: stch_env) =
+		(* First, we need to check that we have a valid declaration by checking for vdecl_t *)
+		let (var, typ, name) = check_vdecl_t { Stch_ast.vdecl_type = m.matrixdecl_type;
+											   Stch_ast.vdecl_name = m.matrixdecl_name} env in
+		(* Check the size of the cols and stuff *)
+		let rows = m.matrixdecl_rows in
+		let cols = m.matrixdecl_cols in
+		C_MatrixInit( {Stch_cast.matrixdecl_name = m.matrixdecl_name;
+						Stch_cast.matrixdecl_type = m.matrixdecl_type;
+						Stch_cast.matrixdecl_rows = m.matrixdecl_rows;
+						Stch_cast.matrixdecl_cols = m.matrixdecl_cols}, el)
 
 	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
 

@@ -190,6 +190,10 @@ let string_of_c_vdecl vdecl = string_of_c_dataType vdecl.vdecl_type ^ " " ^ vdec
 let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
     string_of_expr arraydecl.arraydecl_size ^ "]"
 
+let rec string_of_c_matrixlist (seed: string) el = match el with
+    [] -> seed ^ "}"
+    | head::tail -> string_of_c_matrixlist (seed ^ string_of_arraylist head ^ ",\n") tail
+
 let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
 
@@ -217,7 +221,7 @@ let rec string_of_c_stmt = function
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
   | C_MatrixDecl(m) -> string_of_c_matrixdecl m ^ ";\n"
-  (*| ArrayAssign(arraydecl, el) -> "arraydecl;\n" *)
+  | C_MatrixInit(mdecl, li) -> string_of_c_matrixdecl mdecl ^ " = " ^ string_of_c_matrixlist "{" li ^ ";\n"
   | C_Break -> "break;"
 
 let string_of_c_fdecl fdecl =
