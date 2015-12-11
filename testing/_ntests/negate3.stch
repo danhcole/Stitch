@@ -1,0 +1,10 @@
+//negate with wrong data type
+
+int main()
+{
+	int b;
+	b = !'c';
+	print(b);
+}
+
+/*Fatal error: exception Stch_semantic.Error("Cannot negate type char")*/
