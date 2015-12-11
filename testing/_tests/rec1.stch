@@ -1,20 +1,22 @@
-int gcd(int a, int b) {
-	while (a != b) {
-	if (a > b)
-		a -= b;
-		else
-		b -= a;
-	}
-	return a;
-}
-
 int main() {
 	int x = 1;
 	int y = 10;
 
-	int z = gcd(1,10);
+	int z = gcd(x,y);
 
 	print(z);
 
 	return 0;
+}
+
+int gcd(int a, int b) {
+	while (a != b) {
+		if (a > b) {
+			a = a - b;
+		}
+			else {
+				b = b - a;
+			}
+		}
+	return a;
 }
