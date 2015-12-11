@@ -1,15 +1,17 @@
-int main() {
-	int a = 1;
-	int b = 2;
-	int c = 3;
-	int d = 4;
-	int i = 0;
+int main () {
+	
+  int arr[5] = {0,1,2,3,4};
 
-	stitch i from 0 to 10 by 1: {
-		print(a);
-		print(b);
-		print(c);
-		print(d);
-	}
+  int i = 0;
 
+  stitch i from 0 to 5 by 1: {
+  	arr[i] = arr[i] + 1;
+  }
+
+  for(i = 0; i < 4; i = i + 1) {
+
+  	print(arr[i]);
+
+  }
+	return 0;
 }

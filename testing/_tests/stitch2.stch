@@ -1,0 +1,17 @@
+int main() {
+	int a = 1;
+	int b = 2;
+	int c = 3;
+	int d = 4;
+	int i = 0;
+
+	stitch i from 0 to 5 by 1: {
+		print(a);
+		print(b);
+		print(c);
+		print(d);
+	}
+
+	return 0;
+
+}
