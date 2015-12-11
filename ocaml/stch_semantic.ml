@@ -415,7 +415,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 											Stch_cast.stitchdecl_to = ex3;
 											Stch_cast.stitchdecl_by = ex4;
 											Stch_cast.stitchdecl_func = sf.fdecl_name;
-											} in C_Stitch(cs)
+											} in env.funcs <- sf::env.funcs; C_Stitch(cs)
 					end
 				end
 			end
@@ -471,7 +471,7 @@ let init_env : (stch_env) =
 
 						{fdecl_type = Tvoid;
 						 fdecl_name = "open";
-						 fdecl_formals = [ ];
+						 fdecl_formals = [];
 						 body = [];
 						};] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in

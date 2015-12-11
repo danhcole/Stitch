@@ -211,7 +211,8 @@ let rec string_of_c_stmt = function
        " from " ^ string_of_c_expr s.stitchdecl_from ^
         " to " ^ string_of_c_expr s.stitchdecl_to ^ 
         " by " ^ string_of_c_expr s.stitchdecl_by ^ 
-        " : " ^ s.stitchdecl_func
+        " : " ^ s.stitchdecl_func ^
+        "\n"
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
