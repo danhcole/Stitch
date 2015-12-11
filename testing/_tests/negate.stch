@@ -1,0 +1,8 @@
+//negation test
+
+int main()
+{
+	int a = 0;
+	int b = !a;
+	print(b);
+}

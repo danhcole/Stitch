@@ -1,0 +1,7 @@
+//arith2.stch
+
+int main()
+{
+	int a = -5;
+	print(a);
+}
