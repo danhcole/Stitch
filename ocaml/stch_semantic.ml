@@ -225,6 +225,29 @@ let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: st
 			else
 				raise(Error("Types of array initialization do not match"))
 
+let rec check_matrix_rows (name: matrixdecl) (el: expr list) (t: dataType) (env: stch_env) =
+	match el with
+		| [] -> name
+		| head::tail -> let (exp, typ) = check_expr head env in
+			if typ = t then begin
+				(* print_string "CHECKING MATRIX TYPES\n"; *)
+				check_matrix_rows name tail typ env
+			end
+			else 
+				raise(Error("Types of matrix init do not match"))
+
+let rec check_matrix_vals (name: matrixdecl) (el: expr list list) (ncols: int) (t: dataType) (env: stch_env) =
+	match el with
+		| [] -> name
+		| head::tail ->
+			if ncols <> List.length head then begin
+				(* print_string "COLS LENGTH NOT ACCURATE\n"; *)
+				raise(Error("Rows are not matching length in matrix decl"))
+			end
+			else
+				let m = check_matrix_rows name head t env in
+				check_matrix_vals m tail ncols t env
+
 
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
@@ -330,13 +353,35 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* First, we need to check that we have a valid declaration by checking for vdecl_t *)
 		let (var, typ, name) = check_vdecl_t { Stch_ast.vdecl_type = m.matrixdecl_type;
 											   Stch_ast.vdecl_name = m.matrixdecl_name} env in
-		(* Check the size of the cols and stuff *)
-		let rows = m.matrixdecl_rows in
-		let cols = m.matrixdecl_cols in
-		C_MatrixInit( {Stch_cast.matrixdecl_name = m.matrixdecl_name;
+		(* Check the size of the cols and rows, make sure they match the list counts
+			rows = total # of sublists
+			cols = length of the sublists (must be all the same length) 
+		*)
+		let errorstring = "Error with " in
+		let rows = string_of_expr m.matrixdecl_rows in
+		let cols = string_of_expr m.matrixdecl_cols in
+		try
+		if int_of_string rows = List.length el && int_of_string cols > -1 then
+			(* Inside here need to call my functions from above for matrix stuff *)
+			let ret = check_matrix_vals m el (int_of_string cols) typ env in
+				if ret = m then
+					C_MatrixInit( {Stch_cast.matrixdecl_name = m.matrixdecl_name;
 						Stch_cast.matrixdecl_type = m.matrixdecl_type;
 						Stch_cast.matrixdecl_rows = m.matrixdecl_rows;
 						Stch_cast.matrixdecl_cols = m.matrixdecl_cols}, el)
+				else begin
+					(* print_string "HELLO"; *)
+					raise(Error(errorstring ^ "checking return value of list iter"))
+				end
+		else begin
+			(* print_string "HELLO2"; *)
+			raise(Error(errorstring ^ "Int of string statement failure"))
+		end
+		with
+		| _ -> begin
+			(* print_string "HELLO3"; *)
+			raise(Error(errorstring ^ "try/with failure"))
+			end
 
 	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
 
