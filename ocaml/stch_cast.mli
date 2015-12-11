@@ -74,6 +74,7 @@ type c_fdecl = {
 
 type stch_env = {
 	mutable funcs: c_fdecl list;
+  mutable stch_funcs: c_fdecl list;
 	scope: symTable;
 	retType: dataType;
 	in_func: bool;
@@ -82,5 +83,6 @@ type stch_env = {
 type c_program = {
 	stmts : c_stmt list;
 	funcs : c_fdecl list;
+  stch_funcs: c_fdecl list;
 	syms  : symTable;
 }

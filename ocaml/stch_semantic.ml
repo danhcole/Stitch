@@ -428,7 +428,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 											Stch_cast.stitchdecl_to = ex3;
 											Stch_cast.stitchdecl_by = ex4;
 											Stch_cast.stitchdecl_func = sf.fdecl_name;
-											} in env.funcs <- sf::env.funcs; C_Stitch(cs)
+											} in env.stch_funcs <- sf::env.funcs; C_Stitch(cs)
 					end
 				end
 			end
@@ -460,7 +460,7 @@ let f = { Stch_cast.fdecl_name = func.fdecl_name;
 			Stch_cast.fdecl_type = func.fdecl_type; 
 			Stch_cast.fdecl_formals = f_formals; 
 			Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
-		env.funcs <- f::env.funcs; f 
+		env.stch_funcs <- f::env.stch_funcs; f 
 
 (* typecheck the ast env *)
 let init_env : (stch_env) = 
@@ -488,14 +488,15 @@ let init_env : (stch_env) =
 						 body = [];
 						};] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in
-	{ funcs = init_funcs; scope = init_scope; retType = Tvoid; in_func = false; }
+	{ funcs = init_funcs; scope = init_scope; retType = Tvoid; in_func = false; stch_funcs = [] }
 
 (* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
 { Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
 Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
-Stch_cast.syms = env.scope }
+Stch_cast.syms = env.scope;
+Stch_cast.stch_funcs = env.stch_funcs }
 
 
 
