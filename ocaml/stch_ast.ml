@@ -53,6 +53,7 @@ type stmt =
   | ArrayDecl of arraydecl
   | ArrayInit of arraydecl * expr list
   | MatrixDecl of matrixdecl
+  | MatrixInit of matrixdecl * expr list list
   | Break
 
 type fdecl = {
@@ -103,6 +104,12 @@ let string_of_arraydecl arraydecl = string_of_dataType arraydecl.arraydecl_type 
 let string_of_matrixdecl m = string_of_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
 
+let string_of_arraylist el = "{" ^ String.concat ", " (List.map string_of_expr el) ^ "}"
+
+let rec string_of_matrixlist (seed: string) el = match el with
+    [] -> seed ^ "}"
+    | head::tail -> string_of_matrixlist (seed ^ string_of_arraylist head ^ ",\n") tail
+
 let rec string_of_stmt = function
     Block(stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
@@ -121,8 +128,9 @@ let rec string_of_stmt = function
         string_of_expr e3 ^ " by " ^ string_of_expr e4 ^ " : " ^ string_of_stmt s
   | Assign(v, e) -> string_of_vdecl v ^ " = " ^ string_of_expr e ^ ";\n"
   | ArrayDecl(a) -> string_of_arraydecl a ^ ";\n"
-  | ArrayInit(arraydecl, el) -> string_of_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
+  | ArrayInit(arraydecl, el) -> string_of_arraydecl arraydecl ^ " = " ^ string_of_arraylist el ^ ";\n"
   | MatrixDecl(m) -> string_of_matrixdecl m ^ ";\n"
+  | MatrixInit(mdecl, li) -> string_of_matrixdecl mdecl ^ " = " ^ string_of_matrixlist "{" li ^ ";\n"
   | Break -> "break;"
 
 let string_of_fdecl fdecl =

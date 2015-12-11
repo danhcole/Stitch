@@ -96,7 +96,8 @@ stmt:
 	{ ArrayInit($1, $4) }
 /* Two dimensional array statements */
 | matrixdecl SEMI								{ MatrixDecl($1) }
-
+| matrixdecl ASSIGN LBRACE matrix_rev_list RBRACE SEMI
+	{ MatrixInit($1, $4) }
 | RETURN expr_opt SEMI 							{ Return($2) }
 | LBRACE stmt_list RBRACE 						{ Block(List.rev $2) }
 | IF LPAREN expr RPAREN stmt %prec NOELSE		{ If($3, $5, Block([])) }
@@ -126,7 +127,7 @@ expr:
 /*Matrix */
 | ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE ASSIGN expr
 	{ Matrix_Item_Assign($1, $3, $6, $9) }
-	
+
 | ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE
 	{ Matrix_Index_Access($1, $3, $6) }
 /*Arithmetic*/
@@ -153,6 +154,12 @@ expr:
 | ID ASSIGN expr		{ Assign2($1, $3) } 
 | ID ACCESS ID 			{ Access($1, $3) }
 
+matrix_rev_list:
+  matrix_list 	{ List.rev $1 }
+
+matrix_list:
+	LBRACE actuals_opt RBRACE 	{ [$2] }
+|	matrix_list COMMA LBRACE actuals_opt RBRACE { $4::$1 }
 
 actuals_opt:
   /*nothing*/	{ [] }
