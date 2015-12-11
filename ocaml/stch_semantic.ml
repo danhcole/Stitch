@@ -407,10 +407,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 					else begin
 						let s = (check_stmt st env)::[] in 
 							let sf = { Stch_cast.fdecl_type = Tvoid;
-									   Stch_cast.fdecl_name = "temp";
+									   Stch_cast.fdecl_name = "foo";
 									   Stch_cast.fdecl_formals = [];
 									   Stch_cast.body = s; } in
-								let cs = { Stch_cast.stitchdecl_var = ex1;
+								let cs = {  Stch_cast.stitchdecl_var = ex1;
 											Stch_cast.stitchdecl_from = ex2;
 											Stch_cast.stitchdecl_to = ex3;
 											Stch_cast.stitchdecl_by = ex4;
@@ -481,7 +481,7 @@ let init_env : (stch_env) =
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
 { Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
-Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (snd prog));
+Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
 Stch_cast.syms = env.scope }
 
 
