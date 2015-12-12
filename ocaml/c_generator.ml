@@ -230,5 +230,6 @@ let string_of_c_fdecl fdecl =
   "}\n"
 
 let string_of_c_program (prog : Stch_cast.c_program ) =
+  String.concat "\n" (List.map string_of_c_fdecl prog.stch_funcs) ^ "\n" ^
   String.concat "" (List.map string_of_c_stmt prog.stmts) ^ "\n" ^
-  String.concat "\n" (List.map string_of_c_fdecl prog.funcs)
+  String.concat "\n" (List.map string_of_c_fdecl prog.funcs) ^ "\n"

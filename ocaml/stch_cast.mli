@@ -83,6 +83,6 @@ type stch_env = {
 type c_program = {
 	stmts : c_stmt list;
 	funcs : c_fdecl list;
-  stch_funcs: c_fdecl list;
 	syms  : symTable;
+  stch_funcs: c_fdecl list;
 }
