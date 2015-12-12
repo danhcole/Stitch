@@ -196,14 +196,17 @@ let rec string_of_c_matrixlist (seed: string) el = match el with
 
 let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
+    
 
 let convert_stitch_2_for (s: c_stitchdecl) =
-  let iter_var = stitchdecl_var in
-  let start = stitchdecl_from in
-  let end = stitchdecl_to in
-  let step = stitchdecl_by in
-  
-    raise(Error("Working on this now"))
+  let threads = "\npthread_t *threadpool = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
+  let loop = threads ^ "for(" in 
+  let iter_var = s.stitchdecl_var in
+  let start = s.stitchdecl_from in
+  let en = s.stitchdecl_to in
+  let step = s.stitchdecl_by in
+  loop ^ string_of_c_expr iter_var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr iter_var ^ " < " ^
+    string_of_c_expr en ^ ";" ^ string_of_c_expr iter_var ^ " = " ^ string_of_c_expr iter_var ^ "+" ^ string_of_c_expr step ^ ")\n;" 
 
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
@@ -218,13 +221,13 @@ let rec string_of_c_stmt = function
       "for (" ^ string_of_c_expr e1  ^ " ; " ^ string_of_c_expr e2 ^ " ; " ^
       string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
   | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
-  | C_Stitch(s) ->
-      "stitch " ^ string_of_c_expr s.stitchdecl_var ^
+  | C_Stitch(s) -> convert_stitch_2_for s
+(*       "stitch " ^ string_of_c_expr s.stitchdecl_var ^
        " from " ^ string_of_c_expr s.stitchdecl_from ^
         " to " ^ string_of_c_expr s.stitchdecl_to ^ 
         " by " ^ string_of_c_expr s.stitchdecl_by ^ 
         " : " ^ s.stitchdecl_func ^
-        "\n"
+        "\n" *)
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
