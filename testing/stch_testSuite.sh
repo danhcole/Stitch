@@ -87,7 +87,6 @@ echo "******************" 2>&1 | tee -a $LOG
 echo "* Negative Tests *" 2>&1 | tee -a $LOG
 echo "******************" 2>&1 | tee -a $LOG
 
-
 trap checkNComp ERR
 
 for test in $NTESTS

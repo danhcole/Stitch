@@ -2,6 +2,10 @@ open Stch_ast
 open Stch_cast
 exception Error of string
 
+let debug_stch (fd: c_fdecl) : c_fdecl =
+		print_string fd.fdecl_name;
+		print_string " bar\n"; fd
+
 (* symbol table -> string *)
 let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ 
 				String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ 
@@ -30,7 +34,7 @@ let check_binop (lhs: dataType) (rhs: dataType) (env: stch_env) : (Stch_ast.data
 	| (Tfloat, Tfloat) 	-> Tfloat
 	| (_, _) -> raise (Error("Incompatable data types for binop"))
 
-(* check variable decleration, returns a C_Vdecl*)
+(* check variable decleration, returns a C_Vdecl *)
 let check_vdecl (decl: vdecl) (env: stch_env) = 
 	let invalid = List.exists (fun (_, s, _) -> s = decl.vdecl_name) env.scope.vars in 
 		if invalid then
@@ -463,17 +467,17 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				else begin
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin
-						let s = (check_stmt st env)::[] in 
+						let s = [(check_stmt st env)] in 
 							let sf = { Stch_cast.fdecl_type = Tvoid;
 									   Stch_cast.fdecl_name = "foo";
 									   Stch_cast.fdecl_formals = [];
-									   Stch_cast.body = s; } in
+									   Stch_cast.body = []; } in
 								let cs = {  Stch_cast.stitchdecl_var = ex1;
 											Stch_cast.stitchdecl_from = ex2;
 											Stch_cast.stitchdecl_to = ex3;
 											Stch_cast.stitchdecl_by = ex4;
 											Stch_cast.stitchdecl_func = sf.fdecl_name;
-											} in env.funcs <- sf::env.funcs; C_Stitch(cs)
+											} in env.stch_funcs <- sf::env.stch_funcs; C_Stitch(cs) 
 					end
 				end
 			end
@@ -501,11 +505,11 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 		let env' = { env with scope = {parent = Some(env.scope); vars = [];};
 		retType = func.fdecl_type; in_func = true} in
 		let f_formals = (List.rev (List.map (fun x -> check_formals x env') func.fdecl_formals)) in
-let f = { Stch_cast.fdecl_name = func.fdecl_name; 
-			Stch_cast.fdecl_type = func.fdecl_type; 
-			Stch_cast.fdecl_formals = f_formals; 
-			Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
-		env.funcs <- f::env.funcs; f 
+			let f = { Stch_cast.fdecl_name = func.fdecl_name; 
+						Stch_cast.fdecl_type = func.fdecl_type; 
+						Stch_cast.fdecl_formals = f_formals; 
+						Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
+							env.funcs <- f::env.funcs; f 
 
 (* typecheck the ast env *)
 let init_env : (stch_env) = 
@@ -532,15 +536,27 @@ let init_env : (stch_env) =
 						 fdecl_formals = [];
 						 body = [];
 						};] in (* Need to add builtin functions here *)
-	let init_scope = { parent = None; vars = []; } in
-	{ funcs = init_funcs; scope = init_scope; retType = Tvoid; in_func = false; }
+	let init_scope = { parent = None; vars = [(* (Tvoid, "oof", C_Noexpr) *)]; } in
+	{ funcs = init_funcs; 
+		scope = init_scope; 
+		retType = Tvoid; 
+		in_func = false; 
+		stch_funcs = [{fdecl_type = Tvoid; 
+						fdecl_name = "baz"; 
+						fdecl_formals = []; 
+						body = [];}] 
+	}
+
 
 (* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
 { Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
-Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
-Stch_cast.syms = env.scope }
+  Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
+  Stch_cast.syms = env.scope;
+  Stch_cast.stch_funcs = (List.map (fun x -> debug_stch x ) env.stch_funcs);
+}
+
 
 
 
