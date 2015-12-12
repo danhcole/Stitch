@@ -197,6 +197,14 @@ let rec string_of_c_matrixlist (seed: string) el = match el with
 let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
 
+let convert_stitch_2_for (s: c_stitchdecl) =
+  let iter_var = stitchdecl_var in
+  let start = stitchdecl_from in
+  let end = stitchdecl_to in
+  let step = stitchdecl_by in
+  
+    raise(Error("Working on this now"))
+
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_c_stmt stmts) ^ "}\n"
