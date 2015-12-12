@@ -536,7 +536,7 @@ let init_env : (stch_env) =
 						 fdecl_formals = [];
 						 body = [];
 						};] in (* Need to add builtin functions here *)
-	let init_scope = { parent = None; vars = []; } in
+	let init_scope = { parent = None; vars = [(* (Tvoid, "oof", C_Noexpr) *)]; } in
 	{ funcs = init_funcs; 
 		scope = init_scope; 
 		retType = Tvoid; 
@@ -546,6 +546,7 @@ let init_env : (stch_env) =
 						fdecl_formals = []; 
 						body = [];}] 
 	}
+
 
 (* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
