@@ -2,10 +2,10 @@ open Stch_ast
 open Stch_cast
 exception Error of string
 
-let debug_stch (fd: c_fdecl) : c_fdecl =
+(* let debug_stch (fd: c_fdecl) : c_fdecl =
 		print_string fd.fdecl_name;
 		print_string " bar\n"; fd
-
+ *)
 (* symbol table -> string *)
 let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ 
 				String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ 
@@ -454,11 +454,11 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 
 
 	(* Typechecking the expressions of a Stitch Loop *)
-	and check_stitch (e1 : expr) (e2 : expr) (e3 : expr) (e4 : expr) (st : stmt) (env : stch_env) =
-		let (ex1, t1) = check_expr e1 env in
-		let (ex2, t2) = check_expr e2 env in
-		let (ex3, t3) = check_expr e3 env in
-		let (ex4, t4) = check_expr e4 env in
+	and check_stitch (var : expr) (start : expr) (s_end : expr) (stride : expr) (body : stmt) (env : stch_env) =
+		let (var', t1) = check_expr var env in
+		let (start', t2) = check_expr start env in
+		let (s_end', t3) = check_expr s_end env in
+		let (stride', t4) = check_expr stride env in
 		if t1 <> Tint then raise (Error("Stitch: First expression not of type int."))
 		else begin
 			if t2 <> Tint then raise (Error("Stitch: Second expression not of type int."))
@@ -468,17 +468,13 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin
 						print_string "Checking stitch loop\n\n";
-						let s = [(check_stmt st env)] in 
-							let sf = { Stch_cast.fdecl_type = Tvoid;
-									   Stch_cast.fdecl_name = "foo";
-									   Stch_cast.fdecl_formals = [];
-									   Stch_cast.body = []; } in
-								let cs = {  Stch_cast.stitchdecl_var = ex1;
-											Stch_cast.stitchdecl_from = ex2;
-											Stch_cast.stitchdecl_to = ex3;
-											Stch_cast.stitchdecl_by = ex4;
-											Stch_cast.stitchdecl_func = sf.fdecl_name;
-											} in env.stch_funcs <- sf::env.stch_funcs; C_Stitch(cs) 
+						let body' = [(check_stmt body env)] in 
+								(*let cs = {  Stch_cast.stitchdecl_var = var';
+											Stch_cast.stitchdecl_from = start';
+											Stch_cast.stitchdecl_to = s_end';
+											Stch_cast.stitchdecl_by = body';
+											Stch_cast.stitchdecl_func = sf;
+											} in  *)C_Stitch(var', start', s_end', stride', "foo", body') 
 					end
 				end
 			end
@@ -542,10 +538,10 @@ let init_env : (stch_env) =
 		scope = init_scope; 
 		retType = Tvoid; 
 		in_func = false; 
-		stch_funcs = [{fdecl_type = Tvoid; 
+(* 		stch_funcs = [{fdecl_type = Tvoid; 
 						fdecl_name = "baz"; 
 						fdecl_formals = []; 
-						body = [];}] 
+						body = [];}]  *)
 	}
 
 
@@ -555,7 +551,7 @@ let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) =
 { Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
   Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
   Stch_cast.syms = env.scope;
-  Stch_cast.stch_funcs = (List.map (fun x -> debug_stch x ) env.stch_funcs);
+  (* Stch_cast.stch_funcs = (List.map (fun x -> debug_stch x ) env.stch_funcs); *)
 }
 
 

@@ -39,13 +39,13 @@ type c_matrixdecl = {
   matrixdecl_cols : expr;
   }
 
-type c_stitchdecl = {
+(* type c_stitchdecl = {
   stitchdecl_var : c_expr;
   stitchdecl_from : c_expr;
   stitchdecl_to : c_expr;
   stitchdecl_by : c_expr;
-  stitchdecl_func : string;
-}
+  stitchdecl_func : c_fdecl;
+} *)
 
 
 type c_stmt =
@@ -61,7 +61,7 @@ type c_stmt =
   | C_For of c_expr * c_expr * c_expr * c_stmt
   | C_While of c_expr * c_stmt 
   (* stitch <var> from <start> to <end> by <stride>:<code>*)
-  | C_Stitch of c_stitchdecl
+  | C_Stitch of c_expr * c_expr * c_expr * c_expr * string * c_stmt list
   | C_Assign of c_vdecl * c_expr
   | C_Break
 
@@ -74,8 +74,8 @@ type c_fdecl = {
 
 type stch_env = {
 	mutable funcs: c_fdecl list;
-  mutable stch_funcs: c_fdecl list;
-	scope: symTable;
+  (* mutable stch_funcs: c_fdecl list;*)
+  scope: symTable;
 	retType: dataType;
 	in_func: bool;
 }
@@ -84,5 +84,5 @@ type c_program = {
 	stmts : c_stmt list;
 	funcs : c_fdecl list;
 	syms  : symTable;
-  stch_funcs: c_fdecl list;
+(*   stch_funcs: c_fdecl list; *)
 }
