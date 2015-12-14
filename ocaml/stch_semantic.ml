@@ -467,7 +467,6 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				else begin
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin
-						print_string "Checking stitch loop\n\n";
 						let body' = [(check_stmt body env)] in 
 								(*let cs = {  Stch_cast.stitchdecl_var = var';
 											Stch_cast.stitchdecl_from = start';

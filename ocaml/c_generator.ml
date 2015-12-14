@@ -196,18 +196,12 @@ let rec string_of_c_matrixlist (seed: string) el = match el with
 
 let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
-    
 
 let convert_stitch_2_for var start s_end stride =
   let threads = "\npthread_t *threadpool = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
   let loop = threads ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
     string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ string_of_c_expr stride ^ ");\n\n"
-
-
-let stitch2func = function
-    C_Stitch(var, start, s_end, stride, fname, body) -> convert_stitch_2_for var start s_end stride;
-  | _ -> ""
 
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
@@ -236,15 +230,23 @@ let rec string_of_c_stmt = function
   | C_MatrixInit(mdecl, li) -> string_of_c_matrixdecl mdecl ^ " = " ^ string_of_c_matrixlist "{" li ^ ";\n"
   | C_Break -> "break;"
 
+let rec stitch2func = function
+    C_Stitch(var, start, s_end, stride, fname, body) -> "void " ^ fname ^ " ()" ^ 
+      String.concat "\n" (List.map string_of_c_stmt body) ^ "\n"
+  | _ -> ""
+
+let string_of_stitch func = String.concat "" (List.map stitch2func func.body)
+
 let string_of_c_fdecl fdecl =
-  string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ String.concat ", " (List.map string_of_c_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
-  String.concat "" (List.map string_of_c_stmt fdecl.body) ^ "}\n"
+  string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ 
+    String.concat ", " (List.map string_of_c_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
+    String.concat "" (List.map string_of_c_stmt fdecl.body) ^ "}\n"
 
 let string_of_vars (_, s, _) = s
 
 let string_of_c_program (prog : Stch_cast.c_program ) =
-  (* String.concat "\n" (List.map stitch2func prog.stmts) ^ "\n" ^ *)
   String.concat "" (List.map string_of_c_stmt prog.stmts) ^ "\n" ^
+  String.concat "\n" (List.map string_of_stitch prog.funcs) ^ "\n" ^ 
   String.concat "\n" (List.map string_of_c_fdecl prog.funcs) ^ "\n"
 
 
