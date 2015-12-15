@@ -190,6 +190,12 @@ let string_of_c_vdecl vdecl = string_of_c_dataType vdecl.vdecl_type ^ " " ^ vdec
 let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
     string_of_expr arraydecl.arraydecl_size ^ "]"
 
+let rec print_stitch_variables (seed: string) el = match el with
+  [] -> seed ^ "\n"
+  | head::tail -> let (typ, name, exp) = head in
+    print_stitch_variables (seed ^ (string_of_dataType typ) ^ " __stch_global " ^ name ^ string_of_c_expr exp ^ ";\n") tail
+
+
 let rec string_of_c_matrixlist (seed: string) el = match el with
     [] -> seed ^ "}"
     | head::tail -> string_of_c_matrixlist (seed ^ string_of_arraylist head ^ ",\n") tail
@@ -197,7 +203,7 @@ let rec string_of_c_matrixlist (seed: string) el = match el with
 let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
 
-let convert_stitch_2_for var start s_end stride fname =
+let convert_stitch_2_for var start s_end stride fname scope =
   let size = string_of_c_expr s_end in
   let threads = "\npthread_t *threadpool = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
 
@@ -237,7 +243,7 @@ let rec string_of_c_stmt = function
       "for (" ^ string_of_c_expr e1  ^ " ; " ^ string_of_c_expr e2 ^ " ; " ^
       string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
   | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
-  | C_Stitch(var, start, s_end, stride, fname, body) -> convert_stitch_2_for var start s_end stride fname
+  | C_Stitch(var, start, s_end, stride, fname, body, scope) -> convert_stitch_2_for var start s_end stride fname scope
 (*       "stitch " ^ string_of_c_expr s.stitchdecl_var ^
        " from " ^ string_of_c_expr s.stitchdecl_from ^
         " to " ^ string_of_c_expr s.stitchdecl_to ^ 
@@ -252,7 +258,8 @@ let rec string_of_c_stmt = function
   | C_Break -> "break;"
 
 let rec stitch2func = function
-    C_Stitch(var, start, s_end, stride, fname, body) -> "void *" ^ fname ^ " (void *vars)" ^ 
+    C_Stitch(var, start, s_end, stride, fname, body, scope) -> print_stitch_variables "" scope.vars ^ 
+    "\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
       String.concat "\n" (List.map string_of_c_stmt body) ^ "\n"
   | _ -> ""
 

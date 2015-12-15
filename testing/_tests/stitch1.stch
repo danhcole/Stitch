@@ -1,11 +1,11 @@
 int main () {
-	
-  int arr[5] = {0,1,2,3,4};
+
 
   int i = 0;
+  int test = 6;
 
   stitch i from 0 to 4 by 1: {
-  	print("Hello!!");
+  	print(test);
   }
 
   for(i = 0; i < 5; i = i + 1) {

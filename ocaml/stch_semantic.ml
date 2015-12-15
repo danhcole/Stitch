@@ -473,7 +473,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 											Stch_cast.stitchdecl_to = s_end';
 											Stch_cast.stitchdecl_by = body';
 											Stch_cast.stitchdecl_func = sf;
-											} in  *)C_Stitch(var', start', s_end', stride', "foo", body') 
+											} in  *)C_Stitch(var', start', s_end', stride', "foo", body', env.scope) 
 					end
 				end
 			end

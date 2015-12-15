@@ -61,7 +61,7 @@ type c_stmt =
   | C_For of c_expr * c_expr * c_expr * c_stmt
   | C_While of c_expr * c_stmt 
   (* stitch <var> from <start> to <end> by <stride>:<code>*)
-  | C_Stitch of c_expr * c_expr * c_expr * c_expr * string * c_stmt list
+  | C_Stitch of c_expr * c_expr * c_expr * c_expr * string * c_stmt list * symTable
   | C_Assign of c_vdecl * c_expr
   | C_Break
 
