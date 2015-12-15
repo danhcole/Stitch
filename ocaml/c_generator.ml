@@ -208,12 +208,12 @@ let convert_stitch_2_for var start s_end stride fname scope =
   let threads = "\npthread_t *threadpool = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
 
   let thread_assignment = "info[thread].begin = i;\n" ^
-                                  "if((i + 2*(" ^ size ^ "/NUMTHREADS)) > " ^ size ^ ") {\n" ^
+                                  "if((" ^ string_of_c_expr var ^ " + 2*(" ^ size ^ "/NUMTHREADS)) > " ^ size ^ ") {\n" ^
                                   "info[thread].end = " ^ size ^ ";\n" ^
-                                  "i = " ^ size ^ ";\n" ^
+                                  string_of_c_expr var ^ " = " ^ size ^ ";\n" ^
                                   "}\n" ^
                                   "else {\n" ^
-                                  "info[thread].end = i + " ^ size ^ "/NUMTHREADS;\n" ^
+                                  "info[thread].end = " ^ string_of_c_expr var ^ " + " ^ size ^ "/NUMTHREADS;\n" ^
                                   "}\n" in 
 
   let threadgen = "int e = pthread_create(&threadpool[thread], NULL, " ^ fname ^ ", &info[thread]);\n" ^
@@ -224,8 +224,9 @@ let convert_stitch_2_for var start s_end stride fname scope =
                   "}\n" in
 
   let threadjoin = "//loop and wait for all the threads to finish\n" ^
-                    "for(i = 0; i < NUMTHREADS; i++) {\n" ^
-                    "pthread_join(threadpool[i], NULL);\n" ^
+                    "for(" ^ string_of_c_expr var ^ " = 0; "^ string_of_c_expr var ^
+                    " < NUMTHREADS; "^string_of_c_expr var ^"++) {\n" ^
+                    "pthread_join(threadpool["^ string_of_c_expr var ^"], NULL);\n" ^
                     "}\n" in
 
   let varinfo = "struct stch_rangeInfo *info = malloc(sizeof(struct stch_rangeInfo) * NUMTHREADS);\n" in
