@@ -193,7 +193,7 @@ let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_t
 let rec print_stitch_variables (seed: string) el = match el with
   [] -> seed ^ "\n"
   | head::tail -> let (typ, name, exp) = head in
-    print_stitch_variables (seed ^ (string_of_dataType typ) ^ " __stch_global " ^ name ^ string_of_c_expr exp ^ ";\n") tail
+    print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ name ^ string_of_c_expr exp ^ ";\n") tail
 
 
 let rec string_of_c_matrixlist (seed: string) el = match el with
@@ -257,9 +257,37 @@ let rec string_of_c_stmt = function
   | C_MatrixInit(mdecl, li) -> string_of_c_matrixdecl mdecl ^ " = " ^ string_of_c_matrixlist "{" li ^ ";\n"
   | C_Break -> "break;"
 
+
+(* let rec string_of_stch_stmt (structname: string) (st: c_stmt) = match st with
+    C_Block(_, stmts) ->
+      "{\n" ^ String.concat "" (List.map string_of_c_stmt stmts) ^ "}\n"
+  | C_Expr(_, e) -> structname ^ "->" ^ string_of_c_expr e ^ ";\n";
+  | C_Vdecl(v) -> string_of_c_dataType v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
+  | C_Return(_, c_expr) -> "return " ^ string_of_c_expr c_expr ^ ";\n";
+  | C_If(e, s, C_Block(_, [])) -> "if (" ^ string_of_c_expr e ^ ")\n" ^ string_of_c_stmt s
+  | C_If(e, s1, s2) ->  "if (" ^ string_of_c_expr e ^ ")\n" ^
+      string_of_c_stmt s1 ^ "else\n" ^ string_of_c_stmt s2
+  | C_For(e1, e2, e3, s) ->
+      "for (" ^ string_of_c_expr e1  ^ " ; " ^ string_of_c_expr e2 ^ " ; " ^
+      string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
+  | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
+  | C_Stitch(var, start, s_end, stride, fname, body, scope) -> convert_stitch_2_for var start s_end stride fname scope
+(*       "stitch " ^ string_of_c_expr s.stitchdecl_var ^
+       " from " ^ string_of_c_expr s.stitchdecl_from ^
+        " to " ^ string_of_c_expr s.stitchdecl_to ^ 
+        " by " ^ string_of_c_expr s.stitchdecl_by ^ 
+        " : " ^ s.stitchdecl_func ^
+        "\n" *)
+  | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
+  | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
+  | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
+  | C_MatrixDecl(m) -> string_of_c_matrixdecl m ^ ";\n"
+  | C_MatrixInit(mdecl, li) -> string_of_c_matrixdecl mdecl ^ " = " ^ string_of_c_matrixlist "{" li ^ ";\n"
+  | C_Break -> "break;" *)
+
 let rec stitch2func = function
-    C_Stitch(var, start, s_end, stride, fname, body, scope) -> print_stitch_variables "" scope.vars ^ 
-    "\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
+    C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct myvars {\n" ^ print_stitch_variables "" scope.vars ^ 
+    "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
       String.concat "\n" (List.map string_of_c_stmt body) ^ "\n"
   | _ -> ""
 
