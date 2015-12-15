@@ -223,12 +223,17 @@ let convert_stitch_2_for var start s_end stride fname scope =
                   "exit(1);\n" ^
                   "}\n" in
 
+  let threadjoin = "//loop and wait for all the threads to finish\n" ^
+                    "for(i = 0; i < NUMTHREADS; i++) {\n" ^
+                    "pthread_join(threadpool[i], NULL);\n" ^
+                    "}\n" in
+
   let varinfo = "struct stch_rangeInfo *info = malloc(sizeof(struct stch_rangeInfo) * NUMTHREADS);\n" in
   let incr = string_of_c_expr s_end ^ "/" ^ "NUMTHREADS" in
   let loop = threads ^ varinfo ^ "int thread = 0;\n" ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
     string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ incr ^ 
-    ") {\n" ^ thread_assignment ^ threadgen ^ "thread++;\n" ^ "}\n\n"
+    ") {\n" ^ thread_assignment ^ threadgen ^ "thread++;\n" ^ "}\n\n" ^ threadjoin
 
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
