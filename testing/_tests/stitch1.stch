@@ -4,13 +4,13 @@ int main () {
 
   int i = 0;
 
-  stitch i from 0 to 5 by 1: {
-  	arr[i] = arr[i] + 1;
+  stitch i from 0 to 4 by 1: {
+  	print("Hello!!");
   }
 
-  for(i = 0; i < 4; i = i + 1) {
+  for(i = 0; i < 5; i = i + 1) {
 
-  	print(arr[i]);
+  	//print(arr[i]);
 
   }
 	return 0;

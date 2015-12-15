@@ -197,11 +197,32 @@ let rec string_of_c_matrixlist (seed: string) el = match el with
 let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.matrixdecl_name ^ "[" ^
     string_of_expr m.matrixdecl_rows ^ "][" ^ string_of_expr m.matrixdecl_cols ^ "]"
 
-let convert_stitch_2_for var start s_end stride =
+let convert_stitch_2_for var start s_end stride fname =
+  let size = string_of_c_expr s_end in
   let threads = "\npthread_t *threadpool = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
-  let loop = threads ^ "for(" in 
+
+  let thread_assignment = "info[thread].begin = i;\n" ^
+                                  "if((i + 2*(" ^ size ^ "/NUMTHREADS)) > " ^ size ^ ") {\n" ^
+                                  "info[thread].end = " ^ size ^ ";\n" ^
+                                  "i = " ^ size ^ ";\n" ^
+                                  "}\n" ^
+                                  "else {\n" ^
+                                  "info[thread].end = i + " ^ size ^ "/NUMTHREADS;\n" ^
+                                  "}\n" in 
+
+  let threadgen = "int e = pthread_create(&threadpool[thread], NULL, " ^ fname ^ ", &info[thread]);\n" ^
+                  "if (e != 0) {\n" ^
+                  "perror(\"Cannot create thread!\");\n" ^
+                  "free(threadpool); //error, free the threadpool\n" ^
+                  "exit(1);\n" ^
+                  "}\n" in
+
+  let varinfo = "struct stch_rangeInfo *info = malloc(sizeof(struct stch_rangeInfo) * NUMTHREADS);\n" in
+  let incr = string_of_c_expr s_end ^ "/" ^ "NUMTHREADS" in
+  let loop = threads ^ varinfo ^ "int thread = 0;\n" ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
-    string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ string_of_c_expr stride ^ ");\n\n"
+    string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ incr ^ 
+    ") {\n" ^ thread_assignment ^ threadgen ^ "thread++;\n" ^ "}\n\n"
 
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
@@ -216,7 +237,7 @@ let rec string_of_c_stmt = function
       "for (" ^ string_of_c_expr e1  ^ " ; " ^ string_of_c_expr e2 ^ " ; " ^
       string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
   | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
-  | C_Stitch(var, start, s_end, stride, fname, body) -> convert_stitch_2_for var start s_end stride
+  | C_Stitch(var, start, s_end, stride, fname, body) -> convert_stitch_2_for var start s_end stride fname
 (*       "stitch " ^ string_of_c_expr s.stitchdecl_var ^
        " from " ^ string_of_c_expr s.stitchdecl_from ^
         " to " ^ string_of_c_expr s.stitchdecl_to ^ 
@@ -231,11 +252,11 @@ let rec string_of_c_stmt = function
   | C_Break -> "break;"
 
 let rec stitch2func = function
-    C_Stitch(var, start, s_end, stride, fname, body) -> "void " ^ fname ^ " ()" ^ 
+    C_Stitch(var, start, s_end, stride, fname, body) -> "void *" ^ fname ^ " (void *vars)" ^ 
       String.concat "\n" (List.map string_of_c_stmt body) ^ "\n"
   | _ -> ""
 
-let string_of_stitch func = String.concat "" (List.map stitch2func func.body)
+let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
 
 let string_of_c_fdecl fdecl =
   string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ 
