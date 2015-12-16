@@ -187,7 +187,7 @@ let rec string_of_c_expr = function
 
 
 let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
-    C_Int(l) -> structname ^ "->" ^ string_of_int l
+    C_Int(l) -> string_of_int l
   | C_Float(l) -> string_of_float l
   | C_Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
   | C_Id(s, t) -> structname ^ "->" ^ s
@@ -201,8 +201,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_c_expr e2
   | C_Negate(e) -> "!" ^ string_of_c_expr e
-  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) "hello" | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
-  | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
+  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) structname | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
+  | C_Assign2(i, e) -> structname ^ "->" ^ i ^ " = " ^ string_of_c_expr e
   | C_Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_c_expr e
   | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
@@ -232,7 +232,7 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                               string_of_c_expr c ^ "]")::[]
                                     | Tvoid -> raise(Error("Invalid print type void in matrix printing")))
       | C_Id(l, t) -> (match t with
-                        Tint -> ("\"%d\\n\", " ^ (string_of_stch_expr "HEY" e))::[]
+                        Tint -> ("\"%d\\n\", " ^ (string_of_stch_expr structname e))::[]
                         | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr e)::[]
                         | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr e)::[]
                         | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr e)::[]
@@ -408,7 +408,8 @@ let convert_stitch_2_for var start s_end stride fname scope =
                     "pthread_join(threadpool["^ string_of_c_expr var ^"], NULL);\n" ^
                     "}\n" in
 
-  let varinfo = "struct stch_rangeInfo *info = malloc(sizeof(struct stch_rangeInfo) * NUMTHREADS);\n" in
+  let varinfo = "struct stch_rangeInfo *info = malloc(sizeof(struct stch_rangeInfo) * NUMTHREADS);\n" ^
+                "info->(struct myvars)myvars = struct myvars h;\n" in
   let incr = string_of_c_expr s_end ^ "/" ^ "NUMTHREADS" in
   let loop = threads ^ varinfo ^ "int thread = 0;\n" ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
@@ -446,7 +447,7 @@ let rec string_of_c_stmt = function
  let rec string_of_stch_stmt (structname: string) (st: c_stmt) = match st with
     C_Block(_, stmts) ->
       "{\n" ^ String.concat "" (List.map (string_of_stch_stmt structname) stmts) ^ "}\n"
-  | C_Expr(_, e) -> structname ^ "->" ^ string_of_c_expr e ^ ";\n";
+  | C_Expr(_, e) -> string_of_stch_expr structname e ^ ";\n";
   | C_Vdecl(v) -> string_of_c_dataType v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
   | C_Return(_, c_expr) -> "return " ^ string_of_c_expr c_expr ^ ";\n";
   | C_If(e, s, C_Block(_, [])) -> "if (" ^ string_of_c_expr e ^ ")\n" ^ string_of_c_stmt s
@@ -473,7 +474,7 @@ let rec string_of_c_stmt = function
 let rec stitch2func = function
     C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct myvars {\n" ^ print_stitch_variables "" scope.vars ^ 
     "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
-      String.concat "\n" (List.map (string_of_stch_stmt "myvars") body) ^ "\n"
+      String.concat "\n" (List.map (string_of_stch_stmt "vars->myvars") body) ^ "\n"
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 

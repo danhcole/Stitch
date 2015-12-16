@@ -46,6 +46,7 @@ struct stch_rangeInfo{
     int 	stepSize;
     int 	cols;
     struct 	stchLocalVars *locals;
+    void *myvars;
 
 };
 
