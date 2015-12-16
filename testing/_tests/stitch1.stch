@@ -5,7 +5,8 @@ int main () {
   int test = 6;
 
   stitch i from 0 to 4 by 1: {
-  	print("Hello!!");
+    test = 7;
+  	print(test);
   }
 
   for(i = 0; i < 5; i = i + 1) {

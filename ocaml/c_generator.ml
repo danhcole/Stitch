@@ -185,6 +185,185 @@ let rec string_of_c_expr = function
                                           )
       | _ -> raise (Error("Invalid expr in print statement: " ^ string_of_c_expr e))
 
+
+let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
+    C_Int(l) -> structname ^ "->" ^ string_of_int l
+  | C_Float(l) -> string_of_float l
+  | C_Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
+  | C_Id(s, t) -> structname ^ "->" ^ s
+  | C_String(s) -> "\"" ^ s ^ "\""
+  | C_Binop(e1, o, e2) ->
+      string_of_c_expr e1 ^ " " ^
+      (match o with
+        Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
+      | Equal -> "==" | Ne -> "!="
+      | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
+      | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
+      string_of_c_expr e2
+  | C_Negate(e) -> "!" ^ string_of_c_expr e
+  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) "hello" | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
+  | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
+  | C_Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_c_expr e
+  | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
+  | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
+  | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
+  (* | C_Access(f, s) -> f ^ "." ^ s  *)
+  | C_Noexpr -> ""
+
+      and print_2_fprint (e: c_expr) (structname: string) = match e with
+        C_Int(l) -> ("\"%d\\n\", " ^ (string_of_stch_expr structname e))::[]
+      | C_Float(l) -> ("\"%f\\n\", " ^ string_of_c_expr e)::[]
+      | C_Char(l) -> ("\"%c\\n\", " ^ string_of_c_expr e)::[]
+      | C_String(l) -> ("\"%s\\n\", " ^ string_of_c_expr e)::[]
+      | C_Array_Index(a, i, t) -> (match t with
+                                    Tint -> ("\"%d\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
+                                    | Tfloat -> ("\"%f\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
+                                    | Tchar -> ("\"%c\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
+                                    | Tstring -> ("\"%s\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
+                                    | Tvoid -> raise (Error("Invalid print type Void: " ^ a ^ "[" ^ string_of_c_expr i ^ "]")))
+      | C_Matrix_Index(m, r, c, t) -> (match t with
+                                     Tint -> ("\"%d\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^ 
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tfloat -> ("\"%f\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tchar -> ("\"%c\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tstring -> ("\"%s\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
+                                              string_of_c_expr c ^ "]")::[]
+                                    | Tvoid -> raise(Error("Invalid print type void in matrix printing")))
+      | C_Id(l, t) -> (match t with
+                        Tint -> ("\"%d\\n\", " ^ (string_of_stch_expr "HEY" e))::[]
+                        | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr e)::[]
+                        | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr e)::[]
+                        | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr e)::[]
+                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e)))
+      | C_Binop(lhs, o, rhs) -> (match o with
+                                    Add -> (match lhs with
+                                              C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Subtract -> (match lhs with
+                                              C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Times -> (match lhs with
+                                              C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Divide -> (match lhs with
+                                              C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Equal -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "==" ^ string_of_c_expr rhs)::[]
+                                  | Ne -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "!=" ^ string_of_c_expr rhs)::[]
+                                  | Lt -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "<" ^ string_of_c_expr rhs)::[]
+                                  | Le -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "<=" ^ string_of_c_expr rhs)::[]
+                                  | Gt -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ ">" ^ string_of_c_expr rhs)::[]
+                                  | Ge -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ ">=" ^ string_of_c_expr rhs)::[]
+                                  | Or -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "||" ^ string_of_c_expr rhs)::[]
+                                  | And -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "&&" ^ string_of_c_expr rhs)::[]
+                                  | Mod -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "%" ^ string_of_c_expr rhs)::[]
+                                          )
+      | _ -> raise (Error("Invalid expr in print statement: " ^ string_of_c_expr e))
+
+      and error_2_fprintf (e: c_expr) = match e with
+        C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr e)::[]
+      | C_Float(l) -> ("stderr, \"%f\\n\", " ^ string_of_c_expr e)::[]
+      | C_Char(l) -> ("stderr, \"%c\\n\", " ^ string_of_c_expr e)::[]
+      | C_String(l) -> ("stderr, \"%s\\n\", " ^ string_of_c_expr e)::[]
+      | C_Id(l, t) -> (match t with
+                        Tint -> ("stderr, \"%d\\n\", " ^ string_of_c_expr e)::[]
+                        | Tfloat -> ("stderr, \"%f\\n\", " ^ string_of_c_expr e)::[]
+                        | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr e)::[]
+                        | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr e)::[]
+                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e)))
+      | C_Binop(lhs, o, rhs) -> (match o with
+                                    Add -> (match lhs with
+                                              C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Subtract -> (match lhs with
+                                              C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Times -> (match lhs with
+                                              C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("stderr, stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Divide -> (match lhs with
+                                              C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                            | C_Float(l) -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                            | C_Id(l, t) -> (match t with
+                                                                  Tint -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tfloat -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)))
+                                            | _ -> raise (Error("Invalid add in function call"))
+                                          )
+                                  | Equal -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "==" ^ string_of_c_expr rhs)::[]
+                                  | Ne -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "!=" ^ string_of_c_expr rhs)::[]
+                                  | Lt -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "<" ^ string_of_c_expr rhs)::[]
+                                  | Le -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "<=" ^ string_of_c_expr rhs)::[]
+                                  | Gt -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ ">" ^ string_of_c_expr rhs)::[]
+                                  | Ge -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ ">=" ^ string_of_c_expr rhs)::[]
+                                  | Or -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "||" ^ string_of_c_expr rhs)::[]
+                                  | And -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "&&" ^ string_of_c_expr rhs)::[]
+                                  | Mod -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "%" ^ string_of_c_expr rhs)::[]
+                                          )
+      | _ -> raise (Error("Invalid expr in print statement: " ^ string_of_c_expr e))
+
+
+
 let string_of_c_vdecl vdecl = string_of_c_dataType vdecl.vdecl_type ^ " " ^ vdecl.vdecl_name (* " " ^ vdecl.array_size ^ *)
 
 let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_type ^ " " ^ arraydecl.arraydecl_name ^ "[" ^
@@ -264,9 +443,9 @@ let rec string_of_c_stmt = function
   | C_Break -> "break;"
 
 
-(* let rec string_of_stch_stmt (structname: string) (st: c_stmt) = match st with
+ let rec string_of_stch_stmt (structname: string) (st: c_stmt) = match st with
     C_Block(_, stmts) ->
-      "{\n" ^ String.concat "" (List.map string_of_c_stmt stmts) ^ "}\n"
+      "{\n" ^ String.concat "" (List.map (string_of_stch_stmt structname) stmts) ^ "}\n"
   | C_Expr(_, e) -> structname ^ "->" ^ string_of_c_expr e ^ ";\n";
   | C_Vdecl(v) -> string_of_c_dataType v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
   | C_Return(_, c_expr) -> "return " ^ string_of_c_expr c_expr ^ ";\n";
@@ -289,12 +468,12 @@ let rec string_of_c_stmt = function
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
   | C_MatrixDecl(m) -> string_of_c_matrixdecl m ^ ";\n"
   | C_MatrixInit(mdecl, li) -> string_of_c_matrixdecl mdecl ^ " = " ^ string_of_c_matrixlist "{" li ^ ";\n"
-  | C_Break -> "break;" *)
+  | C_Break -> "break;" 
 
 let rec stitch2func = function
     C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct myvars {\n" ^ print_stitch_variables "" scope.vars ^ 
     "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
-      String.concat "\n" (List.map string_of_c_stmt body) ^ "\n"
+      String.concat "\n" (List.map (string_of_stch_stmt "myvars") body) ^ "\n"
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
