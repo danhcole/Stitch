@@ -459,8 +459,9 @@ let rec string_of_c_stmt = function
 let rec stitch2func = function
     C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
       "int end;\n" ^ "int stepSize;\n" ^ (print_stitch_variables "" scope.vars) ^ 
-    "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
-      String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ "\n"
+    "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars){" ^ 
+      String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ 
+        "\nreturn (void*)0;\n}\n"
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
