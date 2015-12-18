@@ -1,6 +1,6 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
           | Or | And
-type dataType = Tint | Tfloat | Tchar | Tvoid | Tstring
+type dataType = Tint | Tfloat | Tchar | Tvoid | Tstring | Tintap | Tintam | Tfloatap | Tfloatam
 
 type vdecl = {
   vdecl_type     : dataType;

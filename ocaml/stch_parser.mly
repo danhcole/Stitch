@@ -6,7 +6,7 @@
 %token AND OR
 %token GT GE LT LE
 %token FROM TO BY
-%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOID TINT TFLOAT TCHAR
+%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOID TINT TFLOAT TCHAR TINTAP TINTAM TFLOATAP TFLOATAM
 %token CONST VOID
 %token <int>INT
 %token <char>CHAR
@@ -48,6 +48,10 @@ TINT			{ Tint }
 | TFLOAT		{ Tfloat }
 | TCHAR 		{ Tchar }
 | TVOID 		{ Tvoid }
+| TINTAP		{ Tintap }
+| TINTAM		{ Tintam }
+| TFLOATAP		{ Tfloatap }
+| TFLOATAM		{ Tfloatam }
 
 formals_opt:
 	/* nothing */	{ [] }
@@ -62,7 +66,6 @@ vdecl:
 	{{
 		vdecl_type 	= $1;
 		vdecl_name	= $2;
-		(*array_size	= $3;*)
 	}}
 
 arraydecl:
