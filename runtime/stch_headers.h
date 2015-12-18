@@ -38,17 +38,17 @@ struct stch_LocalVars{
 
 };
 
-//range info passed into the thread
-struct stch_rangeInfo{
+// //range info passed into the thread
+// struct stch_rangeInfo{
 
-    int 	begin;
-    int 	end;
-    int 	stepSize;
-    int 	cols;
-    struct 	stchLocalVars *locals;
-    void *myvars;
+//     int 	begin;
+//     int 	end;
+//     int 	stepSize;
+//     int 	cols;
+//     struct 	stchLocalVars *locals;
+//     void *myvars;
 
-};
+// };
 
 //array wrapper
 typedef struct stch_array{
