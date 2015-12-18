@@ -384,16 +384,16 @@ let convert_stitch_2_for var start s_end stride fname scope =
   let size = string_of_c_expr s_end in
   let threads = "\npthread_t *threadpool" ^ fname ^ " = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
 
-  let thread_assignment = "info[thread].begin = i;\n" ^
+  let thread_assignment = "info"^fname^"[thread"^fname^"].begin = i;\n" ^
                                   "if((" ^ string_of_c_expr var ^ " + 2*(" ^ size ^ "/NUMTHREADS)) > " ^ size ^ ") {\n" ^
-                                  "info[thread].end = " ^ size ^ ";\n" ^
+                                  "info"^fname^"[thread"^fname^"].end = " ^ size ^ ";\n" ^
                                   string_of_c_expr var ^ " = " ^ size ^ ";\n" ^
                                   "}\n" ^
                                   "else {\n" ^
-                                  "info[thread].end = " ^ string_of_c_expr var ^ " + " ^ size ^ "/NUMTHREADS;\n" ^
+                                  "info"^fname^"[thread"^fname^"].end = " ^ string_of_c_expr var ^ " + " ^ size ^ "/NUMTHREADS;\n" ^
                                   "}\n" in 
 
-  let threadgen = "int e = pthread_create(&threadpool"^fname^"[thread], NULL, " ^ fname ^ ", &info[thread]);\n" ^
+  let threadgen = "int e = pthread_create(&threadpool"^fname^"[thread"^fname^"], NULL, " ^ fname ^ ", &info"^fname^"[thread"^fname^"]);\n" ^
                   "if (e != 0) {\n" ^
                   "perror(\"Cannot create thread!\");\n" ^
                   "free(threadpool"^fname^"); //error, free the threadpool\n" ^
@@ -406,12 +406,12 @@ let convert_stitch_2_for var start s_end stride fname scope =
                     "pthread_join(threadpool"^fname^"["^ string_of_c_expr var ^"], NULL);\n" ^
                     "}\n" in
 
-  let varinfo = "struct stch_rangeInfo" ^ fname ^ " *info = malloc(sizeof(struct stch_rangeInfo" ^fname^") * NUMTHREADS);\n" in
+  let varinfo = "struct stch_rangeInfo" ^ fname ^ " *info"^fname^" = malloc(sizeof(struct stch_rangeInfo" ^fname^") * NUMTHREADS);\n" in
   let incr = string_of_c_expr s_end ^ "/" ^ "NUMTHREADS" in
-  let loop = threads ^ varinfo ^ "int thread = 0;\n" ^ "for(" in 
+  let loop = threads ^ varinfo ^ "int thread"^fname^" = 0;\n" ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
     string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ incr ^ 
-    ") {\n" ^ thread_assignment ^ threadgen ^ "thread++;\n" ^ "}\n\n" ^ threadjoin
+    ") {\n" ^ thread_assignment ^ threadgen ^ "thread"^fname^"++;\n" ^ "}\n\n" ^ threadjoin
 
 let rec string_of_c_stmt = function
     C_Block(_, stmts) ->
