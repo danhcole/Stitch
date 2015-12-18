@@ -372,6 +372,10 @@ let rec print_stitch_variables (seed: string) el = match el with
   | head::tail -> let (typ, name, exp) = head in
     print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ name ^ string_of_c_expr exp ^ ";\n") tail
 
+let rec assign_stitch_variables (seed: string) (structname: string) el = match el with
+  [] -> seed ^ "\n"
+  | head::tail -> let (typ, name, exp) = head in
+    assign_stitch_variables (seed ^ structname ^ "." ^ name ^ " = " ^ name ^ ";\n") (structname) tail
 
 let rec string_of_c_matrixlist (seed: string) el = match el with
     [] -> seed ^ "}"
@@ -385,6 +389,7 @@ let convert_stitch_2_for var start s_end stride fname scope =
   let threads = "\npthread_t *threadpool" ^ fname ^ " = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
 
   let thread_assignment = "info"^fname^"[thread"^fname^"].begin = i;\n" ^
+                                  (assign_stitch_variables "" ("info"^fname^"[thread"^fname^"]") scope.vars )^
                                   "if((" ^ string_of_c_expr var ^ " + 2*(" ^ size ^ "/NUMTHREADS)) > " ^ size ^ ") {\n" ^
                                   "info"^fname^"[thread"^fname^"].end = " ^ size ^ ";\n" ^
                                   string_of_c_expr var ^ " = " ^ size ^ ";\n" ^

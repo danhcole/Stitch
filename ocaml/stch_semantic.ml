@@ -468,7 +468,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				if t3 <> Tint then raise (Error("Stitch: Third expression not of type int."))
 				else begin
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
-					else begin
+					else begin 
 						let body' = [(check_stmt body env)] in 
 							C_Stitch(var', start', s_end', stride', gen_name sn, body', env.scope) 
 					end
