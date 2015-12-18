@@ -408,7 +408,7 @@ let convert_stitch_2_for var start s_end stride fname scope =
                     "pthread_join(threadpool["^ string_of_c_expr var ^"], NULL);\n" ^
                     "}\n" in
 
-  let varinfo = "struct stch_rangeInfo *info = malloc(sizeof(struct stch_rangeInfo) * NUMTHREADS);\n" in
+  let varinfo = "struct stch_rangeInfo" ^ fname ^ " *info = malloc(sizeof(struct stch_rangeInfo" ^fname^") * NUMTHREADS);\n" in
   let incr = string_of_c_expr s_end ^ "/" ^ "NUMTHREADS" in
   let loop = threads ^ varinfo ^ "int thread = 0;\n" ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
@@ -474,7 +474,7 @@ let rec stitch2func = function
     C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
       "int end;\n" ^ "int stepSize;\n" ^ print_stitch_variables "" scope.vars ^ 
     "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
-      String.concat "\n" (List.map (string_of_stch_stmt "((struct stch_rangeInfo *)vars)") body) ^ "\n"
+      String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ "\n"
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
