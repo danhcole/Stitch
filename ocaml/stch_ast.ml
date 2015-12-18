@@ -5,7 +5,6 @@ type dataType = Tint | Tfloat | Tchar | Tvoid | Tstring
 type vdecl = {
   vdecl_type     : dataType;
   vdecl_name     : string;
-(*   array_size     : int; *)
 }
 
 type expr =

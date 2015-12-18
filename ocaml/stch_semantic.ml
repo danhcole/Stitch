@@ -470,12 +470,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin
 						let body' = [(check_stmt body env)] in 
-								(*let cs = {  Stch_cast.stitchdecl_var = var';
-											Stch_cast.stitchdecl_from = start';
-											Stch_cast.stitchdecl_to = s_end';
-											Stch_cast.stitchdecl_by = body';
-											Stch_cast.stitchdecl_func = sf;
-											} in  *)C_Stitch(var', start', s_end', stride', gen_name sn, body', env.scope) 
+							C_Stitch(var', start', s_end', stride', gen_name sn, body', env.scope) 
 					end
 				end
 			end
@@ -534,15 +529,11 @@ let init_env : (stch_env) =
 						 fdecl_formals = [];
 						 body = [];
 						};] in (* Need to add builtin functions here *)
-	let init_scope = { parent = None; vars = [(* (Tvoid, "oof", C_Noexpr) *)]; } in
+	let init_scope = { parent = None; vars = []; } in
 	{ funcs = init_funcs; 
 		scope = init_scope; 
 		retType = Tvoid; 
 		in_func = false; 
-(* 		stch_funcs = [{fdecl_type = Tvoid; 
-						fdecl_name = "baz"; 
-						fdecl_formals = []; 
-						body = [];}]  *)
 	}
 
 
@@ -552,7 +543,6 @@ let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) =
 { Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
   Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
   Stch_cast.syms = env.scope;
-  (* Stch_cast.stch_funcs = (List.map (fun x -> debug_stch x ) env.stch_funcs); *)
 }
 
 

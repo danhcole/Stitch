@@ -30,7 +30,6 @@ let rec string_of_c_expr = function
   | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
   | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
-  (* | C_Access(f, s) -> f ^ "." ^ s  *)
   | C_Noexpr -> ""
 
       and print_2_fprint (e: c_expr) = match e with
@@ -207,7 +206,6 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
   | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
   | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
-  (* | C_Access(f, s) -> f ^ "." ^ s  *)
   | C_Noexpr -> ""
 
       and print_2_fprint (e: c_expr) (structname: string) = match e with
@@ -429,12 +427,6 @@ let rec string_of_c_stmt = function
       string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
   | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
   | C_Stitch(var, start, s_end, stride, fname, body, scope) -> convert_stitch_2_for var start s_end stride fname scope
-(*       "stitch " ^ string_of_c_expr s.stitchdecl_var ^
-       " from " ^ string_of_c_expr s.stitchdecl_from ^
-        " to " ^ string_of_c_expr s.stitchdecl_to ^ 
-        " by " ^ string_of_c_expr s.stitchdecl_by ^ 
-        " : " ^ s.stitchdecl_func ^
-        "\n" *)
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"
@@ -457,12 +449,6 @@ let rec string_of_c_stmt = function
       string_of_c_expr e3  ^ ") " ^ string_of_c_stmt s
   | C_While(e, s) -> "while (" ^ string_of_c_expr e ^ ") " ^ string_of_c_stmt s
   | C_Stitch(var, start, s_end, stride, fname, body, scope) -> convert_stitch_2_for var start s_end stride fname scope
-(*       "stitch " ^ string_of_c_expr s.stitchdecl_var ^
-       " from " ^ string_of_c_expr s.stitchdecl_from ^
-        " to " ^ string_of_c_expr s.stitchdecl_to ^ 
-        " by " ^ string_of_c_expr s.stitchdecl_by ^ 
-        " : " ^ s.stitchdecl_func ^
-        "\n" *)
   | C_Assign(v, e) -> string_of_c_vdecl v ^ " = " ^ string_of_c_expr e ^ ";\n"
   | C_ArrayDecl(a) -> string_of_c_arraydecl a ^ ";\n"
   | C_ArrayInit(arraydecl, el) -> string_of_c_arraydecl arraydecl ^ " = {" ^ String.concat ", " (List.map string_of_expr el) ^ "};\n"

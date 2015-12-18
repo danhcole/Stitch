@@ -39,15 +39,6 @@ type c_matrixdecl = {
   matrixdecl_cols : expr;
   }
 
-(* type c_stitchdecl = {
-  stitchdecl_var : c_expr;
-  stitchdecl_from : c_expr;
-  stitchdecl_to : c_expr;
-  stitchdecl_by : c_expr;
-  stitchdecl_func : c_fdecl;
-} *)
-
-
 type c_stmt =
     C_Block of symTable * c_stmt list
   | C_Vdecl of c_vdecl
@@ -74,7 +65,6 @@ type c_fdecl = {
 
 type stch_env = {
 	mutable funcs: c_fdecl list;
-  (* mutable stch_funcs: c_fdecl list;*)
   scope: symTable;
 	retType: dataType;
 	in_func: bool;
@@ -84,5 +74,4 @@ type c_program = {
 	stmts : c_stmt list;
 	funcs : c_fdecl list;
 	syms  : symTable;
-(*   stch_funcs: c_fdecl list; *)
 }
