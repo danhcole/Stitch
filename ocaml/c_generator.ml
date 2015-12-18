@@ -382,7 +382,7 @@ let string_of_c_matrixdecl m = string_of_c_dataType m.matrixdecl_type ^ " " ^ m.
 
 let convert_stitch_2_for var start s_end stride fname scope =
   let size = string_of_c_expr s_end in
-  let threads = "\npthread_t *threadpool = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
+  let threads = "\npthread_t *threadpool" ^ fname ^ " = malloc(NUMTHREADS * sizeof(pthread_t));\n" in 
 
   let thread_assignment = "info[thread].begin = i;\n" ^
                                   "if((" ^ string_of_c_expr var ^ " + 2*(" ^ size ^ "/NUMTHREADS)) > " ^ size ^ ") {\n" ^
@@ -393,17 +393,17 @@ let convert_stitch_2_for var start s_end stride fname scope =
                                   "info[thread].end = " ^ string_of_c_expr var ^ " + " ^ size ^ "/NUMTHREADS;\n" ^
                                   "}\n" in 
 
-  let threadgen = "int e = pthread_create(&threadpool[thread], NULL, " ^ fname ^ ", &info[thread]);\n" ^
+  let threadgen = "int e = pthread_create(&threadpool"^fname^"[thread], NULL, " ^ fname ^ ", &info[thread]);\n" ^
                   "if (e != 0) {\n" ^
                   "perror(\"Cannot create thread!\");\n" ^
-                  "free(threadpool); //error, free the threadpool\n" ^
+                  "free(threadpool"^fname^"); //error, free the threadpool\n" ^
                   "exit(1);\n" ^
                   "}\n" in
 
   let threadjoin = "//loop and wait for all the threads to finish\n" ^
                     "for(" ^ string_of_c_expr var ^ " = 0; "^ string_of_c_expr var ^
                     " < NUMTHREADS; "^string_of_c_expr var ^"++) {\n" ^
-                    "pthread_join(threadpool["^ string_of_c_expr var ^"], NULL);\n" ^
+                    "pthread_join(threadpool"^fname^"["^ string_of_c_expr var ^"], NULL);\n" ^
                     "}\n" in
 
   let varinfo = "struct stch_rangeInfo" ^ fname ^ " *info = malloc(sizeof(struct stch_rangeInfo" ^fname^") * NUMTHREADS);\n" in
@@ -458,7 +458,7 @@ let rec string_of_c_stmt = function
 
 let rec stitch2func = function
     C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
-      "int end;\n" ^ "int stepSize;\n" ^ print_stitch_variables "" scope.vars ^ 
+      "int end;\n" ^ "int stepSize;\n" ^ (print_stitch_variables "" scope.vars) ^ 
     "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
       String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ "\n"
   | _ -> ""
