@@ -457,16 +457,17 @@ let rec string_of_c_stmt = function
   | C_Break -> "break;" 
 
 let rec stitch2func = function
-    C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
-      "int end;\n" ^ "int stepSize;\n" ^ (print_stitch_variables "" scope.vars) ^ 
-    "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars){" ^ 
-      String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ 
-        "\nreturn (void*)0;\n}\n"
-  | C_If(e, s, C_Block(_, [])) -> stitch2func s
-  | C_Block(_, stmts) ->
+    C_Block(_, stmts) ->
       String.concat "" (List.map stitch2func stmts)
+  | C_If(e, s, C_Block(_, [])) -> stitch2func s
+  | C_If(e, s1, s2) -> stitch2func s2
   | C_For(e1, e2, e3, s) -> stitch2func s
   | C_While(e, s) -> stitch2func s
+  | C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
+    "int end;\n" ^ "int stepSize;\n" ^ (print_stitch_variables "" scope.vars) ^ 
+  "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars){" ^ 
+    String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ 
+      "\nreturn (void*)0;\n}\n"
   (* need to add any other type of stmt that can contain a stitch loop *)
   | _ -> ""
 
