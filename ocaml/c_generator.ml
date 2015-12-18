@@ -471,7 +471,7 @@ let rec string_of_c_stmt = function
   | C_Break -> "break;" 
 
 let rec stitch2func = function
-    C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo {\n" ^ "int begin;\n"^ 
+    C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
       "int end;\n" ^ "int stepSize;\n" ^ print_stitch_variables "" scope.vars ^ 
     "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars)" ^ 
       String.concat "\n" (List.map (string_of_stch_stmt "((struct stch_rangeInfo *)vars)") body) ^ "\n"

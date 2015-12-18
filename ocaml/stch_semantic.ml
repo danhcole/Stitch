@@ -3,7 +3,7 @@ open Stch_cast
 exception Error of string
 
 type stch_name_gen = { mutable name : int }
-let sn = {name = 1;}
+let sn = {name = 0;}
 
 (* symbol table -> string *)
 let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ 
@@ -251,6 +251,9 @@ let rec check_matrix_vals (name: matrixdecl) (el: expr list list) (ncols: int) (
 				let m = check_matrix_rows name head t env in
 				check_matrix_vals m tail ncols t env
 
+let gen_name (sn : stch_name_gen) = 
+	let i = sn.name in 
+		sn.name <- i+1; "_" ^ string_of_int i
 
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
@@ -453,7 +456,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 
 
 	(* Typechecking the expressions of a Stitch Loop *)
-	and check_stitch (var : expr) (start : expr) (s_end : expr) (stride : expr) (body : stmt) (env : stch_env) =
+	and check_stitch (var : expr) (start : expr) (s_end : expr) (stride : expr) (body : stmt) (env : stch_env)  =
 		let (var', t1) = check_expr var env in
 		let (start', t2) = check_expr start env in
 		let (s_end', t3) = check_expr s_end env in
@@ -472,7 +475,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 											Stch_cast.stitchdecl_to = s_end';
 											Stch_cast.stitchdecl_by = body';
 											Stch_cast.stitchdecl_func = sf;
-											} in  *)C_Stitch(var', start', s_end', stride', "_" , body', env.scope) 
+											} in  *)C_Stitch(var', start', s_end', stride', gen_name sn, body', env.scope) 
 					end
 				end
 			end
