@@ -468,7 +468,7 @@ let rec stitch2func = function
   "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars){" ^ 
     String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ 
       "\nreturn (void*)0;\n}\n"
-  (* need to add any other type of stmt that can contain a stitch loop *)
+  (* need to add any other type of stmt that can contain a stitch loop ***TAKE THIS COMMENT OUT, WE'RE DONE HERE***)
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 

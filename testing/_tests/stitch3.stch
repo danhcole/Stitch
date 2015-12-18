@@ -2,6 +2,7 @@ int main() {
 
   int i = 0;
   int test = 6;
+  test = 7;
 
   stitch i from 0 to 4 by 1: 
     print(test);
