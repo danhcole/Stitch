@@ -2,10 +2,9 @@ open Stch_ast
 open Stch_cast
 exception Error of string
 
-(* let debug_stch (fd: c_fdecl) : c_fdecl =
-		print_string fd.fdecl_name;
-		print_string " bar\n"; fd
- *)
+type stch_name_gen = { mutable name : int }
+let sn = {name = 1;}
+
 (* symbol table -> string *)
 let string_of_symTable (syms: symTable) = let str = "SymTable: \n" ^ 
 				String.concat "\n" (List.map (fun (typ, name, _) -> "[" ^ 
@@ -473,7 +472,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 											Stch_cast.stitchdecl_to = s_end';
 											Stch_cast.stitchdecl_by = body';
 											Stch_cast.stitchdecl_func = sf;
-											} in  *)C_Stitch(var', start', s_end', stride', "foo", body', env.scope) 
+											} in  *)C_Stitch(var', start', s_end', stride', "_" , body', env.scope) 
 					end
 				end
 			end

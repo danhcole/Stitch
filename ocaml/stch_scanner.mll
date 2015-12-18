@@ -52,7 +52,7 @@ rule token = parse
 	| ['-' '+']?['0'-'9']?'.'['0'-'9']* as f_litr 	{ FLOAT(float_of_string f_litr) }
 	| '''([^''']  as ch_litr)'''					{ CHAR(ch_litr) }
 	| '"'([^'"']* as st_litr)'"'					{ STRING(st_litr)}
-	| ['a'-'z' 'A'-'Z' '_']['a'-'z' 'A'-'Z' '0'-'9' '_']* as litr { ID(litr) }
+	| ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as litr { ID(litr) }
 	| eof { EOF }
 	| _ as char { raise (Failure("illegal character " ^ Char.escaped char))}
 
