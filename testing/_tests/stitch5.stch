@@ -1,0 +1,13 @@
+int main() {
+
+  int i = 0;
+  int test = 6;
+
+  for(i = 0; i < 4; i = i + 1){
+    stitch i from 0 to 4 by 1:
+      print(test);
+  }
+
+  return 0;
+
+}
