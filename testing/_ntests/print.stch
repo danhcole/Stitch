@@ -1,0 +1,12 @@
+void add(int a, int b){
+	int c = a + b;
+}
+
+int main() {
+	int a = 5;
+	int b = 5;
+
+	print(add(a,b));
+
+	return 0;
+}
