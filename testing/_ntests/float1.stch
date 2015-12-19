@@ -1,0 +1,11 @@
+//floating point with multiple decimals.
+
+int main()
+{
+	float a = 1.2;
+	print(a);
+	float b = 1.23.4;
+	print(b);
+
+	return 0;
+}
