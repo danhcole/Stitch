@@ -2,17 +2,18 @@
 
 
 
-void p(int a) {
-	
-	print("%d\n", a);
-
-}
-
 int main() {
+
+        int a[2] = {1, 1};
+        int b[2] = {2, 2};
+        int acc;
+        int i = 0;
+
+        stitch i from 0 to 255 by 1: {
+                acc = a[i] * b[i];
+        }
+
+        print(acc);
 	
-	int x = 6;
-
-	p(x);
-
-	return 0;
+        return 0;
 }

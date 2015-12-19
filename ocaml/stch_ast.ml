@@ -70,6 +70,10 @@ let string_of_dataType = function
   | Tchar -> "char"
   | Tvoid -> "void"
   | Tstring -> "char *"
+  | Tintap -> "int"
+  | Tintam -> "int"
+  | Tfloatap -> "float"
+  | Tfloatam -> "float"
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l
