@@ -374,8 +374,12 @@ let string_of_c_arraydecl arraydecl = string_of_c_dataType arraydecl.arraydecl_t
 let rec print_stitch_variables (seed: string) el = match el with
   [] -> seed ^ "\n"
   | head::tail -> let (typ, name, exp) = head in
-    print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ name ^ string_of_c_expr exp ^ ";\n") tail
+    if exp = C_Noexpr then 
+      print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ name ^ string_of_c_expr exp ^ ";\n") tail
+    else
+      print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ string_of_c_expr exp ^ ";\n") tail
 
+      
 let rec assign_stitch_variables (seed: string) (structname: string) el = match el with
   [] -> seed ^ "\n"
   | head::tail -> let (typ, name, exp) = head in

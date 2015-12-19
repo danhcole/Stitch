@@ -1,0 +1,16 @@
+int main() {
+
+  int i = 0;
+  int test = 6;
+
+  int a[10];
+  int m[10][10];
+
+  stitch i from 0 to 4 by 1: {
+  	int test = 8;
+    print(test);
+    }
+
+  return 0;
+
+}

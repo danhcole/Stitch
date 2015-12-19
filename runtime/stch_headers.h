@@ -53,7 +53,7 @@ struct stch_LocalVars{
 //array wrapper
 typedef struct stch_array{
 
-	void 			*data;
+	char 			*name;
 	unsigned int 	length;
 
 } stch_array;

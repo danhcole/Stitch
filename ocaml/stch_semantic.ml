@@ -314,7 +314,13 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 		(* if it isn't, put it in the scope, and make a new c_arraydecl 
 			after you typematch the size expression *)
-			env.scope.vars <- (ve.vdecl_type, ve.vdecl_name, C_Noexpr)::env.scope.vars;
+
+		(* If we have an arraydecl, we want the C_EXPR in the symtable to be an index operation, so we can
+			get the size information when we are passing the symtable to the code generator 
+			This is a bit hacky, but it should work for what we need it to
+		*)
+			let (ex, ty) = check_expr a.arraydecl_size env in 
+			env.scope.vars <- (ve.vdecl_type, ve.vdecl_name, C_Array_Index(ve.vdecl_name, ex, ve.vdecl_type))::env.scope.vars;
 			let (ex, typ) = check_expr a.arraydecl_size env in
 			match typ with 
 				Tfloat -> raise (Error("Invalid array size type, expects int"))
@@ -334,6 +340,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	*)
 	and check_array_init (a: arraydecl) (el: expr list) (env: stch_env) =
 		(* first step: check that we have a valid array decl *)
+
+		(* ------------------ TODO ------------------- *)
+		(* Change this to check for the variable here, so we can add the C_EXPR to the symtable *)
+
 		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; 
 											Stch_ast.vdecl_name = a.arraydecl_name} env in
 		(* now that we know it's valid, check the types of the list *)
@@ -395,6 +405,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		let mat = { Stch_ast.vdecl_type = m.matrixdecl_type; 
 					Stch_ast.vdecl_name = m.matrixdecl_name} in
 
+
 		(* check to see if the variable is not already declared *)
 		let invalid = List.exists (fun (_, s, _) -> s = mat.vdecl_name) env.scope.vars in 
 		if invalid then
@@ -402,7 +413,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		else
 		(* if it isn't, put it in the scope, and make a new c_arraydecl 
 			after you typematch the size expression *)
-			env.scope.vars <- (mat.vdecl_type, mat.vdecl_name, C_Noexpr)::env.scope.vars;
+			let (exr, ty) = check_expr m.matrixdecl_rows env in 
+			let (exc, ty) = check_expr m.matrixdecl_cols env in
+			env.scope.vars <- (mat.vdecl_type, mat.vdecl_name,
+				C_Matrix_Index(mat.vdecl_name, exr, exc ,mat.vdecl_type))::env.scope.vars;
 			let (row, typerow) = check_expr m.matrixdecl_rows env in
 			let (col, typecol) = check_expr m.matrixdecl_cols env in
 			match (typerow, typecol) with 
