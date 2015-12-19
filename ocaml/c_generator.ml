@@ -477,12 +477,13 @@ let rec stitch2func = function
   | C_If(e, s1, s2) -> stitch2func s2
   | C_For(e1, e2, e3, s) -> stitch2func s
   | C_While(e, s) -> stitch2func s
-  | C_Stitch(var, start, s_end, stride, fname, body, scope) -> "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ 
-    "int end;\n" ^ "int stepSize;\n" ^ (print_stitch_variables "" scope.vars) ^ 
-  "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars){" ^ 
-    String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) ^ 
-      "\nreturn (void*)0;\n}\n"
-  (* need to add any other type of stmt that can contain a stitch loop ***TAKE THIS COMMENT OUT, WE'RE DONE HERE***)
+  | C_Stitch(var, start, s_end, stride, fname, body, scope) ->
+    let inner = String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) in 
+      "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ "int end;\n" ^ "int stepSize;\n" ^ 
+      (print_stitch_variables "" scope.vars) ^ "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars) {\n " ^
+      "int "^(string_of_c_expr var)^" = 0;\n for("^(string_of_c_expr var)^" = ((struct stch_rangeInfo"^
+      fname^" *)vars)->begin; "^(string_of_c_expr var)^" < ((struct stch_rangeInfo"^fname^
+        " *)vars)->end; "^(string_of_c_expr var)^"++)" ^ inner ^ "\nreturn (void*)0;\n}\n"
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
