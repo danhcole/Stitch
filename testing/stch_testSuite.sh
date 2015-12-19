@@ -65,6 +65,7 @@ echo "******************" 2>&1 | tee -a $LOG
 echo "* Positive Tests *" 2>&1 | tee -a $LOG
 echo "******************" 2>&1 | tee -a $LOG
 
+
 for test in $TESTS
 do
 	TCOUNT=$((TCOUNT + 1))

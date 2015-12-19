@@ -4,11 +4,20 @@ int main() {
   int test = 6;
 
   int a[10];
-  int m[10][10];
+  int k = 0;
+  int j = 0;
 
-  stitch i from 0 to 4 by 1: {
-  	int test = 8;
-    print(test);
+  for(k = 0; k < 10; k = k + 1) {
+  	a[k] = k;
+  }
+
+  stitch i from 0 to 10 by 1: {
+  	a[i] = a[i] + 1;
+    }
+
+    
+    for(j = 0; j < 10; j= j + 1) {
+    	print(a[i]);
     }
 
   return 0;

@@ -196,18 +196,19 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
   | C_Id(s, t) -> structname ^ "->" ^ s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
-      string_of_c_expr e1 ^ " " ^
+      print_string "IN HERE \n";
+      (string_of_stch_expr structname e1) ^ " " ^
       (match o with
         Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
       | Equal -> "==" | Ne -> "!="
       | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
-      string_of_c_expr e2
+      (string_of_stch_expr structname e2)
   | C_Negate(e) -> "!" ^ string_of_c_expr e
   | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) structname | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
-  | C_Assign2(i, e) -> structname ^ "->" ^ i ^ " = " ^ string_of_c_expr e
-  | C_Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_c_expr e
-  | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
+  | C_Assign2(i, e) -> structname ^ "->" ^ i ^ " = " ^ string_of_stch_expr structname e
+  | C_Array_Item_Assign(id, ind, e) -> structname ^ "->" ^ id ^ "[" ^ string_of_stch_expr structname ind ^"] = " ^ string_of_stch_expr structname e
+  | C_Array_Index(a, i, t) -> structname ^ "->" ^ a ^ "[" ^ string_of_stch_expr structname i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
   | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
   | C_Noexpr -> ""
@@ -377,9 +378,9 @@ let rec print_stitch_variables (seed: string) el = match el with
     if exp = C_Noexpr then 
       print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ name ^ string_of_c_expr exp ^ ";\n") tail
     else
-      print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ string_of_c_expr exp ^ ";\n") tail
+      print_stitch_variables (seed ^ (string_of_dataType typ) ^ " *" ^ name ^ ";\n") tail
 
-      
+
 let rec assign_stitch_variables (seed: string) (structname: string) el = match el with
   [] -> seed ^ "\n"
   | head::tail -> let (typ, name, exp) = head in
