@@ -251,6 +251,7 @@ let rec check_matrix_vals (name: matrixdecl) (el: expr list list) (ncols: int) (
 				let m = check_matrix_rows name head t env in
 				check_matrix_vals m tail ncols t env
 
+(* Generate the names for the struct and the anonymous pthread functions *)
 let gen_name (sn : stch_name_gen) = 
 	let i = sn.name in 
 		sn.name <- i+1; "_" ^ string_of_int i
@@ -468,6 +469,29 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			end
 		end
 
+(* Go through the body of a stitch loop and create an environment of all the variables used, so we know
+	what needs to be passed in
+	NOTE: VDECLS and ARRAYDECLS/MATRIXDECLS should NOT be added here, because those are local in the stitch
+	loop and should not be copied *)
+
+	and check_stitch_body (el: c_stmt list) (table: symTable) (env: stch_env) = match el with
+	[] -> table
+	| head::tail -> (* string_of_symTable table; *)
+	(match head with
+		(* The symtable of block here consists of all the variables that I do not want to put in the struct *)
+		| C_Block(t, b) -> string_of_symTable t; check_stitch_body b table env
+		| C_Vdecl(a) -> let n = a.vdecl_name in
+			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
+			check_stitch_body tail table' env
+		| C_ArrayDecl(a) -> check_stitch_body tail table env
+		| C_MatrixDecl(m) -> check_stitch_body tail table env
+		| C_Assign(v, r) -> check_stitch_body tail table env
+		(* Need to add ARRAYINIT, MATRIXINIT, and others *)
+		(* else I want to keep them in the symtable *)
+		| _ -> print_string ("CHECKING OTHER\n") ;check_stitch_body tail table env
+	)
+
 
 	(* Typechecking the expressions of a Stitch Loop *)
 	and check_stitch (var : expr) (start : expr) (s_end : expr) (stride : expr) (body : stmt) (env : stch_env)  =
@@ -483,8 +507,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 				else begin
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin 
-						let body' = [(check_stmt body env)] in 
-							C_Stitch(var', start', s_end', stride', gen_name sn, body', env.scope) 
+						let body' = [(check_stmt body env)] in
+						let t' = check_stitch_body body' env.scope env in  
+							C_Stitch(var', start', s_end', stride', gen_name sn, body', t') 
 					end
 				end
 			end
