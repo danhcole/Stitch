@@ -9,3 +9,5 @@ int main()
 
 	return 0;
 }
+
+/*Fatal error: exception Parsing.Parse_error*/
