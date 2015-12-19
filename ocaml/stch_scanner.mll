@@ -40,7 +40,6 @@ rule token = parse
 	| "by"						{ BY }
 	| "break"					{ BREAK }
 	| "return"					{ RETURN }
-	| "const"					{ CONST }
 	| "void"					{ TVOID }
 	| "int"						{ TINT }
 	| "float"					{ TFLOAT }

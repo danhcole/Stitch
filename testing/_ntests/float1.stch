@@ -4,7 +4,7 @@ int main()
 {
 	float a = 1.2;
 	print(a);
-	float b = 1.23.4;
+	float b = 1.23.4; //causes parsing error
 	print(b);
 
 	return 0;

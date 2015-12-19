@@ -7,7 +7,7 @@
 %token GT GE LT LE
 %token FROM TO BY
 %token IF ELSE WHILE FOR STITCH BREAK RETURN TVOID TINT TFLOAT TCHAR TINTAP TINTAM TFLOATAP TFLOATAM
-%token CONST VOID
+%token VOID
 %token <int>INT
 %token <char>CHAR
 %token <float> FLOAT 
