@@ -196,7 +196,6 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
   | C_Id(s, t) -> structname ^ "->" ^ s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
-      print_string "IN HERE \n";
       (string_of_stch_expr structname e1) ^ " " ^
       (match o with
         Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
