@@ -1,0 +1,9 @@
+/*identifiers cannot start with _ or a number*/
+
+int main()
+{
+	int _a = 0;
+	print(_a);
+}
+
+/*Fatal error: exception Failure("illegal character _")*/
