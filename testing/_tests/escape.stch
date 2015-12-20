@@ -1,6 +1,6 @@
 int main() {
 
-	char e = '\\';
+	char e = '\n';
 	print(e);
 
 	return 0;
