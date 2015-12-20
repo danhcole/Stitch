@@ -4,4 +4,6 @@ int main()
   print("this should print");
   exit(x);
   print("this should not");
+
+  return 0;
 }

@@ -9,5 +9,5 @@ int main(){
   	print(a[i]);
 
   }
-
+  return 0;
 }

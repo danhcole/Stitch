@@ -62,6 +62,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	  Int(l) 	-> C_Int(l), Tint
 	| Float(l) 	-> C_Float(l), Tfloat
 	| Char(l) 	-> C_Char(l), Tchar
+	| Escape(l) -> C_Escape(l), Tchar
 	| String(l) -> C_String(l), Tstring
 	(* For ID's, check to see if the variable has been declared, if it has, get the name and type *)
 	| Id(l) -> 
@@ -116,6 +117,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		and (rhs, t2) = check_expr rhs env in
 		if t1 = t2 then
 			C_Assign2(lhs, rhs), t2
+		else if t1 = Tint && t2 = Tchar then
+			C_Assign2(lhs, rhs), t1
 		else
 			raise (Error("Type mismatch on variable assignment " ^ lhs ^ 
 				"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
@@ -547,6 +550,13 @@ let check_formals (decl: vdecl) (env: stch_env) =
 			let v = { Stch_cast.vdecl_type = decl.vdecl_type; 
 						Stch_cast.vdecl_name = decl.vdecl_name } in v
 
+let check_for_ret (body: stmt list) = 
+	if (List.exists ( fun ( s ) -> match s with
+		 									Return(a) -> true
+		 									| _ -> false ) body) then ""
+	else
+		raise (Error("Control reaches the end of nonvoid function."))
+
 (* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 	if env.in_func then
@@ -559,7 +569,10 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 						Stch_cast.fdecl_type = func.fdecl_type; 
 						Stch_cast.fdecl_formals = f_formals; 
 						Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
-							env.funcs <- f::env.funcs; f 
+							match func.fdecl_type with
+								Tvoid -> env.funcs <- f::env.funcs; f 
+								| _ -> ignore(check_for_ret func.body); env.funcs <- f::env.funcs; f 
+							
 
 (* typecheck the ast env *)
 let init_env : (stch_env) = 

@@ -18,6 +18,7 @@ let rec string_of_c_expr = function
     C_Int(l) -> string_of_int l
   | C_Float(l) -> string_of_float l
   | C_Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
+  | C_Escape(l) -> "\'" ^ l ^ "\'"
   | C_Id(s, t) -> s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
@@ -254,6 +255,7 @@ let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr)
           structname ^ "->" ^ s
       else
           s      
+  | C_Escape(l) -> "\'" ^ l ^ "\'"
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
       (string_of_stch_expr structname table e1) ^ " " ^

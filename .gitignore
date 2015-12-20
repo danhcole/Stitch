@@ -20,5 +20,7 @@ stitch
 *.stch.c
 *.o
 /testing/_bin/**
+/testing/file1.stch
 *.acv
 *.idlk
+/ocaml/image_invert.stch

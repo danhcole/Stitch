@@ -5,4 +5,6 @@ int main()
   a = open("file1.stch");
   read(a, c);
   print("success");
+
+  return 0;
 }
