@@ -1,6 +1,6 @@
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
           | Or | And
-type dataType = Tint | Tfloat | Tchar | Tvoid | Tstring | Tintap | Tintam | Tfloatap | Tfloatam
+type dataType = Tint | Tfloat | Tchar | Tvoid | Tstring | Tintap | Tintam | Tfloatap | Tfloatam | Tfile
 
 type vdecl = {
   vdecl_type     : dataType;
@@ -74,6 +74,7 @@ let string_of_dataType = function
   | Tintam -> "int"
   | Tfloatap -> "float"
   | Tfloatam -> "float"
+  | Tfile -> "FILE *"
 
 let rec string_of_expr = function
     Int(l) -> string_of_int l

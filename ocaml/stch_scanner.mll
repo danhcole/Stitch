@@ -48,6 +48,7 @@ rule token = parse
 	| "int_am"					{ TINTAM }
 	| "float_ap"				{ TFLOATAP }
 	| "float_am"				{ TFLOATAM }
+	| "FILE"					{ TFILE }
 	| ['-' '+']?['0' - '9']+ as i_litr				{ INT(int_of_string i_litr) }
 	| ['-' '+']?['0'-'9']?'.'['0'-'9']* as f_litr 	{ FLOAT(float_of_string f_litr) }
 	| '''([^''']  as ch_litr)'''					{ CHAR(ch_litr) }

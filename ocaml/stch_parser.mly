@@ -6,10 +6,10 @@
 %token AND OR
 %token GT GE LT LE
 %token FROM TO BY
-%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOID TINT TFLOAT TCHAR TINTAP TINTAM TFLOATAP TFLOATAM
+%token IF ELSE WHILE FOR STITCH BREAK RETURN TVOID TINT TFLOAT TCHAR TINTAP TINTAM TFLOATAP TFLOATAM TFILE
 %token VOID
-%token <int>INT
-%token <char>CHAR
+%token <int> INT
+%token <char> CHAR
 %token <float> FLOAT 
 %token <string> STRING
 %token <string> ID
@@ -52,6 +52,7 @@ TINT			{ Tint }
 | TINTAM		{ Tintam }
 | TFLOATAP		{ Tfloatap }
 | TFLOATAM		{ Tfloatam }
+| TFILE			{ Tfile }
 
 formals_opt:
 	/* nothing */	{ [] }

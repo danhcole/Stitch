@@ -12,6 +12,7 @@ let string_of_c_dataType = function
   | Tintam -> "int"
   | Tfloatap -> "float"
   | Tfloatam -> "float"
+  | Tfile -> "FILE *"
 
 let rec string_of_c_expr = function
     C_Int(l) -> string_of_int l
@@ -28,13 +29,18 @@ let rec string_of_c_expr = function
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_c_expr e2
   | C_Negate(e) -> "!" ^ string_of_c_expr e
-  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
+  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | "open" -> "fopen" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) | "error" -> error_2_fprintf (List.hd el) | "open" -> open_2_fopen (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
   | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
   | C_Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_c_expr e
   | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
   | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
   | C_Noexpr -> ""
+
+      and open_2_fopen (e: c_expr) = match e with
+        C_String(l) -> ("\"" ^ l ^ "\", \"w+\"" )::[]
+      | _ -> raise (Error("Invalid argument for open: " ^ string_of_c_expr e))
+
 
       and print_2_fprint (e: c_expr) = match e with
         C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr e)::[]
@@ -46,7 +52,8 @@ let rec string_of_c_expr = function
                                     | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
                                     | Tchar -> ("\"%c\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
                                     | Tstring -> ("\"%s\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
-                                    | Tvoid -> raise (Error("Invalid print type Void: " ^ a ^ "[" ^ string_of_c_expr i ^ "]")))
+                                    | Tvoid -> raise (Error("Invalid print type Void: " ^ a ^ "[" ^ string_of_c_expr i ^ "]"))
+                                    | Tfile -> raise (Error("Invalid print type File")))
       | C_Matrix_Index(m, r, c, t) -> (match t with
                                      Tint | Tintap | Tintam -> ("\"%d\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^ 
                                               string_of_c_expr c ^ "]")::[]
@@ -56,13 +63,15 @@ let rec string_of_c_expr = function
                                               string_of_c_expr c ^ "]")::[]
                                     | Tstring -> ("\"%s\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
                                               string_of_c_expr c ^ "]")::[]
-                                    | Tvoid -> raise(Error("Invalid print type void in matrix printing")))
+                                    | Tvoid -> raise(Error("Invalid print type void in matrix printing"))
+                                    | Tfile -> raise(Error("Invlaid print type file in matrix printing")))
       | C_Id(l, t) -> (match t with
                         Tint | Tintap | Tintam -> ("\"%d\\n\", " ^ string_of_c_expr e)::[]
                         | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr e)::[]
                         | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr e)::[]
                         | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr e)::[]
-                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e)))
+                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e))
+                        | Tfile -> raise (Error("Invalid print type File: ")))
       | C_Binop(lhs, o, rhs) -> (match o with
                                     Add -> (match lhs with
                                               C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
@@ -72,7 +81,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Subtract -> (match lhs with
@@ -83,7 +93,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Times -> (match lhs with
@@ -94,7 +105,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Divide -> (match lhs with
@@ -105,7 +117,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Equal -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "==" ^ string_of_c_expr rhs)::[]
@@ -130,7 +143,8 @@ let rec string_of_c_expr = function
                         | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr e)::[]
                         | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr e)::[]
                         | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr e)::[]
-                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e)))
+                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e))
+                        | Tfile -> raise (Error("Invalid print type File: ")))
       | C_Binop(lhs, o, rhs) -> (match o with
                                     Add -> (match lhs with
                                               C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
@@ -140,7 +154,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Subtract -> (match lhs with
@@ -151,7 +166,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Times -> (match lhs with
@@ -162,7 +178,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Divide -> (match lhs with
@@ -173,7 +190,8 @@ let rec string_of_c_expr = function
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Equal -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "==" ^ string_of_c_expr rhs)::[]
@@ -222,7 +240,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                     | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
                                     | Tchar -> ("\"%c\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
                                     | Tstring -> ("\"%s\\n\", " ^ a ^ "[" ^ string_of_c_expr i ^ "]")::[]
-                                    | Tvoid -> raise (Error("Invalid print type Void: " ^ a ^ "[" ^ string_of_c_expr i ^ "]")))
+                                    | Tvoid -> raise (Error("Invalid print type Void: " ^ a ^ "[" ^ string_of_c_expr i ^ "]"))
+                                    | Tfile -> raise (Error("Invalid print type File: ")))
       | C_Matrix_Index(m, r, c, t) -> (match t with
                                      Tint | Tintap | Tintam -> ("\"%d\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^ 
                                               string_of_c_expr c ^ "]")::[]
@@ -232,13 +251,15 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                               string_of_c_expr c ^ "]")::[]
                                     | Tstring -> ("\"%s\\n\", " ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^
                                               string_of_c_expr c ^ "]")::[]
-                                    | Tvoid -> raise(Error("Invalid print type void in matrix printing")))
+                                    | Tvoid -> raise(Error("Invalid print type void in matrix printing"))
+                                    | Tfile -> raise (Error("Invalid print type File: ")))
       | C_Id(l, t) -> (match t with
                           Tint | Tintap | Tintam -> ("\"%d\\n\", " ^ (string_of_stch_expr structname e))::[]
                         | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr e)::[]
                         | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr e)::[]
                         | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr e)::[]
-                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e)))
+                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e))
+                        | Tfile -> raise (Error("Invalid print type File: ")))
       | C_Binop(lhs, o, rhs) -> (match o with
                                     Add -> (match lhs with
                                               C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
@@ -248,7 +269,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Subtract -> (match lhs with
@@ -259,7 +281,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Times -> (match lhs with
@@ -270,7 +293,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Divide -> (match lhs with
@@ -281,7 +305,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("\"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("\"%c\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("\"%s\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Equal -> ("\"%d\\n\", " ^ string_of_c_expr lhs ^ "==" ^ string_of_c_expr rhs)::[]
@@ -306,7 +331,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                         | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr e)::[]
                         | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr e)::[]
                         | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr e)::[]
-                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e)))
+                        | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr e))
+                        | Tfile -> raise (Error("Invalid print type File: ")))
       | C_Binop(lhs, o, rhs) -> (match o with
                                     Add -> (match lhs with
                                               C_Int(l) -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
@@ -316,7 +342,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "+" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Subtract -> (match lhs with
@@ -327,7 +354,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "-" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Times -> (match lhs with
@@ -338,7 +366,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "*" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Divide -> (match lhs with
@@ -349,7 +378,8 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
                                                                 | Tfloat | Tfloatap | Tfloatam -> ("stderr, \"%f\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tchar -> ("stderr, \"%c\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
                                                                 | Tstring -> ("stderr, \"%s\\n\", " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)::[]
-                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs)))
+                                                                | Tvoid -> raise (Error("Invalid print type Void: " ^ string_of_c_expr lhs ^ "/" ^ string_of_c_expr rhs))
+                                                                | Tfile -> raise (Error("Invalid print type File: ")))
                                             | _ -> raise (Error("Invalid add in function call"))
                                           )
                                   | Equal -> ("stderr, \"%d\\n\", " ^ string_of_c_expr lhs ^ "==" ^ string_of_c_expr rhs)::[]

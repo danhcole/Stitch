@@ -563,9 +563,9 @@ let init_env : (stch_env) =
 						 body = [];
 						};
 
-						{fdecl_type = Tvoid;
+						{fdecl_type = Tfile;
 						 fdecl_name = "open";
-						 fdecl_formals = [];
+						 fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "fn"}; ];
 						 body = [];
 						};] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in
