@@ -478,18 +478,29 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	[] -> table
 	| head::tail -> (* string_of_symTable table; *)
 	(match head with
-		(* The symtable of block here consists of all the variables that I do not want to put in the struct *)
-		| C_Block(t, b) -> string_of_symTable t; check_stitch_body b table env
+		(* The symtable of block here consists of all the variables that I do not want to put in the struct,
+			so we just pass the list through *)
+		| C_Block(t, b) -> check_stitch_body b table env
 		| C_Vdecl(a) -> let n = a.vdecl_name in
 			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
-		| C_ArrayDecl(a) -> check_stitch_body tail table env
-		| C_MatrixDecl(m) -> check_stitch_body tail table env
-		| C_Assign(v, r) -> check_stitch_body tail table env
+		| C_ArrayDecl(a) -> let n = a.arraydecl_name in
+			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
+			check_stitch_body tail table' env
+		| C_MatrixDecl(m) -> let n = m.matrixdecl_name in
+			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
+			check_stitch_body tail table' env
+		| C_Assign(v, r) -> let n = v.vdecl_name in
+			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
+			check_stitch_body tail table' env
 		(* Need to add ARRAYINIT, MATRIXINIT, and others *)
-		(* else I want to keep them in the symtable *)
-		| _ -> print_string ("CHECKING OTHER\n") ;check_stitch_body tail table env
+
+		(* else I want to keep them in the symtable, continue down the list *)
+		| _ -> check_stitch_body tail table env 
 	)
 
 
