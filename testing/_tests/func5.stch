@@ -1,0 +1,14 @@
+float func(float a, float b, float c)
+{
+	return a + b + c;
+}
+
+int main()
+{
+	float a = 0.5;
+
+	a = func(1.0,2.0,3.0);
+	print(a);
+
+	return 0;
+}
