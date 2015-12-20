@@ -1,0 +1,14 @@
+int func(int x)
+{
+	return x + 1;
+}
+
+int main()
+{
+	int a = 0;
+	a = func(a=7);
+
+	print(a);
+
+	return 0;
+}

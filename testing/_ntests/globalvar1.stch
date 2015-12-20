@@ -1,3 +1,5 @@
+/*global variables are not supported*/
+
 int b = 1;
 
 int main()
@@ -7,3 +9,5 @@ int main()
 
 	return 0;
 }
+
+/*Fatal error: exception Parsing.Parse_error*/
