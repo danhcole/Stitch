@@ -1,8 +1,8 @@
 int main()
 {
-  FILE a;
+  int a;
   char c[5000];
   a = open("file1.stch");
-  write(a, c);
+  read(a, c);
   print("success");
 }

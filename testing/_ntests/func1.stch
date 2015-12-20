@@ -1,0 +1,11 @@
+int main() {
+	int b = 9;
+
+	int func(int a){
+		print(a);
+	}
+
+	func(b);
+
+	return 0;
+}

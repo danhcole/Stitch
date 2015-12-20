@@ -1,0 +1,6 @@
+int main() {
+	
+	void a = "hello";
+
+	return 0;
+}

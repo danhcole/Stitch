@@ -1,0 +1,8 @@
+int main() {
+	
+	if(int i == 0){
+		print("hello");
+	}
+
+	return 0;
+}

@@ -1,6 +1,6 @@
 int main()
 {
 	int a;
-	a = 39 + 3;
+	a = 39 + 3 + 10 + 42;
 	print(a);
 }
