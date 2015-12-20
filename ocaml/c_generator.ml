@@ -241,11 +241,6 @@ let rec string_of_c_expr = function
       | _ -> raise (Error("Invalid expr in print statement: " ^ string_of_c_expr e))
 
 
-(* let rec need_prepend_expr (structname: string) (table: symTable) (exp: c_expr) = match exp with
-    | C_Id(l) ->
-    | _ -> false *)
-
-
 let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr) = match exp with
     C_Int(l) -> string_of_int l
   | C_Float(l) -> string_of_float l
@@ -268,7 +263,11 @@ let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr)
   | C_Negate(e) -> "!" ^ string_of_stch_expr structname table e
   | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) structname table | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
   (* NEED TO CHECK THE REST OF THESE  *)
-  | C_Assign2(i, e) -> structname ^ "->" ^ i ^ " = " ^ string_of_stch_expr structname table e
+  | C_Assign2(i, e) -> 
+      if List.exists( fun(_,s,_) -> s = i) table.vars then
+        structname ^ "->" ^ i ^ " = " ^ string_of_stch_expr structname table e
+      else
+        i ^ " = " ^ string_of_stch_expr structname table e
   | C_Array_Item_Assign(id, ind, e) -> structname ^ "->" ^ id ^ "[" ^ string_of_stch_expr structname table ind ^
       "] = " ^ string_of_stch_expr structname table e
   | C_Array_Index(a, i, t) -> structname ^ "->" ^ a ^ "[" ^ string_of_stch_expr structname table i ^ "]"
