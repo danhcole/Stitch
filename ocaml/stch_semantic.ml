@@ -519,7 +519,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin 
 						let body' = [(check_stmt body env)] in
-						let t' = check_stitch_body body' env.scope env in  
+						let t' = check_stitch_body body' env.scope env in
+(* NEED TO REMOVE VAR HERE, OR ELSE EVERYTHING IS FUCKED *)
+(* let scope' = {Stch_cast.parent = scope.parent; Stch_cast.vars = List.filter (fun (t, n, e) -> n <> (string_of_c_expr var)) scope.vars } in *)
 							C_Stitch(var', start', s_end', stride', gen_name sn, body', t') 
 					end
 				end

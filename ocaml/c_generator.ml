@@ -257,10 +257,10 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
   | C_Negate(e) -> "!" ^ string_of_c_expr e
   | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) structname | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
   | C_Assign2(i, e) -> structname ^ "->" ^ i ^ " = " ^ string_of_stch_expr structname e
-  | C_Array_Item_Assign(id, ind, e) -> structname ^ "->" ^ id ^ "[" ^ string_of_stch_expr structname ind ^"] = " ^ string_of_stch_expr structname e
-  | C_Array_Index(a, i, t) -> structname ^ "->" ^ a ^ "[" ^ string_of_stch_expr structname i ^ "]"
-  | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
-  | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
+  | C_Array_Item_Assign(id, ind, e) -> structname ^ "->" ^ id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_stch_expr structname e
+  | C_Array_Index(a, i, t) -> structname ^ "->" ^ a ^ "[" ^ string_of_c_expr i ^ "]"
+  | C_Matrix_Index(m, r, c, t) -> structname ^ "->" ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
+  | C_Matrix_Item_Assign(m, r, c, e) -> structname ^ "->" ^ m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_stch_expr structname e
   | C_Noexpr -> ""
 
       and print_2_fprint (e: c_expr) (structname: string) = match e with
@@ -532,6 +532,101 @@ let rec string_of_c_stmt = function
   | C_MatrixInit(mdecl, li) -> string_of_c_matrixdecl mdecl ^ " = " ^ string_of_c_matrixlist "{" li ^ ";\n"
   | C_Break -> "break;" 
 
+(* This function will take in a structname, a statement list, and a symbol table
+  For every statement, we will check to see if it's a variable inside the symbol table
+  If it is, we want to prepend the structname to it (By calling string_of_stch_statement) 
+  We want this to return a list of strings 
+  *)
+
+(* For now, array and matrix indexing must be done with local variables. You are not allowed to use variables
+  outside the stitch loops to index into anything, with the exception of "var"
+   *)
+
+
+let rec map_structname (structname: string) (sl: c_stmt list) (table: symTable) (seed: string list) = match sl with
+  | [] -> List.rev seed
+  | head::tail -> (match head with
+                    (* @TODO Fix how the body works here, need curly braces *)
+                    C_Block(_, stmts) -> map_structname structname stmts table seed
+                    (* For expr and vdecl, we want to check if they're inside the symbol table *)
+                    | C_Expr(t, e) -> (match e with 
+                        | C_Assign2(i, e) ->
+                          if List.exists( fun(_,s,_) -> s = i) table.vars then
+                            let s' = (string_of_stch_stmt structname head)::seed in 
+                            map_structname structname tail table s'
+                          else
+                            let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                        | C_Array_Item_Assign(id, ind, e) -> print_string "Inside array item assign\n";
+                          let i = id in 
+                          if List.exists( fun(_,s,_) -> s = i) table.vars then
+                            let s' = (string_of_stch_stmt structname head)::seed in 
+                            map_structname structname tail table s'
+                          else
+                            let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                        | C_Array_Index(a, i, t) -> 
+                          if List.exists( fun(_,s,_) -> s = a) table.vars then
+                            let s' = (string_of_stch_stmt structname head)::seed in 
+                            map_structname structname tail table s'
+                          else
+                            let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                        | C_Matrix_Index(m, r, c, t) -> 
+                          if List.exists( fun(_,s,_) -> s = m) table.vars then
+                            let s' = (string_of_stch_stmt structname head)::seed in 
+                            map_structname structname tail table s'
+                          else
+                            let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                        | C_Matrix_Item_Assign(m, r, c, e) ->
+                          if List.exists( fun(_,s,_) -> s = m) table.vars then
+                            let s' = (string_of_stch_stmt structname head)::seed in 
+                            map_structname structname tail table s'
+                          else
+                            let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                        | C_Id(s, t) ->
+                          if List.exists( fun(_,n,_) -> n = s) table.vars then
+                            let s' = (string_of_stch_stmt structname head)::seed in 
+                            map_structname structname tail table s'
+                          else
+                            let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                        | C_Binop(e1, o, e2) -> raise(Error("Dear lord i'm dying here"))
+                        (* else I just want to pass it along *)
+                        | _ -> let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s' ) 
+                    | C_Vdecl(v) -> let n = v.vdecl_name in
+                        if List.exists( fun(_,s,_) -> s = n) table.vars then
+                          let s' = (string_of_stch_stmt structname head)::seed in 
+                          map_structname structname tail table s'
+                        else
+                          let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s' 
+                    (* For the rest of these, just print the statements as is *)
+                    | C_Return(_, c_expr) ->
+                        let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                    | C_If(e,e2,_) ->
+                        let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                    | C_For(e1, e2, e3, s) ->
+                        let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                    | C_While(e, s) ->
+                        let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                    | C_Stitch(var, start, s_end, stride, fname, body, scope) ->
+                        let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                    (* For assignments and arraydecls, we need to check the symbol tables *)
+                    | C_Assign(v, e) -> let n = v.vdecl_name in 
+                        if List.exists( fun(_,s,_) -> s = n) table.vars then
+                          let s' = (string_of_stch_stmt structname head)::seed in 
+                          map_structname structname tail table s'
+                        else
+                          let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s' 
+                    | C_ArrayDecl(a) -> let n = a.arraydecl_name in 
+                        if List.exists( fun(_,s,_) -> s = n) table.vars then
+                          let s' = (string_of_stch_stmt structname head)::seed in 
+                          map_structname structname tail table s'
+                        else
+                          let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s' 
+                    | C_ArrayInit(arraydecl, el) -> raise(Error("hello from arrayinit"))
+                    | C_MatrixDecl(m) -> raise(Error("hello"))
+                    | C_MatrixInit(mdecl, li) -> raise(Error("hello"))
+
+                    | C_Break -> let s' = (string_of_c_stmt head)::seed in map_structname structname tail table s'
+                     )
+
 let rec stitch2func = function
     C_Block(_, stmts) ->
       String.concat "" (List.map stitch2func stmts)
@@ -540,12 +635,13 @@ let rec stitch2func = function
   | C_For(e1, e2, e3, s) -> stitch2func s
   | C_While(e, s) -> stitch2func s
   | C_Stitch(var, start, s_end, stride, fname, body, scope) ->
-    let inner = String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) in 
+     let inner = String.concat "\n" (List.map (string_of_stch_stmt ("((struct stch_rangeInfo" ^ fname ^ " *)vars)")) body) in 
+    (* let inner = String.concat "\n" (map_structname ("((struct stch_rangeInfo"^fname^" *)vars)") body scope []) in  *)
       "struct stch_rangeInfo" ^ fname ^ " {\n" ^ "int begin;\n"^ "int end;\n" ^ "int stepSize;\n" ^ 
       (print_stitch_variables "" scope.vars) ^ "\n};\n\n" ^ "void *" ^ fname ^ " (void *vars) {\n " ^
       "int "^(string_of_c_expr var)^" = 0;\n for("^(string_of_c_expr var)^" = ((struct stch_rangeInfo"^
       fname^" *)vars)->begin; "^(string_of_c_expr var)^" < ((struct stch_rangeInfo"^fname^
-        " *)vars)->end; "^(string_of_c_expr var)^"++)" ^ inner ^ "\nreturn (void*)0;\n}\n"
+        " *)vars)->end; "^(string_of_c_expr var)^"++) {\n" ^ inner ^ "\n}\nreturn (void*)0;\n}\n"
   | _ -> ""
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
