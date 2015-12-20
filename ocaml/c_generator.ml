@@ -29,13 +29,46 @@ let rec string_of_c_expr = function
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       string_of_c_expr e2
   | C_Negate(e) -> "!" ^ string_of_c_expr e
-  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | "open" -> "fopen" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) | "error" -> error_2_fprintf (List.hd el) | "open" -> open_2_fopen (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
+  | C_Call(f, el) -> (match f with "print" -> "printf" 
+                                  | "error" -> "fprintf" 
+                                  | "open" -> "fopen" 
+                                  | "read" -> "fread"
+                                  | "write" -> "fwrite"
+                                  | _ -> f) ^ 
+                    "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) 
+                                                          | "error" -> error_2_fprintf (List.hd el) 
+                                                          | "open" -> open_2_fopen (List.hd el) 
+                                                          | "read" -> read_2_fread el
+                                                          | "write" -> write_2_fwrite el
+                                                          | _ -> List.map string_of_c_expr el) ^ ")"
   | C_Assign2(i, e) -> i ^ " = " ^ string_of_c_expr e
   | C_Array_Item_Assign(id, ind, e) -> id ^ "[" ^ string_of_c_expr ind ^"] = " ^ string_of_c_expr e
   | C_Array_Index(a, i, t) -> a ^ "[" ^ string_of_c_expr i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "]"
   | C_Matrix_Item_Assign(m, r, c, e) -> m ^ "[" ^ string_of_c_expr r ^ "][" ^ string_of_c_expr c ^ "] = " ^ string_of_c_expr e
   | C_Noexpr -> ""
+
+      and read_2_fread (el: c_expr list) = 
+        let file = List.hd el in
+          let arr = List.hd (List.rev el) in
+            match file with
+              C_Id(s, t) -> (match t with
+                Tfile -> (match arr with
+                  C_Id(s', t') -> (s' ^ ", sizeof(" ^ s'  ^ "), 1, " ^ s)::[]
+                  | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr arr)))
+                | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr file)))
+              | _ -> raise(Error("Invalid argument for read: " ^ string_of_c_expr file))
+
+      and write_2_fwrite (el: c_expr list) = 
+        let file = List.hd el in
+          let arr = List.hd (List.rev el) in
+            match file with
+              C_Id(s, t) -> (match t with
+                Tfile -> (match arr with
+                  C_Id(s', t') -> (s' ^ ", sizeof(" ^ s'  ^ "), 1, " ^ s)::[]
+                  | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr arr)))
+                | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr file)))
+              | _ -> raise(Error("Invalid argument for read: " ^ string_of_c_expr file))
 
       and open_2_fopen (e: c_expr) = match e with
         C_String(l) -> ("\"" ^ l ^ "\", \"w+\"" )::[]

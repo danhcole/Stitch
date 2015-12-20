@@ -578,7 +578,20 @@ let init_env : (stch_env) =
 						 fdecl_name = "open";
 						 fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "fn"}; ];
 						 body = [];
-						};] in (* Need to add builtin functions here *)
+						};
+
+						{fdecl_type = Tint;
+						 fdecl_name = "read";
+						 fdecl_formals = [ {vdecl_type = Tfile; vdecl_name = "f"}; {vdecl_type = Tchar; vdecl_name = "a"}; ];
+						 body = [];
+						};
+
+						{fdecl_type = Tint;
+						 fdecl_name = "write";
+						 fdecl_formals = [ {vdecl_type = Tfile; vdecl_name = "f"}; {vdecl_type = Tchar; vdecl_name = "a"}; ];
+						 body = [];
+						};
+						] in (* Need to add builtin functions here *)
 	let init_scope = { parent = None; vars = []; } in
 	{ funcs = init_funcs; 
 		scope = init_scope; 
