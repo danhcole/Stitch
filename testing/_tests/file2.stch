@@ -1,8 +1,8 @@
 int main()
 {
   FILE a;
-  char c[5000];
-  a = open("file1.stch");
+  char c[13] = {'h', 'e', 'l', 'l', 'o', ',',' ','w','o','r','l','d','!'};
+  a = open("./_outputs/file2a_gen.txt");
   write(a, c);
   print("success");
 }
