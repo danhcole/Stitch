@@ -1,0 +1,16 @@
+int func1(int a){
+	print(a);
+}
+
+void func2(int b){
+	print(b);
+}
+
+int main() {
+	int x = 1;
+	int y = 2;
+	func1(x);
+	func2(y);
+
+	return 0;
+}

@@ -542,6 +542,13 @@ let check_formals (decl: vdecl) (env: stch_env) =
 			let v = { Stch_cast.vdecl_type = decl.vdecl_type; 
 						Stch_cast.vdecl_name = decl.vdecl_name } in v
 
+let check_for_ret (body: stmt list) = 
+	if (List.exists ( fun ( s ) -> match s with
+		 									Return(a) -> true
+		 									| _ -> false ) body) then ""
+	else
+		raise (Error("Control reaches the end of nonvoid function."))
+
 (* typecheck a function declaration *)
 let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 	if env.in_func then
@@ -554,7 +561,10 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 						Stch_cast.fdecl_type = func.fdecl_type; 
 						Stch_cast.fdecl_formals = f_formals; 
 						Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
-							env.funcs <- f::env.funcs; f 
+							match func.fdecl_type with
+								Tvoid -> env.funcs <- f::env.funcs; f 
+								| _ -> ignore(check_for_ret func.body); env.funcs <- f::env.funcs; f 
+							
 
 (* typecheck the ast env *)
 let init_env : (stch_env) = 
