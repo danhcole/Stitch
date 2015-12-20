@@ -529,7 +529,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 						let body' = [(check_stmt body env)] in
 						let t' = check_stitch_body body' env.scope env in
 						let scope' = {Stch_cast.parent = env.scope.parent;
-							Stch_cast.vars = List.filter (fun (t, n, e) -> n <> name) env.scope.vars } in
+							Stch_cast.vars = List.filter (fun (t, n, e) -> n <> name) t'.vars } in
 							C_Stitch(var', start', s_end', stride', gen_name sn, body', scope') 
 					end
 				end
