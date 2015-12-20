@@ -646,17 +646,30 @@ let rec stitch2func = function
 
 let string_of_stitch func = String.concat "" (List.map stitch2func func.body) 
 
+let string_of_c_fdecl fdecl = match fdecl.fdecl_name with
+  "main" -> ""
+  | _ -> string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ 
+    String.concat ", " (List.map string_of_c_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
+    String.concat "" (List.map string_of_c_stmt fdecl.body) ^ "}\n"
+(* 
 let string_of_c_fdecl fdecl =
   string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ 
     String.concat ", " (List.map string_of_c_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
+    String.concat "" (List.map string_of_c_stmt fdecl.body) ^ "}\n" *)
+
+let string_of_main fdecl = match fdecl.fdecl_name with
+  "main" -> string_of_c_dataType fdecl.fdecl_type ^ " " ^ fdecl.fdecl_name ^ "(" ^ 
+    String.concat ", " (List.map string_of_c_vdecl fdecl.fdecl_formals) ^ ")\n{\n" ^
     String.concat "" (List.map string_of_c_stmt fdecl.body) ^ "}\n"
+  | _ -> ""
 
 let string_of_vars (_, s, _) = s
 
 let string_of_c_program (prog : Stch_cast.c_program ) =
   String.concat "" (List.map string_of_c_stmt prog.stmts) ^ "\n" ^
+  String.concat "\n" (List.map string_of_c_fdecl prog.funcs) ^ "\n" ^
   String.concat "\n" (List.map string_of_stitch prog.funcs) ^ "\n" ^ 
-  String.concat "\n" (List.map string_of_c_fdecl prog.funcs) ^ "\n"
+  String.concat "\n" (List.map string_of_main prog.funcs) ^ "\n" 
 
 
 
