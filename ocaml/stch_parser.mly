@@ -10,6 +10,7 @@
 %token VOID
 %token <int> INT
 %token <char> CHAR
+%token <string> ESCAPE
 %token <float> FLOAT 
 %token <string> STRING
 %token <string> ID
@@ -123,6 +124,7 @@ expr:
 | INT		{ Int($1) }
 | FLOAT		{ Float($1) }
 | CHAR		{ Char($1) }
+| ESCAPE	{ Escape($1)}
 | ID		{ Id($1) }
 | STRING 	{ String($1) }
 /*Array*/

@@ -4,6 +4,7 @@ type c_expr =
 	  C_Int of int
   | C_Float of float
   | C_Char of char
+  | C_Escape of string
   | C_Id of string * dataType
   | C_String of string
   | C_Binop of c_expr * op * c_expr

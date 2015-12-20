@@ -62,6 +62,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	  Int(l) 	-> C_Int(l), Tint
 	| Float(l) 	-> C_Float(l), Tfloat
 	| Char(l) 	-> C_Char(l), Tchar
+	| Escape(l) -> C_Escape(l), Tchar
 	| String(l) -> C_String(l), Tstring
 	(* For ID's, check to see if the variable has been declared, if it has, get the name and type *)
 	| Id(l) -> 

@@ -18,6 +18,7 @@ let rec string_of_c_expr = function
     C_Int(l) -> string_of_int l
   | C_Float(l) -> string_of_float l
   | C_Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
+  | C_Escape(l) -> "\'" ^ l ^ "\'"
   | C_Id(s, t) -> s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
@@ -244,6 +245,7 @@ let rec string_of_stch_expr (structname: string) (exp: c_expr) = match exp with
     C_Int(l) -> string_of_int l
   | C_Float(l) -> string_of_float l
   | C_Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
+  | C_Escape(l) -> "\'" ^ l ^ "\'"
   | C_Id(s, t) -> structname ^ "->" ^ s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->

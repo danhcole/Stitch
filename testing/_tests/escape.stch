@@ -1,0 +1,7 @@
+int main() {
+
+	char e = '\\';
+	print(e);
+
+	return 0;
+}

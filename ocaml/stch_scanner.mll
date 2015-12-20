@@ -49,10 +49,11 @@ rule token = parse
 	| "float_ap"				{ TFLOATAP }
 	| "float_am"				{ TFLOATAM }
 	| "FILE"					{ TFILE }
-	| ['-' '+']?['0' - '9']+ as i_litr				{ INT(int_of_string i_litr) }
-	| ['-' '+']?['0'-'9']?'.'['0'-'9']* as f_litr 	{ FLOAT(float_of_string f_litr) }
-	| '''([^''']  as ch_litr)'''					{ CHAR(ch_litr) }
-	| '"'([^'"']* as st_litr)'"'					{ STRING(st_litr)}
+	| ['-' '+']?['0' - '9']+ as i_litr					{ INT(int_of_string i_litr) }
+	| ['-' '+']?['0'-'9']?'.'['0'-'9']* as f_litr 		{ FLOAT(float_of_string f_litr) }
+	| '''([^''']  as ch_litr)'''						{ CHAR(ch_litr)}
+	| '''(['\\']['\\' ''' '"' 't' 'n'] as esc_ch)'''		{ ESCAPE(esc_ch)}
+	| '"'([^'"']* as st_litr)'"'						{ STRING(st_litr)}
 	| ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as litr { ID(litr) }
 	| eof { EOF }
 	| _ as char { raise (Failure("illegal character " ^ Char.escaped char))}

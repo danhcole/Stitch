@@ -11,6 +11,7 @@ type expr =
     Int of int
   | Float of float
   | Char of char
+  | Escape of string 
   | Id of string
   | String of string
   | Binop of expr * op * expr
@@ -80,6 +81,7 @@ let rec string_of_expr = function
     Int(l) -> string_of_int l
   | Float(l) -> string_of_float l
   | Char(l) ->  "\'" ^ String.make 1 l ^ "\'"
+  | Escape(l) -> "\'" ^ l ^ "\'"
   | Id(s) -> s
   | String(s) -> "\"" ^ s ^ "\""
   | Binop(e1, o, e2) ->
