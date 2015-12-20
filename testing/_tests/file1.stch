@@ -1,7 +1,6 @@
 int main()
 {
   FILE a;
-  int x;
   char c[5000];
   a = open("file1.stch");
   read(a, c);
