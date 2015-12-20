@@ -117,6 +117,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 		and (rhs, t2) = check_expr rhs env in
 		if t1 = t2 then
 			C_Assign2(lhs, rhs), t2
+		else if t1 = Tint && t2 = Tchar then
+			C_Assign2(lhs, rhs), t1
 		else
 			raise (Error("Type mismatch on variable assignment " ^ lhs ^ 
 				"\nExpected: " ^ string_of_dataType t1 ^ " Got: " ^ string_of_dataType t2))
