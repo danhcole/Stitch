@@ -1,0 +1,17 @@
+//error because there is no return type associated with foo().
+
+foo(int a, int b)
+{
+	print(a+b);
+}
+
+int main()
+{
+	int a = 2;
+	int b = 3;
+	foo(a, b);
+
+	return 0;
+}
+
+/*Fatal error: exception Parsing.Parse_error*/

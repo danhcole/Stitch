@@ -1,0 +1,12 @@
+//can't add chars to ints
+
+int main()
+{
+	int a = 0;
+	a = a + 'a';
+	print(a);
+
+	return 0;
+}
+
+/*Fatal error: exception Stch_semantic.Error("Incompatable data types for binop")*/
