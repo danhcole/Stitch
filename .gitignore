@@ -20,3 +20,5 @@ stitch
 *.stch.c
 *.o
 /testing/_bin/**
+*.acv
+*.idlk
