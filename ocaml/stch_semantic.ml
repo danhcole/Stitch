@@ -256,6 +256,10 @@ let gen_name (sn : stch_name_gen) =
 	let i = sn.name in 
 		sn.name <- i+1; "_" ^ string_of_int i
 
+let get_id_from_expr (ex: expr) = match ex with
+	Id(l) -> l
+	|_ -> "_null"
+
 (* typecheck a statement *)
 let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	Block(ss) -> 
@@ -507,6 +511,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	(* Typechecking the expressions of a Stitch Loop *)
 	and check_stitch (var : expr) (start : expr) (s_end : expr) (stride : expr) (body : stmt) (env : stch_env)  =
 		let (var', t1) = check_expr var env in
+		let name = get_id_from_expr var in
 		let (start', t2) = check_expr start env in
 		let (s_end', t3) = check_expr s_end env in
 		let (stride', t4) = check_expr stride env in
@@ -520,9 +525,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 					else begin 
 						let body' = [(check_stmt body env)] in
 						let t' = check_stitch_body body' env.scope env in
-(* NEED TO REMOVE VAR HERE, OR ELSE EVERYTHING IS FUCKED *)
-(* let scope' = {Stch_cast.parent = scope.parent; Stch_cast.vars = List.filter (fun (t, n, e) -> n <> (string_of_c_expr var)) scope.vars } in *)
-							C_Stitch(var', start', s_end', stride', gen_name sn, body', t') 
+						let scope' = {Stch_cast.parent = env.scope.parent;
+							Stch_cast.vars = List.filter (fun (t, n, e) -> n <> name) env.scope.vars } in
+							C_Stitch(var', start', s_end', stride', gen_name sn, body', scope') 
 					end
 				end
 			end
