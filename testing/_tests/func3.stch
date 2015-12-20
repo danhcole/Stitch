@@ -1,4 +1,4 @@
-int func1(int a){
+void func1(int a){
 	print(a);
 }
 

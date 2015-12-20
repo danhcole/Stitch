@@ -10,4 +10,6 @@ int main()
 	  print("five");
 	*/
 	print("six");
+
+	return 0;
 }

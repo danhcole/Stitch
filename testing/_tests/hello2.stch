@@ -3,4 +3,5 @@ int main(){
   print("hello, ");
   error("world");
 
+  return 0;
 }

@@ -5,4 +5,6 @@ int main()
   a = open("./_outputs/file2a_gen.txt");
   write(a, c);
   print("success");
+
+  return 0;
 }
