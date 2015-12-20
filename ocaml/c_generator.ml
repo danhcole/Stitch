@@ -489,9 +489,9 @@ let convert_stitch_2_for var start s_end stride fname scope =
     string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ incr ^ 
     ") {\n" ^ thread_assignment ^ threadgen ^ "thread"^fname^"++;\n" ^ "}\n\n" ^ threadjoin
 
-let rec string_of_c_stmt = function
+let rec string_of_c_stmt ?structname:(structname="") (st: c_stmt)= match st with
     C_Block(_, stmts) ->
-      "{\n" ^ String.concat "" (List.map string_of_c_stmt stmts) ^ "}\n"
+      "{\n" ^ String.concat "" (List.map (string_of_c_stmt ~structname:"hello") stmts) ^ "}\n"
   | C_Expr(_, e) -> string_of_c_expr e ^ ";\n";
   | C_Vdecl(v) -> string_of_c_dataType v.vdecl_type ^ " " ^ v.vdecl_name ^ ";\n";
   | C_Return(_, c_expr) -> "return " ^ string_of_c_expr c_expr ^ ";\n";
