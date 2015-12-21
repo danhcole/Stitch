@@ -1,0 +1,10 @@
+/*initializing with 2D array on a 1D declared array fails.*/
+
+int main()
+{
+	int a[4] = {1,2,{3,4},5};
+
+	return 0;
+}
+
+/*Fatal error: exception Parsing.Parse_error*/
