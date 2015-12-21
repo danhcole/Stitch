@@ -45,7 +45,7 @@ fdecl:
 		body = List.rev $7; } }
 
 type_name:
-TINT			{ Tint }
+  TINT			{ Tint }
 | TFLOAT		{ Tfloat }
 | TCHAR 		{ Tchar }
 | TVOID 		{ Tvoid }
@@ -56,7 +56,7 @@ TINT			{ Tint }
 | TFILE			{ Tfile }
 
 formals_opt:
-	/* nothing */	{ [] }
+  /* nothing */		{ [] }
 | formal_list		{ List.rev $1 }
 
 formal_list:
@@ -76,7 +76,7 @@ arraydecl:
 		arraydecl_type = $1;
 		arraydecl_name = $2;
 		arraydecl_size = $4;
-		}}
+	}}
 
 matrixdecl: /* two dimensional array implementation */
 	type_name ID LSQUARE expr_opt RSQUARE LSQUARE expr_opt RSQUARE
@@ -85,7 +85,7 @@ matrixdecl: /* two dimensional array implementation */
 		matrixdecl_name = $2;
 		matrixdecl_rows = $4;
 		matrixdecl_cols = $7;
-		}}
+	}}
 
 
 stmt_list:
@@ -116,7 +116,7 @@ stmt:
 | BREAK SEMI									{ Break }
 
 expr_opt:
-/*nothing*/		{ Noexpr }
+  /*nothing*/	{ Noexpr }
 | expr			{ $1 }
 
 expr:
@@ -133,7 +133,6 @@ expr:
 /*Matrix */
 | ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE ASSIGN expr
 	{ Matrix_Item_Assign($1, $3, $6, $9) }
-
 | ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE
 	{ Matrix_Index_Access($1, $3, $6) }
 /*Arithmetic*/

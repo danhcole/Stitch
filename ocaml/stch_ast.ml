@@ -65,6 +65,7 @@ type fdecl = {
 
 type program = stmt list * fdecl list
 
+(* Pretty printer, used for testing, and in parts of the c_generator *)
 let string_of_dataType = function
   Tint -> "int"
   | Tfloat -> "float"
