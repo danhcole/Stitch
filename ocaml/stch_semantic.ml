@@ -503,19 +503,19 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			so we just pass the list through *)
 		| C_Block(t, b) -> check_stitch_body b table env
 		| C_Vdecl(a) -> let n = a.vdecl_name in
-			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
 		| C_ArrayDecl(a) -> let n = a.arraydecl_name in
-			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
 		| C_MatrixDecl(m) -> let n = m.matrixdecl_name in
-			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
 		| C_Assign(v, r) -> let n = v.vdecl_name in
-			let table' = {Stch_cast.parent = None; Stch_cast.vars = 
+			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
 		(* Need to add ARRAYINIT, MATRIXINIT, and others *)
@@ -524,15 +524,15 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		| _ -> check_stitch_body tail table env 
 	)
 
-(* 		try
-		List.find (fun (_, s, _) -> s = name ) scope.vars
-	with Not_found -> match scope.parent with
-	Some(parent) -> find_variable parent name
-	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *) *)
+(* 
+	and iterate_vars (data: (dataType * string * c_expr) list ) (table: symTable) = match data with
+		| [] -> table
+		| head::tail ->  let b = (table.vars <- head::table.vars) in iterate_vars tail table
 
-(* 	and check_all_envs (el: c_stmt list) (table: symTable) (env: stch_env) = match table with
-		| None -> check_stitch_body el table env
-		| Some(parent) -> check_stitch_body el table.parent env *)
+   	and check_all_envs (el: c_stmt list) (table: symTable) (env: stch_env) = match table.parent with
+   		| None -> iterate_vars table.vars table
+   		| Some(parent) ->  iterate_vars table.vars table; check_all_envs *)
+ 		
 
 
 	(* Typechecking the expressions of a Stitch Loop *)
