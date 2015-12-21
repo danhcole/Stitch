@@ -22,13 +22,13 @@ let rec string_of_c_expr = function
   | C_Id(s, t) -> s
   | C_String(s) -> "\"" ^ s ^ "\""
   | C_Binop(e1, o, e2) ->
-      string_of_c_expr e1 ^ " " ^
+      "(" ^ string_of_c_expr e1 ^ " " ^
       (match o with
 	      Add -> "+" | Subtract -> "-" | Times -> "*" | Divide -> "/"
       | Equal -> "==" | Ne -> "!="
       | Lt -> "<" | Le -> "<=" | Gt -> ">" | Ge -> ">="
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
-      string_of_c_expr e2
+      string_of_c_expr e2 ^ ")"
   | C_Negate(e) -> "!" ^ string_of_c_expr e
   | C_Call(f, el) -> (match f with "print" -> "printf" 
                                   | "error" -> "fprintf" 
