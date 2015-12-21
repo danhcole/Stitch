@@ -268,9 +268,18 @@ let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr)
         structname ^ "->" ^ i ^ " = " ^ string_of_stch_expr structname table e
       else
         i ^ " = " ^ string_of_stch_expr structname table e
-  | C_Array_Item_Assign(id, ind, e) -> structname ^ "->" ^ id ^ "[" ^ string_of_stch_expr structname table ind ^
-      "] = " ^ string_of_stch_expr structname table e
-  | C_Array_Index(a, i, t) -> structname ^ "->" ^ a ^ "[" ^ string_of_stch_expr structname table i ^ "]"
+  | C_Array_Item_Assign(id, ind, e) -> 
+      if List.exists( fun(_,s,_) -> s = id) table.vars then
+        structname ^ "->" ^ id ^ "[" ^ string_of_stch_expr structname table ind ^
+        "] = " ^ string_of_stch_expr structname table e
+      else
+        id ^ "[" ^ string_of_stch_expr structname table ind ^
+        "] = " ^ string_of_stch_expr structname table e
+  | C_Array_Index(a, i, t) -> 
+      if List.exists( fun(_,s,_) -> s = a) table.vars then
+        structname ^ "->" ^ a ^ "[" ^ string_of_stch_expr structname table i ^ "]"
+      else
+        a ^ "[" ^ string_of_stch_expr structname table i ^ "]"
   | C_Matrix_Index(m, r, c, t) -> structname ^ "->" ^ m ^ "[" ^ string_of_stch_expr structname table r ^
        "][" ^ string_of_stch_expr structname table c ^ "]"
   | C_Matrix_Item_Assign(m, r, c, e) -> structname ^ "->" ^ m ^ "[" ^ string_of_stch_expr structname table r ^ 
