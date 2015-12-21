@@ -1,7 +1,7 @@
 int main() {
 	void y;
 
-	print(y);
+	error(y);
 
 	return 0;
 }
