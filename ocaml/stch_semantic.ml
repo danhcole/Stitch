@@ -156,6 +156,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 				raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
 			else
 				let (erhs, trhs) = check_expr rhs env in
+				(* Hacky for now, allowing anything to store into a int or char array *)
 					if trhs <> typ && (typ <> Tint && typ <> Tchar )then
 						raise(Error("Type mismatch on array item assignment"))
 					else
