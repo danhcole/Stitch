@@ -1,0 +1,11 @@
+/*wrong type in array initialization*/
+
+int main()
+{
+	
+	int a[3] = {1,0.5,2};
+
+	return 0;
+}
+
+/*Fatal error: exception Stch_semantic.Error("Cannot initialize array with a variable")*/
