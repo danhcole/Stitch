@@ -4,7 +4,7 @@ int main()
 {
 	int a = -5;
 	print(a);
-	int b = 5 * 8 + 3 * 2;
+	int b = 5 * (8 + 3);
 	print(b);
 
 	return 0;
