@@ -348,10 +348,6 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	*)
 	and check_array_init (a: arraydecl) (el: expr list) (env: stch_env) =
 		(* first step: check that we have a valid array decl *)
-
-		(* ------------------ TODO ------------------- *)
-		(* Change this to check for the variable here, so we can add the C_EXPR to the symtable *)
-
 		let invalid = List.exists (fun (_,s,_) -> s = a.arraydecl_name) env.scope.vars in
 			if invalid then
 				raise (Error("Variable " ^ a.arraydecl_name ^ " already declared"))
@@ -382,36 +378,45 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		end
 	and check_matrix_init (m: matrixdecl) (el: expr list list) (env: stch_env) =
 		(* First, we need to check that we have a valid declaration by checking for vdecl_t *)
-		let (var, typ, name) = check_vdecl_t { Stch_ast.vdecl_type = m.matrixdecl_type;
-											   Stch_ast.vdecl_name = m.matrixdecl_name} env in
 		(* Check the size of the cols and rows, make sure they match the list counts
 			rows = total # of sublists
 			cols = length of the sublists (must be all the same length) 
 		*)
-		let errorstring = "Error with " in
-		let rows = string_of_expr m.matrixdecl_rows in
-		let cols = string_of_expr m.matrixdecl_cols in
-		try
-		if int_of_string rows = List.length el && int_of_string cols > -1 then
-			(* Inside here need to call my functions from above for matrix stuff *)
-			let ret = check_matrix_vals m el (int_of_string cols) typ env in
-				if ret = m then
-					C_MatrixInit( {Stch_cast.matrixdecl_name = m.matrixdecl_name;
-						Stch_cast.matrixdecl_type = m.matrixdecl_type;
-						Stch_cast.matrixdecl_rows = m.matrixdecl_rows;
-						Stch_cast.matrixdecl_cols = m.matrixdecl_cols}, el)
+
+		let invalid = List.exists (fun (_,s,_) -> s = m.matrixdecl_name) env.scope.vars in
+			if invalid then
+				raise (Error("Variable " ^ m.matrixdecl_name ^ " already declared"))
+			else begin
+				let (exr, ty) = check_expr m.matrixdecl_rows env in
+				let (exc, ty2) = check_expr m.matrixdecl_cols env in
+				env.scope.vars <- (m.matrixdecl_type, m.matrixdecl_name,
+					 C_Matrix_Index(m.matrixdecl_name, exr, exc, m.matrixdecl_type))::env.scope.vars;
+				let typ = m.matrixdecl_type in
+				let errorstring = "Error with " in
+				let rows = string_of_expr m.matrixdecl_rows in
+				let cols = string_of_expr m.matrixdecl_cols in
+				try
+				if int_of_string rows = List.length el && int_of_string cols > -1 then
+					(* Inside here need to call my functions from above for matrix stuff *)
+					let ret = check_matrix_vals m el (int_of_string cols) typ env in
+						if ret = m then
+							C_MatrixInit( {Stch_cast.matrixdecl_name = m.matrixdecl_name;
+								Stch_cast.matrixdecl_type = m.matrixdecl_type;
+								Stch_cast.matrixdecl_rows = m.matrixdecl_rows;
+								Stch_cast.matrixdecl_cols = m.matrixdecl_cols}, el)
+						else begin
+							(* print_string "HELLO"; *)
+							raise(Error(errorstring ^ "checking return value of list iter"))
+						end
 				else begin
-					(* print_string "HELLO"; *)
-					raise(Error(errorstring ^ "checking return value of list iter"))
+					(* print_string "HELLO2"; *)
+					raise(Error(errorstring ^ "Int of string statement failure"))
 				end
-		else begin
-			(* print_string "HELLO2"; *)
-			raise(Error(errorstring ^ "Int of string statement failure"))
-		end
-		with
-		| _ -> begin
-			(* print_string "HELLO3"; *)
-			raise(Error(errorstring ^ "try/with failure"))
+				with
+				| _ -> begin
+					(* print_string "HELLO3"; *)
+					raise(Error(errorstring ^ "try/with failure"))
+					end
 			end
 
 	and check_matrix_decl (m: matrixdecl) (env: stch_env) =
