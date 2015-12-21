@@ -32,13 +32,15 @@ let rec string_of_c_expr = function
   | C_Negate(e) -> "!" ^ string_of_c_expr e
   | C_Call(f, el) -> (match f with "print" -> "printf" 
                                   | "error" -> "fprintf" 
-                                  | "open" -> "fopen" 
+                                  | "open_r" -> "fopen"
+                                  | "open_w" -> "fopen"
                                   | "read" -> "fread"
                                   | "write" -> "fwrite"
                                   | _ -> f) ^ 
                     "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) 
                                                           | "error" -> error_2_fprintf (List.hd el) 
-                                                          | "open" -> open_2_fopen (List.hd el) 
+                                                          | "open_r" -> open_2_fopen_r (List.hd el) 
+                                                          | "open_w" -> open_2_fopen_w (List.hd el)
                                                           | "read" -> read_2_fread el
                                                           | "write" -> write_2_fwrite el
                                                           | _ -> List.map string_of_c_expr el) ^ ")"
@@ -71,10 +73,13 @@ let rec string_of_c_expr = function
                 | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr file)))
               | _ -> raise(Error("Invalid argument for read: " ^ string_of_c_expr file))
 
-      and open_2_fopen (e: c_expr) = match e with
-        C_String(l) -> ("\"" ^ l ^ "\", \"w+\"" )::[]
+      and open_2_fopen_r (e: c_expr) = match e with
+        C_String(l) -> ("\"" ^ l ^ "\", \"r+\"" )::[]
       | _ -> raise (Error("Invalid argument for open: " ^ string_of_c_expr e))
 
+      and open_2_fopen_w (e: c_expr) = match e with
+        C_String(l) -> ("\"" ^ l ^ "\", \"w+\"" )::[]
+      | _ -> raise (Error("Invalid argument for open: " ^ string_of_c_expr e))
 
       and print_2_fprint (e: c_expr) = match e with
         C_Int(l) -> ("\"%d\\n\", " ^ string_of_c_expr e)::[]

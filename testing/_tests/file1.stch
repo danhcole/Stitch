@@ -2,7 +2,7 @@ int main()
 {
   FILE a;
   char c[5000];
-  a = open("file1.stch");
+  a = open_r("file1.stch");
   read(a, c);
   print("success");
 

@@ -614,7 +614,13 @@ let init_env : (stch_env) =
 						};
 
 						{fdecl_type = Tfile;
-						 fdecl_name = "open";
+						 fdecl_name = "open_r";
+						 fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "fn"}; ];
+						 body = [];
+						};
+
+						{fdecl_type = Tfile;
+						 fdecl_name = "open_w";
 						 fdecl_formals = [ {vdecl_type = Tstring; vdecl_name = "fn"}; ];
 						 body = [];
 						};
