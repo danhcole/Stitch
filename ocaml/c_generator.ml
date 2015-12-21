@@ -453,9 +453,14 @@ let rec print_stitch_variables (seed: string) el = match el with
   | head::tail -> let (typ, name, exp) = head in
     if exp = C_Noexpr then 
       print_stitch_variables (seed ^ (string_of_dataType typ) ^ " " ^ name ^ string_of_c_expr exp ^ ";\n") tail
-    else
+    else begin
+    if exp = C_Array_Index(name, exp, typ) then
       print_stitch_variables (seed ^ (string_of_dataType typ) ^ " *" ^ name ^ ";\n") tail
-
+    else (match exp with 
+      | C_Matrix_Index(nm,ro,col,dt) -> print_stitch_variables (seed ^ (string_of_dataType typ) ^
+        " (* " ^ name ^ ")["^string_of_c_expr col^"];\n") tail
+      | _ -> raise(Error("How did we even get here?")) )
+    end
 
 let rec assign_stitch_variables (seed: string) (structname: string) el = match el with
   [] -> seed ^ "\n"

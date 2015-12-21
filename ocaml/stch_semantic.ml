@@ -476,6 +476,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			end
 		end
 
+
+
 (* Go through the body of a stitch loop and create an environment of all the variables used, so we know
 	what needs to be passed in
 	NOTE: VDECLS and ARRAYDECLS/MATRIXDECLS should NOT be added here, because those are local in the stitch
@@ -509,6 +511,16 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* else I want to keep them in the symtable, continue down the list *)
 		| _ -> check_stitch_body tail table env 
 	)
+
+(* 		try
+		List.find (fun (_, s, _) -> s = name ) scope.vars
+	with Not_found -> match scope.parent with
+	Some(parent) -> find_variable parent name
+	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *) *)
+
+(* 	and check_all_envs (el: c_stmt list) (table: symTable) (env: stch_env) = match table with
+		| None -> check_stitch_body el table env
+		| Some(parent) -> check_stitch_body el table.parent env *)
 
 
 	(* Typechecking the expressions of a Stitch Loop *)
