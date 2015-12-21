@@ -20,16 +20,10 @@ let rec find_variable (scope: symTable) name =
 	| _ -> raise (Error("Bad ID " ^ name)) (* in general, any type mismatch raises an error *)
 
 (* check to see if a function has been defined *)
-let rec find_func (funcs: c_fdecl list) (fname: string) (rec_fname: string) =
-	let recFunc = [{ fdecl_type = Tvoid;
-						fdecl_name = rec_fname;
-						fdecl_formals = [];
-						body = [];
-						};] in
-								try
-									List.find ( fun fn -> fn.fdecl_name = fname ) funcs::recFunc
-								with 
-									Not_found -> raise (Error ("Function call not recognized: " ^ fname))
+let rec find_func (funcs: c_fdecl list) fname =
+	try
+		List.find ( fun fn -> fn.fdecl_name = fname ) funcs
+	with Not_found -> raise (Error ("Function call not recognized: " ^ fname))
 
 (* type check binary operations *)
 (* for now, Stitch does not support type coercion, so binops must be int/int or flt/flt  *)
@@ -62,7 +56,7 @@ let check_vdecl_t (decl: vdecl) (env: stch_env) =
 				v, v.vdecl_type, v.vdecl_name
 
 (* type check an expression and put into c_ast *)
-let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr * Stch_ast.dataType) = 
+let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) = 
 	match e with
 	(* primitives get a free pass *)
 	  Int(l) 	-> C_Int(l), Tint
@@ -80,7 +74,7 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 	(* other exprs need to call their respective check functions *)
 	| Binop(lhs, o, rhs) -> binop_ret lhs o rhs env
 	| Negate(l) -> check_negate l env
-	| Call(f, b) -> check_call f b env fname
+	| Call(f, b) -> check_call f b env
 	| Assign2(lhs, rhs) -> check_assign2 lhs rhs env
 	| Array_Index_Access(name, index) -> check_array_index name index env
 	| Array_Item_Assign(name, index, ex) -> check_array_item_assign name index ex env
@@ -91,7 +85,7 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 
 	(* check negation.  As of now, only ints and floats can be negated *)
 	and check_negate (e: expr) (env: stch_env) = 
-		let exp = check_expr e env "" in
+		let exp = check_expr e env in
 		match snd exp with
 		  Tint -> C_Negate((fst exp)), Tint
 		| Tfloat -> C_Negate((fst exp)), Tfloat
@@ -99,8 +93,8 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 
 	(* check the binop return type*)
 	and binop_ret (lhs: expr) (o: op) (rhs: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) =
-		let (lhs, t1) = check_expr lhs env ""
-		and (rhs, t2) = check_expr rhs env "" in
+		let (lhs, t1) = check_expr lhs env
+		and (rhs, t2) = check_expr rhs env in
 
 		match o with
 		  Add -> C_Binop(lhs, o, rhs), check_binop t1 t2 env
@@ -120,7 +114,7 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 	(* check assign2 (i.e. expr assign) *)
 	and check_assign2 (lhs: string) (rhs: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) = 
 		let (t1, _, _) = find_variable env.scope lhs
-		and (rhs, t2) = check_expr rhs env "" in
+		and (rhs, t2) = check_expr rhs env in
 		if t1 = t2 then
 			C_Assign2(lhs, rhs), t2
 		else if t1 = Tint && t2 = Tchar then
@@ -134,7 +128,7 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 	and check_array_index (n: string) (index: expr) (env: stch_env) =
 		let var = find_variable env.scope n in
 		let (typ, vname, _) = var in
-		let (e, t) = check_expr index env "" in match t with
+		let (e, t) = check_expr index env in match t with
 			Tint -> C_Array_Index(vname, e, typ), typ
 			| _ -> raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
 
@@ -144,8 +138,8 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 	and check_matrix_index (n: string) (row: expr) (col: expr) (env: stch_env) =
 		let var = find_variable env.scope n in
 		let (typ, vname, _) = var in
-		let (erow, trow) = check_expr row env "" in
-		let (ecol, tcol) = check_expr col env "" in match (trow, tcol) with
+		let (erow, trow) = check_expr row env in
+		let (ecol, tcol) = check_expr col env in match (trow, tcol) with
 			(Tint, Tint) -> C_Matrix_Index(vname, erow, ecol, typ), typ
 			| _ -> raise(Error("Cannot index into an array with types " ^ string_of_expr row ^ ", " ^ 
 								string_of_expr col))
@@ -157,11 +151,11 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 	and check_array_item_assign (name: string) (index: expr) (rhs: expr) (env: stch_env) =
 		let var = find_variable env.scope name in
 		let (typ, vname, _) = var in
-		let (e, t) = check_expr index env "" in
+		let (e, t) = check_expr index env in
 			if t <> Tint then
 				raise(Error("Cannot index into an array with type " ^ string_of_dataType t))
 			else
-				let (erhs, trhs) = check_expr rhs env ""in
+				let (erhs, trhs) = check_expr rhs env in
 					if trhs <> typ then
 						raise(Error("Type mismatch on array item assignment"))
 					else
@@ -170,21 +164,21 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 	and check_matrix_item_assign (name: string) (row: expr) (col: expr) (rhs: expr) (env: stch_env) =
 		let var = find_variable env.scope name in
 		let (vtyp, vname, _) = var in
-		let (erow, trow) = check_expr row env ""in
-		let (ecol, tcol) = check_expr col env ""in
+		let (erow, trow) = check_expr row env in
+		let (ecol, tcol) = check_expr col env in
 			if trow <> Tint || tcol <> Tint then
 				raise(Error("Cannot index into a matrix with non-int values"))
 			else
-				let (erhs, trhs) = check_expr rhs env ""in
+				let (erhs, trhs) = check_expr rhs env in
 					if trhs <> vtyp then
 						raise(Error("Type mismatch on matrix item assignment"))
 					else
 						C_Matrix_Item_Assign(vname, erow, ecol, erhs), vtyp
 
 	(* check function call *)
-	and check_call (f: string) (el: expr list) (env: stch_env) (fname: string) =
-		let l_expr_typ = List.map (fun e -> check_expr e env "") el in
-		let func_ret =  List.hd (find_func env.funcs f fname) in
+	and check_call (f: string) (el: expr list) (env: stch_env) =
+		let l_expr_typ = List.map (fun e -> check_expr e env) el in
+		let func_ret = find_func env.funcs f in
 		let args_l = find_func_sig f l_expr_typ func_ret in
 			C_Call(func_ret.fdecl_name, args_l), func_ret.fdecl_type
 
@@ -231,7 +225,7 @@ let rec check_expr (e: expr) (env: stch_env) (fname: string): (Stch_cast.c_expr 
 let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: stch_env) = 
 	match el with
 		| [] -> name
-		| head::tail -> let (ex, typ) = check_expr head env "" in
+		| head::tail -> let (ex, typ) = check_expr head env in
 			if typ = t then
 				check_init_vals name tail typ env
 			else
@@ -240,7 +234,7 @@ let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: st
 let rec check_matrix_rows (name: matrixdecl) (el: expr list) (t: dataType) (env: stch_env) =
 	match el with
 		| [] -> name
-		| head::tail -> let (exp, typ) = check_expr head env "" in
+		| head::tail -> let (exp, typ) = check_expr head env in
 			if typ = t then begin
 				(* print_string "CHECKING MATRIX TYPES\n"; *)
 				check_matrix_rows name tail typ env
@@ -270,15 +264,15 @@ let get_id_from_expr (ex: expr) = match ex with
 	|_ -> "_null"
 
 (* typecheck a statement *)
-let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s with
+let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	Block(ss) -> 
 		let scope' = { parent = Some(env.scope); vars = []; } in
 			let env' = { env with scope = scope' } in
-			let ss = List.map (fun s -> check_stmt s env' "") ss in
+			let ss = List.map (fun s -> check_stmt s env') ss in
 			scope'.vars <- List.rev scope'.vars;
 			C_Block(scope', ss)
 	| Vdecl(v) -> check_vdecl v env
-	| Expr(e) -> let (e,t) = check_expr e env fname in C_Expr(t, e)
+	| Expr(e) -> let (e,t) = check_expr e env in C_Expr(t, e)
 	| ArrayDecl(a) -> check_array_decl a env
 	| ArrayInit(a, el) -> check_array_init a el env
 	| MatrixDecl(m) -> check_matrix_decl m env
@@ -295,7 +289,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 	(* check assign (i.e. stmt assign) *)
 	and check_assign (lhs: vdecl) (rhs: expr) (env: stch_env) = 
 		let (v, t1, _) = check_vdecl_t lhs env
-			and (rhs, t2) = check_expr rhs env ""in
+			and (rhs, t2) = check_expr rhs env in
 		if t1 = t2 then
 			C_Assign(v, rhs)
 	else
@@ -304,7 +298,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 	(* typecheck return (not return type, but keyword 'return') *)
 	and check_return (e: expr) (env: stch_env) =
 		if env.in_func then
-		let (e,t) = check_expr e env ""in
+		let (e,t) = check_expr e env in
 			if t = env.retType then
 				C_Return(t, e)
 			else
@@ -333,9 +327,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 			get the size information when we are passing the symtable to the code generator 
 			This is a bit hacky, but it should work for what we need it to
 		*)
-			let (ex, ty) = check_expr a.arraydecl_size env "" in 
+			let (ex, ty) = check_expr a.arraydecl_size env in 
 			env.scope.vars <- (ve.vdecl_type, ve.vdecl_name, C_Array_Index(ve.vdecl_name, ex, ve.vdecl_type))::env.scope.vars;
-			let (ex, typ) = check_expr a.arraydecl_size env ""in
+			let (ex, typ) = check_expr a.arraydecl_size env in
 			match typ with 
 				Tfloat -> raise (Error("Invalid array size type, expects int"))
 				| Tchar -> raise (Error("Invalid array size type, expects int"))
@@ -427,12 +421,12 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 		else
 		(* if it isn't, put it in the scope, and make a new c_arraydecl 
 			after you typematch the size expression *)
-			let (exr, ty) = check_expr m.matrixdecl_rows env ""in 
-			let (exc, ty) = check_expr m.matrixdecl_cols env ""in
+			let (exr, ty) = check_expr m.matrixdecl_rows env in 
+			let (exc, ty) = check_expr m.matrixdecl_cols env in
 			env.scope.vars <- (mat.vdecl_type, mat.vdecl_name,
 				C_Matrix_Index(mat.vdecl_name, exr, exc ,mat.vdecl_type))::env.scope.vars;
-			let (row, typerow) = check_expr m.matrixdecl_rows env "" in
-			let (col, typecol) = check_expr m.matrixdecl_cols env "" in
+			let (row, typerow) = check_expr m.matrixdecl_rows env in
+			let (col, typecol) = check_expr m.matrixdecl_cols env in
 			match (typerow, typecol) with 
 				(Tfloat, _) -> raise (Error("Invalid matrix row type, expects int"))
 				| (Tchar, _) -> raise (Error("Invalid matrix row type, expects int"))
@@ -453,10 +447,10 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 
 	(* Typechecking the expression of an "if" statement *)
 	and check_if (ex: expr) (th: stmt) (el: stmt) (en : stch_env) =
-		let (e, t) = check_expr ex en "" in
+		let (e, t) = check_expr ex en in
 			if t = Tint || t = Tfloat || t = Tchar then
-				let s1 = check_stmt th en "" in
-				let s2 = check_stmt el en ""in
+				let s1 = check_stmt th en in
+				let s2 = check_stmt el en in
 				C_If(e, s1, s2)
 			else
 				raise (Error("If clause has expression of type " ^ string_of_dataType t))
@@ -464,9 +458,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 
 	(* typecheck the for loop *)
 	and check_for (e1: expr) (e2: expr) (e3: expr) (st: stmt) (env: stch_env) =
-		let (ex1, t1) = check_expr e1 env "" in
-		let (ex2, t2) = check_expr e2 env "" in
-		let (ex3, t3) = check_expr e3 env "" in
+		let (ex1, t1) = check_expr e1 env in
+		let (ex2, t2) = check_expr e2 env in
+		let (ex3, t3) = check_expr e3 env in
 		if t1 <> Tint && t1 <> Tvoid then 
 			raise (Error("For Loop: First expression not of type int."))
 		else begin
@@ -476,7 +470,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 				if t3 <> Tint && t3 <> Tvoid then 
 					raise (Error("For Loop: Third expression not of type int."))
 				else begin
-					let s = check_stmt st env "" in
+					let s = check_stmt st env in
 					C_For(ex1,ex2,ex3,s)
 				end
 			end
@@ -519,11 +513,11 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 
 	(* Typechecking the expressions of a Stitch Loop *)
 	and check_stitch (var : expr) (start : expr) (s_end : expr) (stride : expr) (body : stmt) (env : stch_env)  =
-		let (var', t1) = check_expr var env "" in
+		let (var', t1) = check_expr var env in
 		let name = get_id_from_expr var in
-		let (start', t2) = check_expr start env "" in
-		let (s_end', t3) = check_expr s_end env "" in
-		let (stride', t4) = check_expr stride env "" in
+		let (start', t2) = check_expr start env in
+		let (s_end', t3) = check_expr s_end env in
+		let (stride', t4) = check_expr stride env in
 		if t1 <> Tint then raise (Error("Stitch: First expression not of type int."))
 		else begin
 			if t2 <> Tint then raise (Error("Stitch: Second expression not of type int."))
@@ -532,7 +526,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 				else begin
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin 
-						let body' = [(check_stmt body env "")] in
+						let body' = [(check_stmt body env)] in
 						let t' = check_stitch_body body' env.scope env in
 						let scope' = {Stch_cast.parent = env.scope.parent;
 							Stch_cast.vars = List.filter (fun (t, n, e) -> n <> name) t'.vars } in
@@ -544,9 +538,9 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) (fname: string) = match s 
 
 	(* typecheck the while loop *)
 	and check_while (e: expr) (s: stmt) (env: stch_env) =
-		let (e,t) = check_expr e env "" in
+		let (e,t) = check_expr e env in
 		if t = Tint then
-			let s' = check_stmt s env "" in C_While(e,s')
+			let s' = check_stmt s env in C_While(e,s')
 		else
 			raise (Error("Invalid 'while' expression"))
 
@@ -574,7 +568,7 @@ let check_fdecl (func: Stch_ast.fdecl) (env: stch_env) : c_fdecl =
 			let f = { Stch_cast.fdecl_name = func.fdecl_name; 
 						Stch_cast.fdecl_type = func.fdecl_type; 
 						Stch_cast.fdecl_formals = f_formals; 
-						Stch_cast.body = ( List.map (fun x -> check_stmt x env' func.fdecl_name) func.body );} in
+						Stch_cast.body = ( List.map (fun x -> check_stmt x env') func.body );} in
 							match func.fdecl_type with
 								Tvoid -> env.funcs <- f::env.funcs; f 
 								| _ -> ignore(check_for_ret func.body); env.funcs <- f::env.funcs; f 
@@ -629,7 +623,7 @@ let init_env : (stch_env) =
 (* check the programc *)
 let check_prog (prog: Stch_ast.program) : (Stch_cast.c_program) = 
 	let env = init_env in
-{ Stch_cast.stmts = (List.map (fun x -> check_stmt x env "") (fst prog));
+{ Stch_cast.stmts = (List.map (fun x -> check_stmt x env) (fst prog));
   Stch_cast.funcs = (List.map (fun x -> check_fdecl x env) (List.rev (snd prog)));
   Stch_cast.syms = env.scope;
 }
