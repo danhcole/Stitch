@@ -532,14 +532,17 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		| _ -> check_stitch_body tail table env 
 	)
 
-(* 
+ 
 	and iterate_vars (data: (dataType * string * c_expr) list ) (table: symTable) = match data with
 		| [] -> table
 		| head::tail ->  let b = (table.vars <- head::table.vars) in iterate_vars tail table
 
-   	and check_all_envs (el: c_stmt list) (table: symTable) (env: stch_env) = match table.parent with
-   		| None -> iterate_vars table.vars table
-   		| Some(parent) ->  iterate_vars table.vars table; check_all_envs *)
+   	and check_all_envs (el: c_stmt list) (currTable: symTable) (newTable: symTable) (env: stch_env) =
+
+   		ignore(iterate_vars currTable.vars newTable); (* add all the vars to the current table *)
+ 		match currTable.parent with (* then check the parent *)
+ 			| None -> newTable
+   			| Some(parent) -> check_all_envs el parent newTable env 
  		
 
 
@@ -559,7 +562,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 					if t4 <> Tint then raise (Error("Stitch: Fourth expression not of type int"))
 					else begin 
 						let body' = [(check_stmt body env)] in
-						let t' = check_stitch_body body' env.scope env in
+						let n' = check_all_envs body' env.scope {Stch_cast.parent = None; Stch_cast.vars = []} env in
+						let t' = check_stitch_body body' n' env in
 						let scope' = {Stch_cast.parent = env.scope.parent;
 							Stch_cast.vars = List.filter (fun (t, n, e) -> n <> name) t'.vars } in
 							C_Stitch(var', start', s_end', stride', gen_name sn, body', scope') 
