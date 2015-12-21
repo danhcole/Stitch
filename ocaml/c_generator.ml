@@ -266,7 +266,12 @@ let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr)
       | Or -> "||" | And -> "&&" | Mod -> "%" ) ^ " " ^
       (string_of_stch_expr structname table e2)
   | C_Negate(e) -> "!" ^ string_of_stch_expr structname table e
-  | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) structname table | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
+  | C_Call(f, el) -> (match f with 
+        "print" -> "printf"
+        | "error" -> "fprintf"
+        | _ -> f) ^ "(" ^ String.concat ", " (match f with 
+          "print" -> print_2_fprint (List.hd el) structname table
+          | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
   (* Now we need to check to see if the id's are in the table  *)
   | C_Assign2(i, e) -> 
       if List.exists( fun(_,s,_) -> s = i) table.vars then
@@ -489,6 +494,13 @@ let rec assign_stitch_variables (seed: string) (structname: string) el = match e
   | head::tail -> let (typ, name, exp) = head in
     assign_stitch_variables (seed ^ structname ^ "." ^ name ^ " = " ^ name ^ ";\n") (structname) tail
 
+let rec resolve_accums (seed: string) (structname: string ) el = match el with
+  [] -> seed ^ "\n"
+  | head::tail -> let (typ, name, exp) = head in
+    (match typ with
+      (Tintap | Tfloatap) -> resolve_accums (seed ^ name ^ "+=" ^ structname ^ "." ^ name ^";\n") structname tail 
+      |_ -> resolve_accums seed structname tail)
+
 let rec string_of_c_matrixlist (seed: string) el = match el with
     [] -> seed ^ "}"
     | head::tail -> string_of_c_matrixlist (seed ^ string_of_arraylist head ^ ",\n") tail
@@ -523,12 +535,18 @@ let convert_stitch_2_for var start s_end stride fname scope =
                     "pthread_join(threadpool"^fname^"["^ string_of_c_expr var ^"], NULL);\n" ^
                     "}\n" in
 
+  let accums = "//now we loop and resolve any accumulators\n" ^
+                    "for(" ^ string_of_c_expr var ^ " = 0; "^ string_of_c_expr var ^
+                    " < NUMTHREADS; "^string_of_c_expr var ^"++) {\n" ^
+                    (resolve_accums "" ("info"^fname^"["^string_of_c_expr var^"]") scope.vars) ^
+                    "}\n\n" in               
+
   let varinfo = "struct stch_rangeInfo" ^ fname ^ " *info"^fname^" = malloc(sizeof(struct stch_rangeInfo" ^fname^") * NUMTHREADS);\n" in
   let incr = string_of_c_expr s_end ^ "/" ^ "NUMTHREADS" in
   let loop = threads ^ varinfo ^ "int thread"^fname^" = 0;\n" ^ "for(" in 
   loop ^ string_of_c_expr var ^ " = " ^ string_of_c_expr start ^ ";" ^ string_of_c_expr var ^ " < " ^
     string_of_c_expr s_end ^ ";" ^ string_of_c_expr var ^ " = " ^ string_of_c_expr var ^ "+" ^ incr ^ 
-    ") {\n" ^ thread_assignment ^ threadgen ^ "thread"^fname^"++;\n" ^ "}\n\n" ^ threadjoin
+    ") {\n" ^ thread_assignment ^ threadgen ^ "thread"^fname^"++;\n" ^ "}\n\n" ^ threadjoin ^ accums
 
 let rec string_of_c_stmt ?structname:(structname="") (st: c_stmt)= match st with
     C_Block(_, stmts) ->

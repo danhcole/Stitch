@@ -115,7 +115,7 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 	and check_assign2 (lhs: string) (rhs: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.dataType) = 
 		let (t1, _, _) = find_variable env.scope lhs
 		and (rhs, t2) = check_expr rhs env in
-		if t1 = t2 then
+		if t1 = t2 || (t1 = Tintap && t2 = Tint) then
 			C_Assign2(lhs, rhs), t2
 		else if t1 = Tint && t2 = Tchar then
 			C_Assign2(lhs, rhs), t1
@@ -192,6 +192,8 @@ let rec check_expr (e: expr) (env: stch_env) : (Stch_cast.c_expr * Stch_ast.data
 						 | Tfloat -> (fst arg)::[]
 						 | Tchar -> (fst arg)::[]
 						 | Tstring -> (fst arg)::[]
+						 | Tintap -> (fst arg)::[]
+						 | Tintam -> (fst arg)::[]
 						 | _ -> raise (Error("Invalid print type: " ^ string_of_dataType (snd arg))))
 		| "error" -> (let arg = List.hd opts in
 						match (snd arg) with
@@ -290,7 +292,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 	and check_assign (lhs: vdecl) (rhs: expr) (env: stch_env) = 
 		let (v, t1, _) = check_vdecl_t lhs env
 			and (rhs, t2) = check_expr rhs env in
-		if t1 = t2 then
+		if t1 = t2 || (t1 = Tintap && t2 = Tint) then
 			C_Assign(v, rhs)
 	else
 		raise (Error("Type mismatch on variable assignment " ^ string_of_vdecl lhs))
@@ -535,7 +537,8 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
  
 	and iterate_vars (data: (dataType * string * c_expr) list ) (table: symTable) = match data with
 		| [] -> table
-		| head::tail ->  let b = (table.vars <- head::table.vars) in iterate_vars tail table
+		| head::tail ->  ignore(table.vars <- head::table.vars); 
+						 iterate_vars tail table
 
    	and check_all_envs (el: c_stmt list) (currTable: symTable) (newTable: symTable) (env: stch_env) =
 
