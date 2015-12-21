@@ -1,4 +1,4 @@
-/* Image Inverter */
+/* Image Contrast */
 
 int main(){
 
@@ -6,7 +6,7 @@ int main(){
 
 	
 	FILE inFile = open_r("img.bmp");
-	FILE outFile = open_w("out.bmp");
+	FILE outFile = open_w("out_hc.bmp");
 	char buffer[98592];
 	read(inFile, buffer);
 
@@ -17,7 +17,7 @@ int main(){
 		tmp = buffer[i];
 
 		if (tmp < 0) {
-			tmp = (tmp % 256) * -1;
+			tmp = tmp + 256;
 		}
 
 		buffer[i] = curve[tmp];
