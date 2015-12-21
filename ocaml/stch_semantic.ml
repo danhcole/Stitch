@@ -518,8 +518,16 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
-		(* Need to add ARRAYINIT, MATRIXINIT, and others *)
-
+		
+		| C_ArrayInit(a, el) -> let n = a.arraydecl_name in
+			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
+			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
+			check_stitch_body tail table' env
+		| C_MatrixInit(m, el) -> let n = m.matrixdecl_name in
+			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
+			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
+			check_stitch_body tail table' env
+		(* Need to add  others *)
 		(* else I want to keep them in the symtable, continue down the list *)
 		| _ -> check_stitch_body tail table env 
 	)
