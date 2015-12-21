@@ -352,27 +352,34 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 		(* ------------------ TODO ------------------- *)
 		(* Change this to check for the variable here, so we can add the C_EXPR to the symtable *)
 
-		let (v, typ, n) = check_vdecl_t {Stch_ast.vdecl_type = a.arraydecl_type; 
-											Stch_ast.vdecl_name = a.arraydecl_name} env in
-		(* now that we know it's valid, check the types of the list *)
-		let s = a.arraydecl_size in 
-		let i = string_of_expr s in
-		(* try to match the init size with the list size. 
-		   Init size must be an int constant, by C rules *)
-		try 
-		if int_of_string i = List.length el then
-		let ret = check_init_vals a el typ env in 
-			if ret = a then
-				C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
-							 Stch_cast.arraydecl_type = a.arraydecl_type;
-							 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
-			else
-				raise(Error("Error parsing the list of array init args"))
-		else
-			raise(Error("Size mismatch in array initialization"))
-		with
-		| _ -> raise(Error("Cannot initialize array with a variable")) 
+		let invalid = List.exists (fun (_,s,_) -> s = a.arraydecl_name) env.scope.vars in
+			if invalid then
+				raise (Error("Variable " ^ a.arraydecl_name ^ " already declared"))
+			else begin
+				let (ex, ty) = check_expr a.arraydecl_size env in 
+				env.scope.vars <- (a.arraydecl_type, a.arraydecl_name,
+					 C_Array_Index(a.arraydecl_name, ex, a.arraydecl_type))::env.scope.vars;
 
+				(* now that we know it's valid, check the types of the list *)
+				let s = a.arraydecl_size in 
+				let i = string_of_expr s in
+				let typ = a.arraydecl_type in
+				(* try to match the init size with the list size. 
+				   Init size must be an int constant, by C rules *)
+				try 
+				if int_of_string i = List.length el then
+				let ret = check_init_vals a el typ env in 
+					if ret = a then
+						C_ArrayInit({Stch_cast.arraydecl_name = a.arraydecl_name;
+									 Stch_cast.arraydecl_type = a.arraydecl_type;
+									 Stch_cast.arraydecl_size = a.arraydecl_size;}, el)
+					else
+						raise(Error("Error parsing the list of array init args"))
+				else
+					raise(Error("Size mismatch in array initialization"))
+				with
+				| _ -> raise(Error("Cannot initialize array with a variable")) 
+		end
 	and check_matrix_init (m: matrixdecl) (el: expr list list) (env: stch_env) =
 		(* First, we need to check that we have a valid declaration by checking for vdecl_t *)
 		let (var, typ, name) = check_vdecl_t { Stch_ast.vdecl_type = m.matrixdecl_type;
