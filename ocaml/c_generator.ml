@@ -262,7 +262,7 @@ let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr)
       (string_of_stch_expr structname table e2)
   | C_Negate(e) -> "!" ^ string_of_stch_expr structname table e
   | C_Call(f, el) -> (match f with "print" -> "printf" | "error" -> "fprintf" | _ -> f) ^ "(" ^ String.concat ", " (match f with "print" -> print_2_fprint (List.hd el) structname table | "error" -> error_2_fprintf (List.hd el) | _ -> List.map string_of_c_expr el) ^ ")"
-  (* NEED TO CHECK THE REST OF THESE  *)
+  (* Now we need to check to see if the id's are in the table  *)
   | C_Assign2(i, e) -> 
       if List.exists( fun(_,s,_) -> s = i) table.vars then
         structname ^ "->" ^ i ^ " = " ^ string_of_stch_expr structname table e
@@ -280,10 +280,20 @@ let rec string_of_stch_expr (structname: string) (table: symTable) (exp: c_expr)
         structname ^ "->" ^ a ^ "[" ^ string_of_stch_expr structname table i ^ "]"
       else
         a ^ "[" ^ string_of_stch_expr structname table i ^ "]"
-  | C_Matrix_Index(m, r, c, t) -> structname ^ "->" ^ m ^ "[" ^ string_of_stch_expr structname table r ^
-       "][" ^ string_of_stch_expr structname table c ^ "]"
-  | C_Matrix_Item_Assign(m, r, c, e) -> structname ^ "->" ^ m ^ "[" ^ string_of_stch_expr structname table r ^ 
-      "][" ^ string_of_stch_expr structname table c ^ "] = " ^ string_of_stch_expr structname table e
+  | C_Matrix_Index(m, r, c, t) -> 
+      if List.exists( fun(_,s,_) -> s = m) table.vars then
+        structname ^ "->" ^ m ^ "[" ^ string_of_stch_expr structname table r ^
+        "][" ^ string_of_stch_expr structname table c ^ "]"
+      else
+        m ^ "[" ^ string_of_stch_expr structname table r ^
+        "][" ^ string_of_stch_expr structname table c ^ "]"
+  | C_Matrix_Item_Assign(m, r, c, e) -> 
+      if List.exists( fun(_,s,_) -> s = m) table.vars then
+        structname ^ "->" ^ m ^ "[" ^ string_of_stch_expr structname table r ^ 
+        "][" ^ string_of_stch_expr structname table c ^ "] = " ^ string_of_stch_expr structname table e
+      else 
+        m ^ "[" ^ string_of_stch_expr structname table r ^ 
+        "][" ^ string_of_stch_expr structname table c ^ "] = " ^ string_of_stch_expr structname table e
   | C_Noexpr -> ""
 
       and print_2_fprint (e: c_expr) (structname: string) (table: symTable) = match e with
