@@ -55,7 +55,7 @@ let rec string_of_c_expr = function
             match file with
               C_Id(s, t) -> (match t with
                 Tfile -> (match arr with
-                  C_Id(s', t') -> (s' ^ ", sizeof(" ^ s'  ^ "), 1, " ^ s)::[]
+                  C_Id(s', t') -> (s' ^ ", sizeof(" ^ s'  ^ "), sizeof(" ^ string_of_c_dataType t' ^ "), " ^ s)::[]
                   | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr arr)))
                 | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr file)))
               | _ -> raise(Error("Invalid argument for read: " ^ string_of_c_expr file))
@@ -66,7 +66,7 @@ let rec string_of_c_expr = function
             match file with
               C_Id(s, t) -> (match t with
                 Tfile -> (match arr with
-                  C_Id(s', t') -> (s' ^ ", sizeof(" ^ s'  ^ "), 1, " ^ s)::[]
+                  C_Id(s', t') -> (s' ^ ", sizeof(" ^ s'  ^ "), sizeof(" ^ string_of_c_dataType t' ^ "), " ^ s)::[]
                   | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr arr)))
                 | _ -> raise(Error("Invalid argument type for read: " ^ string_of_c_expr file)))
               | _ -> raise(Error("Invalid argument for read: " ^ string_of_c_expr file))
