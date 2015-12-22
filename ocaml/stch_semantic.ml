@@ -1,7 +1,17 @@
+(* 
+Semantic Analyzer
+December 2015
+Authors: Dan Cole, Tim Waterman
+
+Takes the AST and runs semantic analysis on it, turning it into
+a C_AST
+*)
+
 open Stch_ast
 open Stch_cast
 exception Error of string
 
+(* Globals for procedurally generating suffix for stitch items *)
 type stch_name_gen = { mutable name : int }
 let sn = {name = 0;}
 
@@ -234,23 +244,23 @@ let rec check_init_vals (name: arraydecl) (el: expr list) (t: dataType) (env: st
 			else
 				raise(Error("Types of array initialization do not match"))
 
+(* Checking the types for matrix initialization *)
 let rec check_matrix_rows (name: matrixdecl) (el: expr list) (t: dataType) (env: stch_env) =
 	match el with
 		| [] -> name
 		| head::tail -> let (exp, typ) = check_expr head env in
 			if typ = t then begin
-				(* print_string "CHECKING MATRIX TYPES\n"; *)
 				check_matrix_rows name tail typ env
 			end
 			else 
 				raise(Error("Types of matrix init do not match"))
 
+(* Check that all the matrix rows are the proper length *)
 let rec check_matrix_vals (name: matrixdecl) (el: expr list list) (ncols: int) (t: dataType) (env: stch_env) =
 	match el with
 		| [] -> name
 		| head::tail ->
 			if ncols <> List.length head then begin
-				(* print_string "COLS LENGTH NOT ACCURATE\n"; *)
 				raise(Error("Rows are not matching length in matrix decl"))
 			end
 			else
@@ -500,7 +510,7 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 
 	and check_stitch_body (el: c_stmt list) (table: symTable) (env: stch_env) = match el with
 	[] -> table
-	| head::tail -> (* string_of_symTable table; *)
+	| head::tail -> 
 	(match head with
 		(* The symtable of block here consists of all the variables that I do not want to put in the struct,
 			so we just pass the list through *)
@@ -530,17 +540,19 @@ let rec check_stmt (s: Stch_ast.stmt) (env: stch_env) = match s with
 			let table' = {Stch_cast.parent = table.parent; Stch_cast.vars = 
 			List.filter ( fun (typ,nm,ex) -> nm <> n ) env.scope.vars } in 
 			check_stitch_body tail table' env
-		(* Need to add  others *)
+
 		(* else I want to keep them in the symtable, continue down the list *)
 		| _ -> check_stitch_body tail table env 
 	)
 
- 
+
+	(* Iterate through all the variables, adding them to one symtable *)
 	and iterate_vars (data: (dataType * string * c_expr) list ) (table: symTable) = match data with
 		| [] -> table
 		| head::tail ->  ignore(table.vars <- head::table.vars); 
 						 iterate_vars tail table
 
+	(* Bounce up each symtable level, constructing one large symtable with all the variables *)
    	and check_all_envs (el: c_stmt list) (currTable: symTable) (newTable: symTable) (env: stch_env) =
 
    		ignore(iterate_vars currTable.vars newTable); (* add all the vars to the current table *)
