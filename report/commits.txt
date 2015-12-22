@@ -1,0 +1,2353 @@
+commit 14fcbbf36913eeba32454705951f590629df1ae1
+Merge: f86f952 cd73bf1
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 21 12:27:34 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit f86f952f4ed913c92bc2b3d96d028ec7d1b554e7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 21 12:27:29 2015 -0500
+
+    updated demo and presentation
+
+commit cd73bf1546f50a0d761cd73c237e5adc6cd58935
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 21 12:14:34 2015 -0500
+
+    Getting everything up pre-demo
+
+commit 7726285bd6845f42de94c180d981660829932ac7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 21 12:11:17 2015 -0500
+
+    updated presentation and demo
+
+commit 219855f53fdf111f06eb251c678126fe991525fe
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 21 12:08:27 2015 -0500
+
+    updated presntation
+
+commit e34dfe37af0d6b8e38d138b08e95f0495c3ced2f
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Mon Dec 21 11:09:20 2015 -0500
+
+    generated C for matrix multiplication added
+
+commit e28346bb1af89c7959e2ea6309c3d4922651b9fc
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Mon Dec 21 10:56:32 2015 -0500
+
+    added matrix multiplication code
+
+commit 6b9558e962acaa2f7a2ceb2dc585a72fce937bcb
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 21 02:13:42 2015 -0500
+
+    Got demo to work with no C code cheats
+
+commit 833ab002702eb5b56b652087165fb424dbae01cb
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 21 01:27:49 2015 -0500
+
+    Starting testing with + accumulators
+
+commit b8434f0eb623b9ffee29834955d6df9bd966c057
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 21 00:14:15 2015 -0500
+
+    Stitch loop scoping issues worked out
+
+commit 5c465f254dd3266f7dbe482ae6c451ccc9524c67
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 23:57:31 2015 -0500
+
+    Made a better matrix mult test; updated sems
+
+commit 6d19c76c540b35ba8814c9f3b703fa7d1d21a485
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 21:50:28 2015 -0500
+
+    Added matmult output
+
+commit 55d411d2608ceb6180e82de2e2401e7c34a48a90
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 21:48:56 2015 -0500
+
+    Matrix multiplication test working
+
+commit 7bd1175b3e6aa95bc47918a6811abbdea525ce94
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 21:34:36 2015 -0500
+
+    Working on scoping issues
+
+commit b1ba4625bbd4613eefc6ed4871e364a22cf7e29c
+Merge: a978103 5a49906
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 20:35:05 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit a9781034f1f1dd44de3ac97fe08fcf570818e847
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 20:35:00 2015 -0500
+
+    added open_r and open_w
+
+commit 5a49906dd846b14931a3e2c4aef86a73a58b0590
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 20:32:14 2015 -0500
+
+    Finished matrix init -> stitch
+
+commit c909820ba855fce2ca8a62a94dd186aa51d80197
+Merge: 62cbf0a eca869c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 20:19:10 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit eca869cb0f88e9615b4e4cdad106c259a07fd181
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 20:19:04 2015 -0500
+
+    Fixed 1D array init passing
+
+commit 62cbf0a8d1c68cbbd8a7c67a1ce79ce00330a8c1
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 20:19:02 2015 -0500
+
+    minor fix
+
+commit 6455582db726d6f5dd7e2dc7df0a96c0031e9b53
+Merge: 3d2ceff c16ede4
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:57:53 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 3d2ceffe122c54c3b87f5d878060b7644319a2cb
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:57:51 2015 -0500
+
+    Finished stch_stmt checking
+
+commit c16ede42f887a33020826c38f19451e1a7a8e96c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 19:56:27 2015 -0500
+
+    fixed paren issues
+
+commit 1d273b474db7be10ec9c9ec3095e752ab28149a3
+Merge: 4c6e669 8bd704e
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:50:10 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 4c6e669fa31ea9667d8a96b9670393b6c4e63fed
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:50:08 2015 -0500
+
+    Added some more generator testing
+
+commit 8bd704ed2da598867247fe681028b4bc72469083
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 19:43:46 2015 -0500
+
+    removed func3
+
+commit 39eafcbec26b5abdf473b24a59bc6f7e56ed34bc
+Merge: 78c76df 03244dd
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 19:42:43 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 78c76dfd0801089d8f41cb25fb7708bd5d824ffb
+Merge: 38d630a d30b9bf
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 19:42:36 2015 -0500
+
+    removed fib1
+
+commit 03244dde2357d2cf0763b0c043d3ae3f7d54e9ec
+Merge: 02836f8 d30b9bf
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:41:43 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 02836f8476fb79c41b6b85fba37f56e69919eae5
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:41:41 2015 -0500
+
+    Fixed array passing bug
+
+commit 38d630a36e0cbbce22473bd3a30475b78f4e98c5
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 19:41:21 2015 -0500
+
+    added tests
+
+commit d30b9bf0e270d8143e2113eaefbd791ebbd8ef2c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 19:39:52 2015 -0500
+
+    minor fix on 4
+
+commit f515cf5f229418bef8d9530c1f65ef907ad88c38
+Merge: 7fb08e9 200acf2
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:27:28 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 7fb08e934101b3837ee3d105ac06d42357ae54a9
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 19:27:18 2015 -0500
+
+    2D arrays are working
+
+commit 200acf257512624f312e6bd58b5b74ccf6a4d1ee
+Merge: c36a877 aaae5ce
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 19:07:28 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit c36a8772a17c1a1774704f8b9b2aa472199d955a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 19:07:21 2015 -0500
+
+    recursion wont work
+
+commit aaae5ce4829084dcf6751e96cfd8360031d7a5e2
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 18:38:27 2015 -0500
+
+    added _ntests/array3.stch, array4.stch, and matrixinit2.stch
+
+commit 9957b7448d9e6fa3427d38785ee8a6a7da5b6634
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 17:47:41 2015 -0500
+
+    added _tests/fib1.stch
+
+commit 9847733e91ccd9d62bd444f8085ba6821f5b057a
+Merge: 588cc44 515be64
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 17:43:42 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 588cc44363e5e2809436a3b4baf4dfa90efe1f39
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 17:43:39 2015 -0500
+
+    fixed recursion
+
+commit 515be640f660365dd4ef70a62865a9f9bb9e7322
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 17:43:14 2015 -0500
+
+    Can print locals in stitch loops
+
+commit 0fcd77f0c164c463a99f1166662419b806c35141
+Merge: 89b2f31 aceffe8
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 17:36:47 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 89b2f31208a2116d9b3af94c7da2537a77580f42
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 17:36:34 2015 -0500
+
+    added _/tests/func4 and func5.stch
+
+commit aceffe8260737f1a83e5ce8c40f0efda6fe3fbe1
+Merge: 02d3734 3c88e1c
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 17:34:58 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 02d37343356e0b50624e7996a9b83e2d3d961eda
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 17:34:51 2015 -0500
+
+    More code gen
+
+commit 3c88e1c76fa14e81cc087364f249c83e50143ace
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 17:34:19 2015 -0500
+
+    renamed gcd added stitch4 output txt
+
+commit 8c3fbe3a7588c1715967ac2e278e3273988016f9
+Merge: 5f94a5a fa7c23e
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 17:23:19 2015 -0500
+
+    Fixing the merge
+
+commit 5f94a5a12f071674e2943f908bbc0d6f2ef3cf55
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 17:21:18 2015 -0500
+
+    Stitch statement parsing overhaul
+
+commit fa7c23ed6dbfc50cca96c6bc445591c2fd7d9f43
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 16:58:46 2015 -0500
+
+    fixed .gitignore; char can now cast to int
+
+commit 2e19c6d01c184a93898a82205a152202a2018bdd
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 16:55:05 2015 -0500
+
+    fixed escaped characters
+
+commit 50a5d3ee12a1a96f4d5db00ea87fa9e26017f428
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 16:49:34 2015 -0500
+
+    updated all tests to have correct return statements
+
+commit 0354d0c3b716d48a1d5d6eea3f619d12e726c6ea
+Merge: 7413e98 3fe7525
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 16:33:15 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 7413e982270eb9db48be5ca875d06a15445df65b
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 16:32:57 2015 -0500
+
+    check for return on non-void function
+
+commit 3fe7525d89f8244769ddcc90b9679dc962286068
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 16:01:57 2015 -0500
+
+    added _ntests/vardecl1.stch, cant identifier starting with _ or a number
+
+commit 1446057a4c0c33c04434dd7ca02b9257908a0a92
+Merge: 29c3e59 1895079
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 15:33:05 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 29c3e594d2e8672ea9c39be374bb5732efdd314b
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 15:32:59 2015 -0500
+
+    Fixed issue with var being removed too late from stitch
+
+commit 1895079fa4b0a460c0d2166d24d01f3984784322
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Dec 20 15:25:49 2015 -0500
+
+    added _tests/for1.stch
+
+commit 350b17670a0b795902fc008094bc429d8aadf3b3
+Merge: c79809b 1c46608
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 15:15:51 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit c79809b7070dc507bd5c00756504e8cddcf12562
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 15:15:46 2015 -0500
+
+    Adding gen stuff
+
+commit 1c46608678604b7a6c09626205e00d62ee22f28c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 15:05:06 2015 -0500
+
+    fixed function ordering problem
+
+commit ccae33c4a21f924abac64ed695b8e6298581147f
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Dec 20 14:59:01 2015 -0500
+
+    Working on stitch loop verification
+
+commit c447d69eb709f5becdfff2f0d500e609603df306
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 14:39:08 2015 -0500
+
+    updated presentation and demo
+
+commit 492a1ce0c48c369b9681892acd891d6bb950395e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 13:56:02 2015 -0500
+
+    added presentation pdf
+
+commit 655acdd240fe5ef42ebb6b6f3859f9f9807d0b6a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 13:55:24 2015 -0500
+
+    updated file2 test
+
+commit 3954666f247f91a72988b0b63b457b63a66dbce9
+Merge: 6a93ff4 2a5a23a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 13:54:58 2015 -0500
+
+    merge conflict
+
+commit 6a93ff45d27458df206a0dea2cb3cbfe64a61820
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 20 13:53:42 2015 -0500
+
+    updated presnetation, file tests
+
+commit 2a5a23a7d8781a1aced8576bfac4da22477cfae0
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Dec 20 02:18:58 2015 -0500
+
+    added more tests
+
+commit 0d603b1e8406269ede1fc9a6ea4d6b714a4fa53d
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 23:06:32 2015 -0500
+
+    file IO works
+
+commit 2557e441e0b3a4cc0c92b1d6a08ca9cadfb19c8a
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sat Dec 19 21:26:09 2015 -0500
+
+    added _ntests/arith3.stch, checks that you cant add chars to ints. Added _ntests/func2.stch, funcs w/o return type cause error.
+
+commit 0cd0268a41ddbcc67a8f5bb21ffc17ef5f168fc3
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 19:14:51 2015 -0500
+
+    updated gitignore
+
+commit e2b2651405022319038790b7ad8ef7e4fa22db72
+Merge: 58aa1b4 443c22f
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 19:13:18 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 58aa1b46b935835ab04af99604a6dc27c602fe35
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 19:13:15 2015 -0500
+
+    added FILE type
+
+commit 443c22fd1528c3b2999c3d0a55d94f12f474443d
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Dec 19 19:08:05 2015 -0500
+
+    More things now get screened before the struct
+
+commit aae955dc54a06202de85586105c8ec2938e24a8e
+Merge: eff5c5e d82e06d
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 18:43:23 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit eff5c5ea368de4d4899219c3aa1b13a52c74bb02
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 18:43:05 2015 -0500
+
+    added 2nd image for presentation, added new if test
+
+commit d82e06d6b78ffba3105b7e9d97e94d9b18eb5e48
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Dec 19 18:42:36 2015 -0500
+
+    Local stitch variables should not be put inside the struct now
+
+commit 97eb3628befb3c8785eaf214599c6554fec22d84
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 18:14:55 2015 -0500
+
+    added presentation files
+
+commit 067fe06aebdbd31d572c7e9a9471a21dfe4b2c91
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sat Dec 19 17:21:07 2015 -0500
+
+    no more CONST and  NULLin our language, also added global variable negative test
+
+commit 66b262cfb5e01506bc9a449168e25e623b254d75
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sat Dec 19 16:39:59 2015 -0500
+
+    break works, tested in _tests/break1.stch
+
+commit 3736edbef0dc5ff3df06cf3931f17a9ee63056f0
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Dec 19 16:08:16 2015 -0500
+
+    Closer to getting array passing
+
+commit 8f9e8967ffe7a06afa88f83b89ca0d90453f793a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 19 15:50:30 2015 -0500
+
+    fixed unmatched accumulator tokens
+
+commit 83bd3d36ae7130ec9160026054692aea835c8c2f
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sat Dec 19 15:49:03 2015 -0500
+
+    added mod operator to ops1.stch, checked logical operators in ops2.stch
+
+commit 32662a7565735324058e8c84c7b2ed6405d0d3df
+Merge: a5c3d93 7280502
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Dec 19 15:31:00 2015 -0500
+
+    Merging changes
+
+commit a5c3d9353644b6884ab83be67ab67a370004ff81
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Dec 19 15:30:51 2015 -0500
+
+    Arrays are passing through
+
+commit 7280502f0656cc75d20a6793279e7ff3e722897b
+Merge: 40f096c a51ed05
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sat Dec 19 15:24:34 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 40f096ce70eae7a48b09365befa0659c2d428d65
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sat Dec 19 15:24:24 2015 -0500
+
+    added negative print test
+
+commit a51ed052e8f8ddc8c70f0c7523e9e0464d4727c5
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sat Dec 19 15:21:23 2015 -0500
+
+    added _ntests/float1.stch, fails with multiple decimals in floating points
+
+commit 60e63537836e38c965420a8279f50bfa699b3f80
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Dec 19 14:22:24 2015 -0500
+
+    Passing arrays into multithreaded apps working 50%
+
+commit dc56ccfb9de14951ef1a494f96db0088c21d75bf
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 18 18:24:25 2015 -0500
+
+    added accumulator types intap, intam floatap floatam
+
+commit df57730b475a7471e135f494c4a9afd1cc3b8ec5
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 18 14:32:14 2015 -0500
+
+    fixed a testing issue
+
+commit 11079547757834808d3e19b46d78deb6ae0b7877
+Merge: b738f24 9fcef18
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 18 13:44:47 2015 -0500
+
+    fixed merge conflict in stitch3_out.txt
+
+commit b738f24919d8724e864fa1f58955760b32668df7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 18 13:43:47 2015 -0500
+
+    potential merge conflict
+
+commit 9fcef180124171ce21c9d27bf58f191538457163
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 18 11:09:03 2015 -0500
+
+    Passing variables into stitch
+
+commit 3d587d1264a84e7a586ce82829da6d95dcb2bad8
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 18 00:21:10 2015 -0500
+
+    fixed ordering on stitch2func matching
+
+commit 96864c17443d2f972286b0a3724af83ffcd965bd
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 23:48:53 2015 -0500
+
+    really added tests
+
+commit 95cfc40432d3caf3e740a466bf44427c9b54b5ae
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 23:46:55 2015 -0500
+
+    nested stitch loops work; added stitch tests 3 - 6
+
+commit 2900c7f1c23a728b60e616407df48721046b868a
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 17 23:17:24 2015 -0500
+
+    Stitch test 2 output fixed
+
+commit a3537de8df1f2357baa55e2d8157d733785d79bf
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 23:16:59 2015 -0500
+
+    fixed invalid return, fixed non-block stitch issues
+
+commit 1aa8fd9f41f3b8cfc60d4d0716404e6b3bfa80aa
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 17 23:10:00 2015 -0500
+
+    Working on multiple stitch loops
+
+commit 081dc99c0659dd4a6f652a32d0e57f5bc6918f95
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 23:09:40 2015 -0500
+
+    updated stitch2_out
+
+commit 24a32f26e74a09b81f22ad720380f362d98200a1
+Merge: f7318f8 93e2ac7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 23:03:58 2015 -0500
+
+    merge fix
+
+commit f7318f8d4fd5ef755a7d7e7c753c5a0a861ee2a2
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 23:02:52 2015 -0500
+
+    updated tests
+
+commit 93e2ac70401a32852dbf28a6c4aa45e2ba4508db
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 17 23:02:27 2015 -0500
+
+    Added multiple threadpools
+
+commit ec977e821cfb62b6fb0bd8eae89fc4b289637494
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 22:45:44 2015 -0500
+
+    removed struct/access; cleaned up old code
+
+commit 503f05282e3f4493873eccbb92a2277b35046d97
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 17 22:37:57 2015 -0500
+
+    Fixed stitch loops with fnames
+
+commit 847bb3dc7381561e48c479054c71257c41b266e3
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 22:34:10 2015 -0500
+
+    stch func naming works
+
+commit d12ff2fa167e3016acb45fa3d5cf6377fd27bab6
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 17 22:25:49 2015 -0500
+
+    updating stch func gen
+
+commit d4acce8abd070fe0795ca20a08ecea821828dab6
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 17 22:24:53 2015 -0500
+
+    Reworked structs to access stitch variables
+
+commit 5408089ef6734ef9c569f425aa10f316a1b54045
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 16 14:08:58 2015 -0700
+
+    Its going through syntactically, need to get variables passed in from headers
+
+commit 64e35c5bfd99f33d705cd78041d642907d736c9d
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 16 13:51:47 2015 -0700
+
+    Changing names correctly sometimes. Still not general enough
+
+commit 747815f55365df192317f9c8a91e4697001cf050
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 15 10:35:39 2015 -0500
+
+    Adjusted the variables in the generated for loops to be general
+
+commit fc59e0265f8298ab26ba60417a6db8edca7acb95
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 15 10:26:29 2015 -0500
+
+    Added thread blocking. Im an idiot
+
+commit 5faf89299826880b76d63d469365b98e1a370395
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 14 23:59:11 2015 -0500
+
+    Done for tonight
+
+commit 91111abcda95102d45379e3d55fce9ba2d9b3f89
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 14 23:50:07 2015 -0500
+
+    Still working on accessing passed in vars
+
+commit ed3d01241778a94fcc5fb2912f542c84030f7fce
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 14 23:29:43 2015 -0500
+
+    Need to figure out how to change the names of the variables in the stitch loops statement list
+
+commit a051d852d2ab208436e673a6ec66e1a2e8f2a3af
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 14 22:46:43 2015 -0500
+
+    Started to get threaded stitch working. Threadcount is a little wonky
+
+commit 4b5101dbf24f5099115cf3a9a34b610f20818e02
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 13 19:04:34 2015 -0500
+
+    stitch body now turns into a function, still need to get the nameing down
+
+commit d523668973ee4357d92582fe0aa1abf91f3f8991
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 12 20:50:04 2015 -0500
+
+    redid the way that stitch funcs are passed, still need to generate the functions in the c_gen
+
+commit 06ff138f3564f568a93df0d64a531eabb7542268
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sat Dec 12 14:20:03 2015 -0500
+
+    Update README.md
+
+commit d45dd0e7e39b0075f69b07dfac6e04547537ad11
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 11 23:44:27 2015 -0500
+
+    Started stitch->for code generation
+
+commit 77bd9795055f04e9afc69cbd2b7f99577716da07
+Merge: 05e6fbb bce1cd4
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 11 21:43:51 2015 -0500
+
+    Merging with dans changes
+
+commit 05e6fbb5b5b9300a1abcd9b06e7100b22b1f83be
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 11 21:43:48 2015 -0500
+
+    Started work on for loop generation
+
+commit bce1cd4399d50deff099affeee6f48fba0719002
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 11 21:21:47 2015 -0500
+
+    little to no progress on the stch funcs
+
+commit 4ed3f45d1f620971673d20dcfab4ac7545eece87
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 11 20:20:06 2015 -0500
+
+    still working on stitch funcs
+
+commit a23221534f8b6f860e571e88a4793dff2df32f70
+Merge: 1ed3d07 1dff7ec
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 11 17:23:56 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 1ed3d07b8e35de80116f300f5d6f2c9fb57c3571
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 11 17:23:53 2015 -0500
+
+    added stch_funcs
+
+commit 1dff7ec6565c32c511260eb196435f15968e7d29
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 11 11:53:23 2015 -0500
+
+    Finished matrix init. Need to remove debug statements later
+
+commit 9c032762654796bff9347609ac1f218cb6ad8f47
+Merge: a905ad3 952e6d6
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 19:47:33 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit a905ad3de0802fe63588b511849e7475713dfa96
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 19:47:28 2015 -0500
+
+    updated some tests, fixed list rev issue
+
+commit 952e6d66e6601f9263c9cc39d1a95c190cca605d
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 10 19:46:54 2015 -0500
+
+    Matrix init working 90%. Working on typechecking
+
+commit 7163ee62b65f8b609cb7ad5face70e4bc61a5d38
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Thu Dec 10 19:43:00 2015 -0500
+
+    added negate2 and negate3.stch
+
+commit 148ca6dc15be4eb4eae58d011e4c78d2e4105729
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Dec 10 19:41:23 2015 -0500
+
+    fixed rec1 test
+
+commit 3e1db6e827105d913f01ef45877adc34db0f83f8
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 19:24:40 2015 -0500
+
+    removed microc binary
+
+commit ab1a394db56d434412ecd96343a0c8a30b2b4564
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 19:23:47 2015 -0500
+
+    fixed snafu
+
+commit 744381b513e3ba3fa008c3e99bb76901fed54b68
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Dec 10 19:16:44 2015 -0500
+
+    added stitch and rec tests
+
+commit a052841944b13bebaa4b6cd148d9efc5cbd409f8
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Thu Dec 10 19:16:01 2015 -0500
+
+    added more tests
+
+commit 4c9136b74b462cffa92ad6245ae75e5c0e9d20ca
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 19:12:56 2015 -0500
+
+    working on stitch loops
+
+commit f3cca0c68daf4fe582005673f22ca4c393c45cd4
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 18:42:04 2015 -0500
+
+    updated stitch test
+
+commit bb69889b8a08cb305318f24ab411627cb6bdc818
+Merge: 4fc0380 9d063bc
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Dec 10 18:39:12 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 4fc038006a974131c958da7ac365a53c4e54aa7c
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Dec 10 18:39:00 2015 -0500
+
+    added stitch loop test
+
+commit 9d063bc7cbea95c3489fd2e65f78f4fb26105509
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 18:38:29 2015 -0500
+
+    stitch loops redone in cast/analyzer/generator
+
+commit e42e03b0b7c0c8e89400d1f2ecbd35d9b415da56
+Merge: 4a3e470 20b60c4
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 10 16:50:20 2015 -0500
+
+    "Merging with the syntax changes"
+
+commit 4a3e4705a2f8cb2eb032cb79fe769ce545e03ebf
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 10 16:49:59 2015 -0500
+
+    Added matrix checking. Now only init is missing
+
+commit 20b60c4d0df664954390b5fda8bb422fada8255e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 14:18:26 2015 -0500
+
+    fix minor formatting
+
+commit a449e53de6a31c9e6cf93e14dc00732152145260
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 14:11:11 2015 -0500
+
+    fix conflict
+
+commit a0e0636fcffbb966df1f9ef0f8019a9e97da48a7
+Merge: f85e09e 209b7ed
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 14:08:03 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit f85e09eeeb95251cfda76330ac68dd55a716df6a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 10 14:07:13 2015 -0500
+
+    bit of code cleanup in the sem-an, make it a bit more readable
+
+commit 209b7edfb790ec5b8e94cfe3e40b6c121f2e8906
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 10 13:47:37 2015 -0500
+
+    Array assignment in. 1D arrays should work 100% now
+
+commit 121ba6810a11910ca7f1ca581c9f45773ad98edb
+Merge: d55cb3b 0948ea2
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 10 13:16:10 2015 -0500
+
+    Fixed merging issues
+
+commit d55cb3b258de506e980ff64067fa72bb39726d1e
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 10 13:12:07 2015 -0500
+
+    Fixing matching issue with arrays; error messages not accurate
+
+commit 0948ea2b5805d2856e43f584aa6df84dd89d124c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Dec 9 18:09:11 2015 -0500
+
+    questions about matching
+
+commit 10cd1cb8fba3f2dfcbed3e071a71e9d21d096bf6
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Dec 9 17:17:09 2015 -0500
+
+    test suite now echos total number of tests and how many passed
+
+commit 68326e9c504acff661b2ad5bb384d5b3bc4b2d2e
+Merge: cd26dcf ae9e8b6
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 9 16:21:40 2015 -0500
+
+    Pushing the negative array tests after merge
+
+commit cd26dcf1753f24f1ba0ce9216aee5f0bc43bf0ce
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 9 16:21:30 2015 -0500
+
+    Pushing array negative tests
+
+commit ae9e8b6eba22a76202dfcc73b03e546af22ad511
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 8 18:47:54 2015 -0500
+
+    minor commenting
+
+commit 28ec92af50354d748234b76847a993123e5a9e6a
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 8 16:35:29 2015 -0500
+
+    Added size checking for array init
+
+commit a88a2a4d696ee1ec8464ab4bec5a80056c8a451a
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 8 15:55:32 2015 -0500
+
+    Array initialization working
+
+commit b116aa4bd0ee75feec5a11df97bbe1ddd93c0112
+Merge: e052491 aadd3b9
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 8 14:14:47 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit e052491cdb41118329d8f028314fb300d3c2c5de
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 8 14:14:40 2015 -0500
+
+    added exit() + tests; added commenting tests
+
+commit aadd3b987c848a1fc97d17524376ff6d3519bed6
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 8 14:05:32 2015 -0500
+
+    Added array indexing to the print statement
+
+commit 17e1a695296b3dd1cb19110b1a1d4a81678a3f64
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 8 13:57:00 2015 -0500
+
+    Added in array indexing expressions. Need to add them to print
+
+commit 93272f2330e441ac28906db16dab3067503dacd6
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 7 23:04:52 2015 -0500
+
+    Added more array items. Working on 1D array init
+
+commit 05ca28f77603d036ed9b4adf9023c473926e9fff
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 7 21:18:18 2015 -0500
+
+    Added two dimension array decls, working all the way through
+
+commit 39a8a4d403c7083a6049569b97a7f7ae9ae4dd88
+Merge: 73bc7ff 3527842
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 7 19:06:26 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 73bc7ff3374bf6492fd0cc24ce4f342e03ac1914
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Dec 7 19:06:15 2015 -0500
+
+    One dimensional array declarations working, parse->print
+
+commit 3527842aa87c50070f6b76ddafc6768e548479e7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 7 17:17:26 2015 -0500
+
+    file cleanup for negative tests
+
+commit 9b083ee0ff021608921800c4a355de2f901db6dc
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 7 17:17:12 2015 -0500
+
+    updated negative tests
+
+commit 6470897bd762270847c1f1768906851d6d57b5f8
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Dec 7 17:03:00 2015 -0500
+
+    test suite works with negative testing (goes in _ntests); updated headers
+
+commit 8f0482eb4b19acd7a8a4c8e6e758a2541703a7b4
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Dec 7 16:24:01 2015 -0500
+
+    Update README.md
+
+commit 5ca219aa8fa3b010b76f13087198ee7baf54a2ae
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 6 17:28:30 2015 -0500
+
+    error() added Stitch.  Added hello2 test to confirm this
+
+commit cf3e7898576149a1d37a52f30a36cc898e13a460
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 6 17:08:57 2015 -0500
+
+    print works
+
+commit bbd481ecf6e544fb3d6796b30f75ef1c6dc22f93
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Dec 6 16:35:05 2015 -0500
+
+    print works for int, float, char, string, id; does not work for other expr
+
+commit 6f52d3db9df12d425aeb0a7686579766afbde676
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Dec 5 17:37:09 2015 -0500
+
+    print works for ints now, updated all tests accordingly
+
+commit 8049b3dc74d171068c6b6c79cafaf272c7013caf
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 4 22:02:46 2015 -0500
+
+    Quick fix for if statements. Need to rethink how we print
+
+commit d8cb215629af8f4eb180de00cfb578b91f9ebd0d
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Dec 4 21:41:55 2015 -0500
+
+    Fixed the stitch compiler chain, started adding print
+
+commit 25791cdb3d156e9bc3e21b729222013338243af5
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 4 13:49:11 2015 -0500
+
+    working on c_call - find_func_sig working (?)
+
+commit d514d8c32ea80308150b8391a8c3d9d1a2be49c0
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 4 13:41:01 2015 -0500
+
+    working on c_call - find_func_sig
+
+commit 8dfea1a4056bce6cfa0077746ce7a0cd9cc048ae
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 4 13:34:03 2015 -0500
+
+    working on c_call - need to finish func args
+
+commit c6afbb284ad07a4782191f0ee2d6a57776e7a0ce
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 4 11:47:27 2015 -0500
+
+    added better error for check_assign2, tweeked cleanup of test suite
+
+commit 01a92d5332fd6be8b381c92124d059797149c379
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Dec 4 01:40:21 2015 -0500
+
+    fixed assign
+
+commit 0d18e5f2dc10a4b42bc9be3a04bbd306cbaeee42
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 21:27:09 2015 -0500
+
+    Debugging variable issues
+
+commit b41f84754f9e2e01e7ccf665bf95488a7692ae30
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 20:51:12 2015 -0500
+
+    For loops correctly accept expr_opt
+
+commit c07013b4c847fdc45bca258c705c3fb517d1c495
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 20:49:53 2015 -0500
+
+    Added testing file
+
+commit 2cdd1126be26fd365d05714654f86f9c8b04ad47
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 20:38:05 2015 -0500
+
+    Generator issues, but everything seems to compile
+
+commit 308b52d1d7fe1fd1c8c85d53786d07ff0b151928
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 20:27:00 2015 -0500
+
+    fixed gen
+
+commit 479c8701c4df07f1f37653b9d5013ef21b2c2fa5
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 20:15:58 2015 -0500
+
+    Started the C code generation file
+
+commit 9a6bcf3ecd6ea00a525d4dd2bbff7411896e1a16
+Merge: e6246b0 95fde55
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 19:53:26 2015 -0500
+
+    Fixed merge bullshit
+
+commit e6246b0ed9654c03d8617998a22b81f6b9f97877
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 19:51:26 2015 -0500
+
+    Stitch thing working
+
+commit 95fde554d5d23170047438a8f47c2abb8340db65
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 19:49:55 2015 -0500
+
+    sm-an works again
+
+commit cdb0b1ac080b6b897e0c89f335f18195c543576b
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 19:36:34 2015 -0500
+
+    Makefile and compiler edit
+
+commit 7f15f7f49eef9ef9d18ae1eb0e82ea2fdad05a7d
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Thu Dec 3 19:35:03 2015 -0500
+
+    added check_for
+
+commit 61f94774363231958a4dd178850459c9a0348f27
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 19:31:19 2015 -0500
+
+    working on program
+
+commit 93ea0d82be4bb0d166e65b30b108a98b91633070
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 18:39:29 2015 -0500
+
+    making progress
+
+commit ebfa2ec2e5af5e9ad9956b2fa564fb6dd5d3d508
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 18:21:14 2015 -0500
+
+    w
+
+commit 67e40f8420c6d7f8df9cff3f0763d905713d371d
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 17:49:37 2015 -0500
+
+    w
+
+commit a07af01a4af200d1773db6ba89bad67b1eae974c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 17:40:53 2015 -0500
+
+    fixed
+
+commit 86db74aff9b3f8ce04b91284c85e3150ad368362
+Merge: d7f53b2 07a24c3
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 17:25:06 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit d7f53b2e53407b5cea1a5ddbf94e457d7ad3bea5
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Dec 3 17:24:58 2015 -0500
+
+    working on sm
+
+commit 07a24c353a57e3e50d5cc91e356faa2408a2bdc2
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 16:49:28 2015 -0500
+
+    Checked if expressions, while semantic checking done
+
+commit 09a146ab66b698bcedab996f2481847d5beeb315
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Dec 3 16:33:34 2015 -0500
+
+    If semantic checking checks for int type expr
+
+commit a367ac78d4acbd95110ad958d4fa8d41180055cf
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 2 20:05:25 2015 -0500
+
+    Semantic checker compiling with the pieces we have, a lot has been commented out
+
+commit c68b1dfa5fb2bf8e469f1c6f6b0ec972aeddb2f3
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 2 19:11:00 2015 -0500
+
+    Fixed optional error
+
+commit 19d4e043bfae7acee69c090495e91220219bc6bf
+Merge: af3a9ec ca26c84
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 2 17:57:32 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit af3a9ec4dbb6806eba0b31d7063d677efa905844
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 2 17:57:23 2015 -0500
+
+    Fixed compile stuff
+
+commit ca26c84fd8e274c1db816d3db9330c39a52b473c
+Merge: f8be026 83f1175
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Dec 2 17:48:48 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit f8be0264b1d229d54bd13b82deb87814179af5c7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Dec 2 17:48:40 2015 -0500
+
+    updated makefile
+
+commit 83f1175e536b841796b971324361aa78659fc6ac
+Merge: 53282cb 153fff7
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Wed Dec 2 16:13:04 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 53282cb6ab31b0a1ae299be89a8c8b160f8fe299
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Wed Dec 2 16:12:58 2015 -0500
+
+    fixed up sem tests
+
+commit 153fff71062d4532dd8d2dade9aad2d58401fc34
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Dec 2 16:10:39 2015 -0500
+
+    updated comments
+
+commit 3acc1a9c8200480e57791b250e92c44de5a0e42a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Dec 2 15:02:22 2015 -0500
+
+    commented sem_an, still need to do check_for, fix check_var_decl
+
+commit 50f444b4ee818db79e5af2f86d10c33fc219b1a2
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Dec 2 14:37:09 2015 -0500
+
+    Added back access operator and struct keyword
+
+commit 24723bb66ce7c484bbd1d3eec2c582d1e76ff049
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 1 23:39:09 2015 -0500
+
+    Arrays now can assign individual elements
+
+commit 87bdbbe5804eb72d1c4d4f0a6cb00dbf21e9f92c
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 1 23:10:06 2015 -0500
+
+    Initial array declaration passing parser tests
+
+commit a6f399113c32bac2915678d66ea64a3f5d878973
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 1 12:55:27 2015 -0500
+
+    Fixed pretty printing of chars from ast
+
+commit 53166bf86b82e5994464cfc71b9ff1a69e52c094
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Tue Dec 1 11:05:06 2015 -0500
+
+    added the actual semantic checks to test
+
+commit b44f18dd7fa5e2c32d5fede5298f184de76f9ab4
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Tue Dec 1 10:59:14 2015 -0500
+
+    added simple semantic analysis tests
+
+commit 07a81ef1ecfb6d069966a363d0dbcba5dd35b9c4
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Nov 30 12:11:38 2015 -0500
+
+    semantic analizer compiles, still need gen code
+
+commit 5e1fba16104839ac3964bbf7cb73198416e61192
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Nov 30 12:04:15 2015 -0500
+
+    finished sm-an
+
+commit 2aefc5892f392b9d6833fbd1932ac183f03e6423
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 29 17:08:26 2015 -0500
+
+    need to still add init_env and chck_program
+
+commit c1d8dff46a438722f3d181b29451d32b899a7713
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 29 16:46:31 2015 -0500
+
+    working on sem_an
+
+commit 3df7000bffe087e4d01d21b3b7dd4dd19ed00965
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 24 13:20:22 2015 -0500
+
+    working on sem-an
+
+commit 135caf8726134865d43f8ed6a65ebdcad98b313e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 24 13:05:15 2015 -0500
+
+    started on semantic analysis
+
+commit bd34b67afac6cf13c42b59d984e32bb1deab2bd4
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 22 20:21:05 2015 -0500
+
+    created cast, added type dataType refactored the ast for consistancy
+
+commit 79b9ebc687898a82a6f012cd69d9e65632251bec
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 22 19:21:01 2015 -0500
+
+    started on env and complier
+
+commit 2eb53e0ac96e5fc98d4a7728c7247578b730b7ad
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 19 18:06:00 2015 -0500
+
+    updated .gitignore, added makefile for stch_headers library
+
+commit 34301c36c591a75e5ee0ae8c7682d13091966a9d
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 19 18:04:48 2015 -0500
+
+    Added new loop tests
+
+commit 7bb3f01fb70b60d35bb1d748605e20737757b1cf
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 19 17:57:16 2015 -0500
+
+    added function test 6 - check for empty return
+
+commit b491f3d154bda7dbf9d91620a46491ee8c12f9e3
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 19 17:56:10 2015 -0500
+
+    fixed some stuff
+
+commit 8171503e3921b3e15907bf06770c9bf47f0ad811
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 19 13:41:46 2015 -0500
+
+    removed gen code diffing from test suite
+
+commit 2fbbb1d5a434528ff40a6205f50ef1d616a53901
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Nov 19 13:14:49 2015 -0500
+
+    Update README.md
+
+commit bf76fbf0e0040e5ae8e3dbb170d3b2e3f9a8a9d8
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Nov 17 21:20:24 2015 -0500
+
+    Fixed shift/reduce error caused by stitch loop. All tests still work
+
+commit c2892cf56d57fe0aca1aaaa17a69766431094100
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Tue Nov 17 15:46:25 2015 -0500
+
+    updated meeting notes
+
+commit 33fa100ab44678da625a69ea7c9acb64cfefdc4d
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Nov 17 15:07:03 2015 -0500
+
+    Update meetingNotes.md
+
+commit 4c46e088822371df43782b93cd61bacf62a02c5a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 17 12:01:17 2015 -0500
+
+    added two new tests
+
+commit b5d767afb03ba0b1d3e058b49e528a1f9d7b7aab
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 21:40:38 2015 -0500
+
+    added fucn1 targets
+
+commit efc6214ac58989d432b07dc0b42a950321ad25bf
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 21:35:15 2015 -0500
+
+    fixed newline issue, removed .dSYM
+
+commit 876191de3d0b7a13324b69c837228ac13289cde0
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Nov 15 21:30:47 2015 -0500
+
+    AST changes to allow vdecls
+
+commit 6edbc79588c29679de29a66d52a2ea9ae9ceb71d
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 21:29:58 2015 -0500
+
+    updated gitignore
+
+commit a656e75075fea22e29fbc0855eb76f9caa6ce17f
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 21:25:02 2015 -0500
+
+    tester now recompiles everything
+
+commit 856235421ca473adb5e661a6ffbea7565b862aa7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 21:15:15 2015 -0500
+
+    added new tests (spoiler, we pass)
+
+commit 7cfbd96c49b9a5b7d7e06e45f40cbbf2123ee99e
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Nov 15 20:48:02 2015 -0500
+
+    Changed ast to use printf
+
+commit 1740d751c0d627fb4018e5887b1d7d7f3eb1849a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 20:45:22 2015 -0500
+
+    added dummy files for _log and _bin
+
+commit 892ca104b7aacf09a887b6d892666e9e0cf1d0cb
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Nov 15 20:27:58 2015 -0500
+
+    fixed int x = 3 error
+
+commit 27f59871b4707649cb1b6deee7c9ccc421c781b7
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Nov 14 00:07:56 2015 -0500
+
+    test suite now works, also folded in color, etc. from parse tester
+
+commit e9cf2179c20fafba171fe9cc4389213cf41c2370
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Nov 13 12:16:20 2015 -0500
+
+    Fixed tester cases, shift reduce still happening
+
+commit 7fb2182fa4c9569011cfade64c772468633cb984
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Fri Nov 13 00:19:56 2015 -0500
+
+    Made ptest more extendable with functions
+
+commit 000a738da56f1e36a2b1fa686672388d86370d9f
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 12 23:42:58 2015 -0500
+
+    Colorized output of ptest suite
+
+commit 682a5728a1d43a323c2900ecbfc990ba34edccd6
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 22:50:04 2015 -0500
+
+    fixed 8 SR errors
+
+commit 490aa2fdb761d84878860fc2056e84f7d37ff937
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 12 22:43:02 2015 -0500
+
+    Ptests report what they are; while/stitch added
+
+commit d24d0d3645b6fa931632aabd38e5b89473ed35d8
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Nov 12 22:18:06 2015 -0500
+
+    added test doc
+
+commit c6dee2286fb8c13976c8d4c7c342a762811a9b5d
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 22:17:41 2015 -0500
+
+    hello, world
+
+commit ef6c05f24695a445c963fd69a6f9ca89848a4eb6
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 12 22:02:01 2015 -0500
+
+    Parser test script updated
+
+commit 71d238926bffe47ecf9d150e01ac641de54fad5c
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 12 21:55:39 2015 -0500
+
+    Stitch includes headers
+
+commit f4bf3f3c98f8526dbb90b8c8a924059df688f941
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 21:48:51 2015 -0500
+
+    functions working
+
+commit a9a66840ce6149982bbfc426a2444bb3430fc506
+Merge: 80823a2 a41a639
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Nov 12 21:45:24 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 80823a268592ff0e7ef847970d3fd349e7f9eca6
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Nov 12 21:45:10 2015 -0500
+
+    added more tests
+
+commit a41a639f64cd7ce4928e429964cdd38bc2875bd2
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 21:28:45 2015 -0500
+
+    minor fix
+
+commit 2788f4c6905199da5809b05604683aead1f52021
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Nov 12 21:28:13 2015 -0500
+
+    added test suite for parser
+
+commit a7c5865238d584ddfa294f3e74a949e71bae8c52
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 20:48:20 2015 -0500
+
+    working on functions
+
+commit 7e594a1be51209e15a2036e42d675c57abeaadcd
+Merge: 337987d 453f44c
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 12 20:47:42 2015 -0500
+
+    Fixed stitch.ml issue
+
+commit 337987de8088fb08547c57def1e1a38a4445acec
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Nov 12 20:45:13 2015 -0500
+
+    Stitch.ml taking in filename
+
+commit 453f44c460ce2284d3bbb6746969955484a8de44
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 19:30:40 2015 -0500
+
+    unordered vdecl statments works
+
+commit c611d232489da46e7980218d78a36d28d3a82786
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 19:05:52 2015 -0500
+
+    restructured vdelcs
+
+commit d7a3b80647b4b5ee1f8422d2df0c0619842556bd
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Nov 12 18:14:18 2015 -0500
+
+    added stitch to pretty print
+
+commit 372687d8979d718aa95c77d80043ca6167bc15dc
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Tue Nov 10 19:09:15 2015 -0500
+
+    fixed formatting
+
+commit ed6e4eb55757b017f2314121e009a6b463e05127
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Tue Nov 10 19:08:04 2015 -0500
+
+    added notes from 11/10 meeting
+
+commit cd71c4551c3dcca992c8a558a43e3fc41aa24e57
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 16:15:16 2015 -0500
+
+    compiler compiles (with nothing in it_
+    )
+
+commit 6d743a00b1cbf24b92b34eaddef8c9cd6d69a2c3
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 15:37:34 2015 -0500
+
+    2 more errors fixed
+
+commit 6dba4d67453ecb49007b733ad32ae9412fe3698e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 15:21:01 2015 -0500
+
+    updated
+
+commit 31538c38a2cd5f4537ff694a536f0f4173f4d0eb
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 13:44:33 2015 -0500
+
+    fixed some issues
+
+commit 68c76a75ffef4e3ba3ac323f3b44c2b23a38c76e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 12:28:33 2015 -0500
+
+    added Makefile
+
+commit d4b388634339bf16d57a8819d4e803545fb5db20
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 11:43:35 2015 -0500
+
+    test update 2
+
+commit 87a91772064c8e9c6b0ebf32bd65ddd22ee14b44
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 11:42:21 2015 -0500
+
+    test update 1
+
+commit 7adba58bdd0c1a33c393b8b8636759ab57e7d0f1
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 01:47:55 2015 -0500
+
+    updated test script
+
+commit a26d8ff170dbf9f72e9930afe0920464f4505be4
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 01:42:58 2015 -0500
+
+    test suite added
+
+commit 23eb1db66e5506a86aaebc06a0b94b2b909d2b18
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Nov 10 01:40:37 2015 -0500
+
+    tests
+
+commit 450976a82bf9a87cb4686f4827f8fc4d6197d8aa
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Nov 9 18:06:59 2015 -0500
+
+    Delete hello1_target.c
+
+commit 85e07a535c066c960b7da02da713c58b11574e25
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Nov 9 18:06:45 2015 -0500
+
+    Delete stch_headers.h
+
+commit 3615729f345a3aa9049607c163c6021dc038740b
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Nov 9 18:05:53 2015 -0500
+
+    started work on testing
+
+commit 736cb3ac8ed69d787e37299afdbdafce2eec822e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Nov 9 17:07:46 2015 -0500
+
+    hw test target
+
+commit 78e30de0b28a2dec1a323eee367b006436cf50b4
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Nov 9 15:52:21 2015 -0500
+
+    Update stch_compiler.ml
+
+commit 387cf5404148befd486af3268fd9ce394376c4c5
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Nov 9 15:22:54 2015 -0500
+
+    Create stch_compiler.ml
+
+commit 997ff10affded68449ea05e3cedbeb290ea17acc
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Nov 9 15:21:47 2015 -0500
+
+    Create hello2.stch
+
+commit ac2ab8a9a9cf0b094acf5e897812d75fefdd6d30
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Mon Nov 9 15:16:28 2015 -0500
+
+    Create hello1.stch
+
+commit 3baf3d29959ee88b8bb4afa3542c351947e17965
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Nov 9 10:54:22 2015 -0500
+
+    stch c headers and func defs added
+
+commit c86292b09b0ddc5ba33a71cd86471c4a318ecfa2
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Nov 8 20:06:36 2015 -0500
+
+    Update stch_headers.h
+
+commit d23f256f266c4573c5f9bc83bc4ad0416b76c20f
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Nov 8 20:01:46 2015 -0500
+
+    runtime questions for 4/10
+
+commit 6b47151d175862256a05adf28b96b690a706a13e
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Nov 5 17:47:35 2015 -0500
+
+    Update stch_headers.h
+
+commit 47eea775ef5cd9719b20b540683f9cfffe16173b
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Nov 5 13:16:49 2015 -0500
+
+    Started work on header
+    
+    This header file will be auto-included at the beginning of any c file generated by the Stitch compiler.
+    
+    It should include all includes, defines, and structs needed by every Stitch-C program.  Program specific functions will be generated separately.
+
+commit bad6110bf902b80c6d6dab96e9361b3a422edd31
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Nov 5 12:13:16 2015 -0500
+
+    removed bitwise, unary operators
+
+commit a7ae8c95120edee5c1a3fec12c7ffb9d57ea9606
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Nov 5 12:12:01 2015 -0500
+
+    removed bitwise, unary operators
+
+commit 2568ef7fd2a282c838dc9605768a21a04510d1f1
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Nov 5 12:08:32 2015 -0500
+
+    removed bitwise, unary operators
+
+commit 3febda5584311329ff4ce362a669b3e513a34cd5
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Wed Nov 4 21:43:15 2015 -0500
+
+    added my notes from meeting
+
+commit 279aade3ad61b3cb653b32e5b98b92e5ca6f2058
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Nov 3 15:23:42 2015 -0500
+
+    Update meetingNotes.md
+
+commit 29e5576bae82533f51bcb7939d5e901f503beeb8
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Nov 1 15:39:23 2015 -0500
+
+    arrays work without any shift/reduce errors
+
+commit 30551c08218c896be4888779dec8455f7e716122
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Nov 1 14:51:48 2015 -0500
+
+    fixed typos in arrays
+
+commit c1f2800dd4f252149b00288c921c8001775dbcd7
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Nov 1 14:46:50 2015 -0500
+
+    started to add arrays
+
+commit 10725757d0c9b2e95172eac8f86fbd58b6c0ef52
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Oct 29 19:36:02 2015 -0400
+
+    took out Call from ast
+
+commit 54c7cd249affffb534054d1115ad9569c7eddaa8
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Thu Oct 29 19:10:10 2015 -0400
+
+    fixed parser, no more shift/reduce errors. need to add arrays still.
+
+commit 633eb9c0ea5b060e4dd6e1c724148f39d811370b
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Oct 29 18:50:49 2015 -0400
+
+    updated typenames, updated gitignore, added singer
+
+commit ff2e47bf4b1be678470743b896eafacff701d0a8
+Merge: f04092d 53193cf
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Thu Oct 29 18:43:20 2015 -0400
+
+    Merge branch 'master' of http://github.com/danhcole/4115_lang
+
+commit f04092d2d0feb89c8ecb6fe910ba5b3d51d70eb2
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Thu Oct 29 18:42:47 2015 -0400
+
+    got rid of ftype
+
+commit 53193cf3451f67dedc5d2fa74150ddc9dd73f433
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 29 12:52:43 2015 -0400
+
+    Create testDoc.md
+
+commit 700b222ad81847077ae826d37ae73fa846c97584
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 29 12:27:32 2015 -0400
+
+    updated meeting times, added link to LRM
+
+commit afaada4a0582941f3997cd30c996616e7515f81a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Oct 29 12:24:59 2015 -0400
+
+    fixed gitignore, started basic compiler toolchain
+
+commit ef0afdbc41a3fac03b12d60fdfc00721247efb97
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Oct 28 18:09:16 2015 -0400
+
+    added .gitignroe, trying to keep things clean
+
+commit 79b78ad499571f143162585822d321307965a471
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Oct 27 17:11:03 2015 -0400
+
+    Update meetingNotes.md
+
+commit 3c0d24d7c9a0be915a8ec0c0a1bd4f6f5702a959
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Oct 27 14:14:01 2015 -0400
+
+    fixed dotproduct
+
+commit b969752af73c8f4f775615c75be026381f13eb2c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Oct 27 13:03:53 2015 -0400
+
+    dotproduct updated
+
+commit 311db285615ede90022bd1da46c685d6c74510d7
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Oct 27 11:57:14 2015 -0400
+
+    removed .* operator
+
+commit 0f4f13a52d9a05594e2403db0f54f5deada242e7
+Merge: 6ee4639 313a484
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Oct 26 14:03:45 2015 -0400
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 6ee4639e42850fdd4d23f866123e48f0c4c227df
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Oct 26 14:03:01 2015 -0400
+
+    Fixed myAdd, working on matrix mult
+
+commit 313a4846a39797db7f10fb758665416f029c29c8
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Oct 25 16:57:29 2015 -0400
+
+    most of the parser is done, have 4 shift/reduce errors
+
+commit cec57449b85e151ac636ce3d91cc114b1290e2b0
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 16:48:54 2015 -0400
+
+    backtracked
+
+commit 29e73d01c4d40260d8799672a57ea411d15a8c9a
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 16:46:47 2015 -0400
+
+    assign now takes a vdecl
+
+commit 3ac86e93cbb8bbf670cebbc8f20add795b066151
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 16:36:15 2015 -0400
+
+    added a vdecl struct to account for multiple typenames
+
+commit f8932cf5aa574b393f11f22a8784f028ddd86b01
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 16:00:05 2015 -0400
+
+    added stitch stmt
+
+commit 24be4c050448c6e1c3149884483d1457bc44f6e5
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 15:38:44 2015 -0400
+
+    minor fix
+
+commit 02441f86411db60084a486b1f8aa22a40a93ef90
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 15:37:09 2015 -0400
+
+    minor fix
+
+commit ddfcd2f74fb474922dd7fbb90dde18a55f037da4
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 15:36:33 2015 -0400
+
+    fixed unary types
+
+commit db2373159a068a8f3175cd8e16127de19a4c2732
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 15:29:31 2015 -0400
+
+    added data types and fixed fn names
+
+commit ce4ebcb7a3c699e7a4396707dc4b7609890920e2
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Sun Oct 25 14:47:55 2015 -0400
+
+    added stitch ops
+
+commit e4778813c18a3a4dcfc6729cf6d3695519d9347f
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Sun Oct 25 14:19:03 2015 -0400
+
+    added all associative operators
+
+commit 353fa76c5504261f3eb526528e3e1173ebfbde7f
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Sun Oct 25 13:51:47 2015 -0400
+
+    updated parser
+
+commit 186cf5ccc8d56277996cc438e599d84a218ed3e9
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Oct 25 13:20:03 2015 -0400
+
+    actually save the updated scanner first...
+
+commit 06fecf11ab9e99ecc1a918dc07bc44975545211e
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Oct 25 13:19:13 2015 -0400
+
+    updated scanner
+
+commit 4cd70880397079e114f45268e920d021621c8643
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Oct 24 17:31:53 2015 -0400
+
+    minor scanner fix
+
+commit 25ba2f17e58d1733dc6dcd274d18276c557ed694
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sat Oct 24 17:25:02 2015 -0400
+
+    Update README.md
+
+commit a5a2637934fa321c1cc7ead3489eaf6ff5daaca3
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Oct 24 13:28:02 2015 -0400
+
+    Adding N to each element - finished
+
+commit 0d507d027e00a643f846030c150c5673d3769769
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sat Oct 24 12:57:02 2015 -0400
+
+    Pthread skeleton working
+
+commit e906286b4ce487ee70979398308967083254cfba
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Oct 24 12:21:46 2015 -0400
+
+    updated scanner
+
+commit 2c3592b23232c5ac1e6e369d98cace990ecf9aa7
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Fri Oct 23 19:50:00 2015 -0400
+
+    Update dotproduct.stch
+
+commit af945319fb88f0158beb1da35b902f7b23d7cb56
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Fri Oct 23 19:46:46 2015 -0400
+
+    Update dotproduct.stch
+
+commit 7d705960d1fe7c9c208f5969ab35a72dd6cf194c
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Fri Oct 23 19:45:12 2015 -0400
+
+    Create dotproduct.stch
+
+commit 09c1e8527116e18d64f6db1545948cdeaee90dc3
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Fri Oct 23 19:28:15 2015 -0400
+
+    Update ideas.md
+
+commit c83c68aec8a2565f0b5ada270bcacc21c87e0a50
+Merge: edbe1d9 308e8b5
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Oct 23 18:01:54 2015 -0400
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit edbe1d939afbb7c1a7350c7c5b4e70794d584a14
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Fri Oct 23 18:01:46 2015 -0400
+
+    scanner mostly done, parser started
+
+commit 308e8b521e95b896cc172b621e0ec776a3d5921a
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 22 18:17:55 2015 -0400
+
+    Update ideas.md
+
+commit 4e97fbf8cd985882cacfd187ac9cd89dadeca68f
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 22 12:48:32 2015 -0400
+
+    Update ideas.md
+
+commit 74380b1db70f1ac201a4defd9970df7b7fb7b5b5
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 22 12:36:40 2015 -0400
+
+    Create ideas.md
+
+commit ddf5d1e7fd533e11d0de8bf86cd7ff120fbf1f87
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Wed Oct 21 17:04:20 2015 -0400
+
+    Added microc sample code
+
+commit ef9f52ca748e31aedf7cb00b69c27f1566d96c0b
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Oct 20 15:34:04 2015 -0400
+
+    Update meetingNotes.md
+
+commit c1a12e6d4897d9d6b115897ce809c1490f2e4187
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 16:04:56 2015 -0400
+
+    Update TODO.md
+
+commit 83422c57deb7b0f60b9ee1b6c70c104590a2bc36
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 16:03:38 2015 -0400
+
+    Rename TODO to TODO.md
+
+commit ffe0d8f1291fed06c4a2c13f45b0186d5ec956d9
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 16:03:21 2015 -0400
+
+    10/20
+
+commit 1d46f16bf292decf7f4a1a0175863557880a1fe3
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 15:55:04 2015 -0400
+
+    questions for 10/20
+
+commit 21154b8fc5419395982feb757cd854945c85f80a
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Oct 18 15:45:36 2015 -0400
+
+    Examples changed
+
+commit 57c0774b562cae68ce2f3ada374ac46fb4415c60
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 15:44:13 2015 -0400
+
+    Update examples.stch
+
+commit 49217d102ca937c72e7ace9e915c16a5affb2501
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 15:07:01 2015 -0400
+
+    Create examples.stch
+
+commit 117b5f74a9449bd7a7475330a508bb9d6278b69e
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Sun Oct 18 15:02:24 2015 -0400
+
+    Update LoopExample.stch
+
+commit 0931cc4540a6940cd9eb78e4b6a8ef497f190de1
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Fri Oct 16 00:16:23 2015 -0400
+
+    Update LoopExample.stch
+
+commit 9a681ac387d7e8bc22cb499d5c847537f76651f6
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Fri Oct 16 00:05:35 2015 -0400
+
+    Update meetingNotes.md
+
+commit 69795aec00ccef4cb233ae3763959a945bf7e682
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Thu Oct 15 22:48:25 2015 -0400
+
+    Some early thoughts on syntax stuff
+
+commit ccb5b7c49431e859085a857bd0ad6e7cc75f2e0d
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 15 17:23:26 2015 -0400
+
+    Update meetingNotes.md
+
+commit a4ddfb53c3ec166017acbc2046707e5c1d423f39
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Thu Oct 15 17:22:19 2015 -0400
+
+    cleaned up notes, reorg.
+
+commit 337e1fc431a6d35c40877fc4870a39ab63825a99
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Thu Oct 15 10:18:30 2015 -0400
+
+    Update MeetingNotes.txt
+
+commit 5f9c8b7e5eeb4eadd07ef9adae9adaf9b0c85dc4
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Wed Oct 14 20:46:55 2015 -0400
+
+    converted to txt file, rtf was being weird
+
+commit 23d0ffc8bae17563caedde534f5000a6aa677049
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Wed Oct 14 20:41:21 2015 -0400
+
+    added ReferenceManual folder
+
+commit e8080df7a4f04e2f1c815d793e6af917697fce7f
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Wed Oct 14 20:38:26 2015 -0400
+
+    added MeetingNotes.txt
+
+commit 8437e3700a5150c23251534466f2fcd9a17fccd1
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Wed Oct 14 20:35:46 2015 -0400
+
+    added MeetingNotes.rtf
+
+commit 2b813a4768920b48f359dcfed3783c8f9cfd0729
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Mon Oct 12 00:25:18 2015 -0400
+
+    Started matrix mult. Pthread structure is done. Need to finish later
+
+commit d536c21195dfd58aec354876d08fa33c469f8b88
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Sun Oct 11 21:24:26 2015 -0400
+
+    Updated First step section
+
+commit d9e2dd310598b609ae5b671838e7201575e431c3
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Thu Oct 8 18:31:02 2015 -0400
+
+    Create openMP_example_link
+
+commit cd0e4e90156605fd5823f613e808c8ab21425fa3
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Oct 6 14:52:46 2015 -0400
+
+    Create meetingNotes.md
+
+commit 28c98405da3a936dc96c30cb28ae1695a7ce265a
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Sep 30 15:49:06 2015 -0400
+
+    remade pdf
+
+commit 096049cfc34a57a32fb1e15c5dda0dbe1050c23f
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Wed Sep 30 15:44:49 2015 -0400
+
+    Corrected typos
+
+commit 2a108e23e604dc41ea2503829faf1893e680958b
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Wed Sep 30 15:43:38 2015 -0400
+
+    Corrected typo and added roles
+
+commit 3af13488ec582d1d724f881e3fa2880850f7e505
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Mon Sep 28 08:41:56 2015 -0400
+
+    updated pdf
+
+commit 5cd818cf0dc19a72e27a3313ce775f56968290f2
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Sep 27 23:24:55 2015 -0400
+
+    Ex3 edited
+
+commit bb8f808bd5b0f476e1367b25cac299a8ec765f85
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Sep 27 17:13:15 2015 -0400
+
+    fixed examples, need example program
+
+commit fd87df4bae7efa64a7559c26b64c4eeae810e2db
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Sep 27 12:39:23 2015 -0400
+
+    minor changes
+
+commit b2b4242a0aca8edb1b53aa81270aa0595c3cc385
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Sep 27 12:13:58 2015 -0400
+
+    added para RE async keywork
+
+commit 92a02644f4372f4e83d60e3b5814b2069a9ff94d
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Sep 27 12:01:27 2015 -0400
+
+    added code example
+
+commit ae8de78c1fd46f0e97b330a8d2b0ffbfa94732eb
+Merge: 1dc3887 10c6456
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Sep 27 11:52:01 2015 -0400
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 1dc3887de4b592953bd64898d30061ae630d86f9
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Sun Sep 27 11:51:49 2015 -0400
+
+    Code snippet added
+
+commit 10c64566f531bf806d9f08c51054fb95d5737a61
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sun Sep 27 11:51:47 2015 -0400
+
+    small changes to .tex
+
+commit f9c5317d8450c748a4cf81ca45cfd28f1a3f1d28
+Author: Rashedul Haydar <rhaydar8@gmail.com>
+Date:   Sat Sep 26 21:52:32 2015 -0400
+
+    Fixed typos
+
+commit 6da5e19dfaab76bbd201fb71df4558cf991fa18b
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Sat Sep 26 21:42:24 2015 -0400
+
+    added rough draft of the proposal language
+
+commit e13d614a71d90849f35c1ba97f016a8781adc514
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Wed Sep 16 14:41:38 2015 -0400
+
+    Markdown is hard
+
+commit 813e51459a7a552d72a5e584887e1b93f9199eb6
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Sep 15 12:58:54 2015 -0400
+
+    1st meeting time
+
+commit 30e38166da5a57f2c946d66312df0bb68760033c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Sep 15 11:52:48 2015 -0400
+
+    updated w/ links to last semesters projects
+
+commit 9ea75aaf3e11cdbeaf823e997ade807c76afe94c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Sep 15 09:49:18 2015 -0400
+
+    minor update to readme
+
+commit 62b7ea6a2e751c08874c7212167b3a6287b173c5
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Sep 15 09:46:55 2015 -0400
+
+    added link to class page
+
+commit e63c1d0b41a77938f668162dc8ba785e47458a62
+Author: Daniel Cole <dhc2131@columbia.edu>
+Date:   Tue Sep 15 09:25:17 2015 -0400
+
+    Initial commit
