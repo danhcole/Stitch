@@ -85,6 +85,24 @@ The underlying method by which Stitch runs multithreaded code is C's \verb|pthre
 \LARGE\textbf{Language Tutorial}\\[2em]
 \normalsize
 
+\Large\textbf{Running The Stitch Compiler:}\\[1em]
+\normalsize
+\tab When inside the ocaml folder, type $ make all in order to generate the stitch executable. Running $ ./singer filename.stch  from the home directory will output a C program called filename.stch.c which gets compiled in singer with the appropriate C libraries and runtime headers into an executable of the same file name. Singer needs to be in the home directory in order to access the compiler executable and runtime headers correctly, if it needs to be moved then those directory accesses need to be updated.
+
+\newpage
+
+\Large\textbf{Hello World}\\[1em]
+\normalsize
+\tab This is the popular ?hello world? program written in Stitch. As can be seen below, it?s almost identical to how it would be written in C, except without the \#include statement and the syntax of the print function.
+\lstinputlisting[language=C, style=customc]{hello.stch}
+
+\newpage
+
+\Large\textbf{Matrix multiplication}\\[1em]
+\normalsize
+\tab If you want to use the multithreaded feature of Stitch, then simply use the stitch loop. Matrix multiplication is shown using the stitch loop below.
+\lstinputlisting[language=C, style=customc]{matmult.stch}
+
 \newpage
 
 \LARGE\textbf{Language Reference Manual}\\[2em]
