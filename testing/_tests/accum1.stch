@@ -6,9 +6,9 @@ int main() {
   int a[4] = {2,3,4,5};
   int b[4] = {4,3,4,3};
 
-  {
-    stitch i from 0 to 4 by 1:
-      dot = a[i] * b[i]; 
+  
+  stitch i from 0 to 4 by 1:{
+    dot = a[i] * b[i]; 
   }
 
   print(dot);
