@@ -1,0 +1,19 @@
+int main()
+	{
+		int a[4];
+		int b = 0;
+		int i;
+		
+		for (i = 0; i < 4; i = i + 1)
+		{
+			a[i] = b;
+			b = b + 1;
+		}
+
+		for (i = 0; i < 4; i = i + 1)
+		{
+			print(a[i]);
+		}
+		
+		return 0;
+	}
