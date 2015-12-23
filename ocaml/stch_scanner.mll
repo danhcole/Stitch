@@ -1,3 +1,10 @@
+(* 
+Stitch Scanner
+December 2015
+Authors: Dan Cole, Rashedul Haydar & Megan Skrypek
+
+*)
+
 { open Stch_parser }
 
 rule token = parse

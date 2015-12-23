@@ -1,3 +1,11 @@
+(* 
+Stitch AST
+December 2015
+Authors: Dan Cole, Rashedul Haydar, Tim Waterman, & Megan Skrypek
+
+Our Stitch Abstract Syntax Tree
+*)
+
 type op = Add | Subtract | Times | Divide | Mod | Equal | Ne | Lt | Le | Gt | Ge 
           | Or | And
 type dataType = Tint | Tfloat | Tchar | Tvoid | Tstring | Tintap | Tintam | Tfloatap | Tfloatam | Tfile
@@ -7,6 +15,7 @@ type vdecl = {
   vdecl_name     : string;
 }
 
+(* Expressions *)
 type expr =
     Int of int
   | Float of float
@@ -25,6 +34,7 @@ type expr =
   | Access of string * string
   | Noexpr
 
+(* Array Declarations *)
 type arraydecl = {
     arraydecl_type : dataType;
     arraydecl_name : string;
@@ -32,6 +42,7 @@ type arraydecl = {
 
   }
 
+(* Matrix Declarations *)
   type matrixdecl = {
     matrixdecl_type : dataType;
     matrixdecl_name : string;
@@ -40,6 +51,7 @@ type arraydecl = {
 
   }
 
+(* Statements *)
 type stmt =
     Block of stmt list
   | Vdecl of vdecl

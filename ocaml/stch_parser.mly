@@ -1,3 +1,10 @@
+(* 
+Stitch Parser
+December 2015
+Authors: Dan Cole, Rashedul Haydar, Megan Skrypek, & Tim Waterman
+
+*)
+
 %{ open Stch_ast %}
 
 %token SEMI SQUOTE DQUOTE COLON LPAREN RPAREN LSQUARE RSQUARE LBRACE RBRACE
@@ -158,6 +165,7 @@ expr:
 | LPAREN expr RPAREN	{ $2 } 
 | ID ASSIGN expr		{ Assign2($1, $3) } 
 
+/*List items for matrix initialization*/
 matrix_rev_list:
   matrix_list 	{ List.rev $1 }
 

@@ -1,5 +1,14 @@
+(* 
+C AST
+December 2015
+Authors: Dan Cole & Tim Waterman
+
+The C AST that will be generated from our semantic analysis
+*)
+
 open Stch_ast
 
+(* Expressions *)
 type c_expr =
 	  C_Int of int
   | C_Float of float
@@ -17,6 +26,7 @@ type c_expr =
   | C_Matrix_Item_Assign of string * c_expr * c_expr * c_expr
   | C_Noexpr
 
+(* Symbol table to store variable and function names *)
 type symTable = {	
 	parent: symTable option;
 	mutable vars: (dataType * string * c_expr) list;
@@ -27,6 +37,7 @@ type c_vdecl = {
 	vdecl_name : string;
 }
 
+(* Array and Matrix data types *)
 type c_arraydecl = {
   arraydecl_type : dataType;
   arraydecl_name : string;
@@ -40,6 +51,7 @@ type c_matrixdecl = {
   matrixdecl_cols : expr;
   }
 
+(* Statements *)
 type c_stmt =
     C_Block of symTable * c_stmt list
   | C_Vdecl of c_vdecl
@@ -52,7 +64,6 @@ type c_stmt =
   | C_If of c_expr * c_stmt * c_stmt
   | C_For of c_expr * c_expr * c_expr * c_stmt
   | C_While of c_expr * c_stmt 
-  (* stitch <var> from <start> to <end> by <stride>:<code>*)
   | C_Stitch of c_expr * c_expr * c_expr * c_expr * string * c_stmt list * symTable
   | C_Assign of c_vdecl * c_expr
   | C_Break
@@ -64,6 +75,7 @@ type c_fdecl = {
     body 			: c_stmt list;
   }
 
+(* Our environment *)
 type stch_env = {
 	mutable funcs: c_fdecl list;
   scope: symTable;
