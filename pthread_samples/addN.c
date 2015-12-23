@@ -1,3 +1,11 @@
+// 
+// addN to All Target
+// December 2015
+// Author: Tim Waterman
+
+// Target C code to compile to showing adding a number to all cells
+//
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

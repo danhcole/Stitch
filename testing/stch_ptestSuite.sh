@@ -1,6 +1,8 @@
 #!/bin/sh
 
 #Stitch Lang Regression Test Suite for Parser
+#
+# Author: Megan Skrypek
 
 COL='\033[0;34m'		#Blue color for description
 SUCC='\033[1;32m'		#Green color for success

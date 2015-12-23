@@ -1,5 +1,8 @@
 #!/bin/sh
 #Stitch language regression test suite
+#
+#Author: Dan Cole
+#
 
 COL='\033[0;34m'		#Blue color for description
 SUCC='\033[1;32m'		#Green color for success

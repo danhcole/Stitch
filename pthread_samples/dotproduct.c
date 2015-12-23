@@ -1,3 +1,11 @@
+// 
+// Dot Product Target
+// December 2015
+// Author: Tim Waterman
+
+// Target C code to compile to showing the dot product
+//
+
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
