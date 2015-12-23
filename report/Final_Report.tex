@@ -153,13 +153,13 @@ The underlying method by which Stitch runs multithreaded code is C's \verb|pthre
 
 \Large\textbf{Planning}\\[1em]
 \normalsize
-We arranged weekly meetings with our language advisor Professor Edwards to discuss progress and issues that we countered. The immediate feedbacks we received from him were extremely helpful in the development of the language, especially when we were heading in the wrong directions. We had weekly meetings as well where all of us got together and worked on the project. During the meetings we split up the work, often two people working together on the same thing. Initially this worked really well since all of us were new with OCaml. \\[3em]
+\tab We arranged weekly meetings with our language advisor Professor Edwards to discuss progress and issues that we encountered. The immediate feedback that was received from him was extremely helpful in the development of the language, especially when we were heading in the wrong direction. We had weekly meetings as well where all of us got together and worked on the project. During the meetings we split up the work, often two people working together on the same thing. Initially this worked really well since all of us were new with OCaml. From Thanksgiving on, we met multiple times a week, eventually forgetting the sweet embrace of sleep as we pushed on to finish the language. \\[3em]
 \Large\textbf{Style Guide}\\[1em]
 \normalsize
 While programming our compiler we tried to follow these general guidelines:
 \begin{itemize}
   \item Ocaml style guidelines, such as indentation and formatting
-  \item Tried to keep lines limited to 80 characters, if this wasn?t possible due to unreadability, then we used 120 characters as the hard limit.
+  \item Tried to keep lines limited to 80 characters, if this wasn't possible due to unreadability, then we used 120 characters as the hard limit.
   \item Unlike Ocaml, we named variables in all lowercase and used underscores as a delimiter
   \item Used 4-space indentation for each program 
 \end{itemize}
@@ -170,9 +170,9 @@ While programming our compiler we tried to follow these general guidelines:
   \item[September 30] Proposal submitted
   \item[October 26] LRM submitted, scanner and parser with 1 shift/reduce error
   \item[November 16] Working scanner, parser, ast without arrays/stitch loops, \\[.5em]'Hello, Word' works
-  \item[November 30] Finished semantic analyzer and cast
-  \item[December 8] Finished c code generator with arrays added
-  \item[December 14] Stitch loops working 
+  \item[November 30] Finished initial semantic analyzer and CAST
+  \item[December 8] Finished C code generator with arrays added
+  \item[December 16] Stitch loops working 
   \item[December 21] Final Presentation
   \item[December 22] Code cleanup and Final Report submitted 
 \end{description}
@@ -186,7 +186,7 @@ Dan Cole & - & System Architect\\
 Megan Skrypek & - & Tester\\
 \end{tabular}\\
 
-While we had assigned roles, the responsibilities became much more fluid as the project progressed. During the initial planning phase we all discussed the structure and components of the language. In the final stages of the project, Dan and Tim worked on the semantic analyzer and the C generator components, while Megan and Rashedul worked on the tests used for the test suite and finalizing the LRM and the final report.  After the initial, non-semantic 'Hello World', Dan wrote most of the semantic analyzer.  Dan did most of the initial work on the C Generator, drawing from the work done of the pretty printer.  Tim added pretty much everything having to do with arrays, Dan took care of built in functions, as well as the initial stitch loop generation.  Tim did most of the pthread code generation, with Dan helping a bit with the architecture of collecting and storing the stitch local variables.
+\tab While we had assigned roles, the responsibilities became much more fluid as the project progressed. During the initial planning phase we all discussed the structure and components of the language. In the final stages of the project, Dan and Tim worked on the semantic analyzer and the C generator components, while Megan and Rashedul worked on the tests used for the test suite and finalizing the LRM and the final report.  After the initial, non-semantic 'Hello World', Dan wrote most of the initial semantic analyzer as well as initial work on the C Generator, drawing from the work done on the pretty printer in the AST.  Tim added pretty much everything having to do with arrays, Dan took care of built in functions, as well as the initial stitch loops, including the generation of functions from the Stitch loop body.  Tim did all the pthread code generation and stitch loop generation, with Dan helping a bit with the architecture of collecting and storing the stitch local variables.
 
 \newpage
 \Large\textbf{Software Development Environment}\\[1em]
@@ -228,12 +228,12 @@ While we had assigned roles, the responsibilities became much more fluid as the 
 \normalsize
 \begin{tabular}{ l p{12cm} }
 Scanner\\\verb|stch_scanner.mll| & The scanner is written in OCamlLex.  It takes input from the source file, and tokenizes it into keywords, identifiers, and literals.  It scans over and removes both single line and multi-line comments, as well as all whitespace not in string literals.  Any token that is not a keyword, or does not meet the criteria for an identifier or literal will throw a scanner error.\\[.5em]
-Parser/AST\\ \verb|stch_parser.mly|\\\verb|stch_ast.ml| & The parser is written in OCamlYacc.  It takes the tokens from the scanner, and using the grammar defined in the parser and the datatypes defined in the AST, generates an abstract syntax tree.  The rules in the parser insure that code that passes this step is syntactically correct, although not necessarily semantically correct.  Any error at this stage will throw a syntax error.  The AST file also contains pretty printing functions for all datatypes defined therin.\\[.5em]
-Semantic Checking/CAST\\ \verb|stch_ast.mll|\\\verb|stch_semantic.ml|\\\verb|stch.cast.mli| & Stitch first runs the AST through the semantic analyzer.  This pass insures that the code is semantically valid.  The output of the semantic analyzer is another AST, a C language AST.  The major difference here is that the CAST carries with it a Stitch Environment, which has, most importantly, a list of declared functions, and a symbol table, which contains all declared identifiers and their type.  Stitches symbol table also contains information on the expression that the identifier references, which is used in the C code generation to build pthread related code.\\[.5em]
+Parser/AST\\ \verb|stch_parser.mly|\\\verb|stch_ast.ml| & The parser is written in OCamlYacc.  It takes the tokens from the scanner, and using the grammar defined in the parser and the datatypes defined in the AST, generates an abstract syntax tree.  The rules in the parser insure that code that passes this step is syntactically correct, although not necessarily semantically correct.  Any error at this stage will throw a parser error.  The AST file also contains pretty printing functions for all datatypes defined therein.\\[.5em]
+Semantic Checking/CAST\\ \verb|stch_ast.mll|\\\verb|stch_semantic.ml|\\\verb|stch.cast.mli| & Stitch first runs the AST through the semantic analyzer.  This pass insures that the code is semantically valid.  The output of the semantic analyzer is another AST, a C language AST.  The major difference here is that the CAST carries with it a Stitch Environment, which has, most importantly, a list of declared functions, and a symbol table, which contains all declared identifiers and their types.  Stitch's symbol table also contains information on the expression that the identifier references, which is used in the C code generation to build pthread related code.\\[.5em]
 \end{tabular}
 \newpage
 \begin{tabular}{ l p{12cm} }
-Code Generation\\\verb|c_generator.ml| & The CAST, which as already been semantically analyzed is now pretty printed.  The bulk of the work to add multithreading is done here.  The C generator performs multiple passes on the CAST.  First any non-\verb|main| functions are printed.  Then any \verb|stitch| loops are analyzed, and their statements are turned into a function.  Finally, \verb|main| is printed.  This insures proper scoping of functions, and that all functions declared before main can be called in any Stitch block.  To convert \verb|stitch| loops to multithreaded \verb|pthread| code, the C generator first takes the body of the loop and transforms it into a function.  The generator also builds a custom \verb|struct| for each \verb|stitch| loop, that contains all in-scope, non-local variables that the loop will need access too.  It then generates the \verb|pthread| specific code, as well as a \verb|for| loop that creates and runs the threads.  The function containing the code body, as well as the structure containing all needed variables is passed into the \verb|pthread|.
+Code Generation\\\verb|c_generator.ml| & The CAST, which has already been semantically analyzed is now pretty printed.  The bulk of the work to add multithreading is done here.  The C generator performs multiple passes on the CAST.  First any non-\verb|main| functions are printed.  Then any \verb|stitch| loops are analyzed, and their statements are turned into a function.  Finally, \verb|main| is printed.  This insures proper scoping of functions, and that all functions declared before main can be called in any Stitch block.  To convert \verb|stitch| loops to multithreaded \verb|pthread| code, the C generator first takes the body of the loop and transforms it into a function.  The generator also builds a custom \verb|struct| for each \verb|stitch| loop, that contains all in-scope, non-local variables that the loop will need access too.  It then generates the \verb|pthread| specific code, as well as a \verb|for| loop that creates and runs the threads.  The function containing the code body, as well as the structure containing all needed variables is passed into the \verb|pthread|.
 \end{tabular}
 \newpage
 
@@ -332,12 +332,12 @@ Tests were added by all members of our team as they were needed. The test script
 
 
 \newpage
-\LARGE\textbf{Lessons Lerned}\\[2em]
+\LARGE\textbf{Lessons Learned}\\[2em]
 \normalsize
 
 \Large\textbf{Rashedul Haydar}\\[1em]
 \normalsize
-\tab For a semester long project it?s very important to try to get at least parts of the project done each week. Thankfully, we planned enough to have progress each week on the project. Having the weekly meetings with our advisor really pushed us to get something done every week. Even with the incremental progress, the last two weeks of the project was still crazy. 
+\tab For a semester long project it's very important to try to get at least parts of the project done each week. Thankfully, we planned enough to have progress each week on the project. Having the weekly meetings with our advisor really pushed us to get something done every week. Even with the incremental progress, the last two weeks of the project was still crazy. 
 
 \newpage
 \Large\textbf{Megan Skrypek}\\[1em]
@@ -354,6 +354,7 @@ Tests were added by all members of our team as they were needed. The test script
 \newpage
 \Large\textbf{Tim Waterman}\\[1em]
 \normalsize
+\tab I learned how to set realistic goals and keep going on a project that's an entire semester long. I learned the importance of consistency in regards to weekly meetings and milestones. And I learned how to think in OCaml. This last one is a bit worrying actually, since I can?t seem to turn it off. My advice for future teams is to start early and stay consistent. Keep the progression small but continuous and you?ll have a much better time.
 \newpage
 
 \newpage
@@ -416,6 +417,8 @@ Tests were added by all members of our team as they were needed. The test script
 \normalsize
 \lstinputlisting[style=ocaml]{../testing/toolkit/singer}
 \newpage
+
+\Large\textbf{Negative Tests}\\
 
 \newpage
 \Large\textbf{arith3.stch}\\[1em]
@@ -566,6 +569,9 @@ Tests were added by all members of our team as they were needed. The test script
 \Large\textbf{void1.stch}\\[1em]
 \normalsize
 \lstinputlisting[language=C, style=customc]{../testing/_ntests/void1.stch}
+\newpage
+
+\Large\textbf{Positive Tests}\\
 
 \newpage
 \Large\textbf{accum1.stch}\\[1em]
@@ -771,9 +777,159 @@ Tests were added by all members of our team as they were needed. The test script
 \Large\textbf{stitch7.stch}\\[1em]
 \normalsize
 \lstinputlisting[language=C, style=customc]{../testing/_tests/stitch7.stch}
+\newpage
 
+\Large\textbf{Parser Tests}\\
 
+\newpage
+\Large\textbf{dec1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec1.stch}
 
+\newpage
+\Large\textbf{dec2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec2.stch}
 
+\newpage
+\Large\textbf{dec3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec3.stch}
+
+\newpage
+\Large\textbf{dec4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec4.stch}
+
+\newpage
+\Large\textbf{dec5.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec5.stch}
+
+\newpage
+\Large\textbf{dec6.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec6.stch}
+
+\newpage
+\Large\textbf{dec7.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec7.stch}
+
+\newpage
+\Large\textbf{dec8.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/dec8.stch}
+
+\newpage
+\Large\textbf{func1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func1.stch}
+
+\newpage
+\Large\textbf{func2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func2.stch}
+
+\newpage
+\Large\textbf{func3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func3.stch}
+
+\newpage
+\Large\textbf{func4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func4.stch}
+
+\newpage
+\Large\textbf{func5.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func5.stch}
+
+\newpage
+\Large\textbf{func6.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func6.stch}
+
+\newpage
+\Large\textbf{func7.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/func7.stch}
+
+\newpage
+\Large\textbf{loop1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop1.stch}
+
+\newpage
+\Large\textbf{loop2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop2.stch}
+
+\newpage
+\Large\textbf{loop3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop3.stch}
+
+\newpage
+\Large\textbf{loop4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop4.stch}
+
+\newpage
+\Large\textbf{loop5.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop5.stch}
+
+\newpage
+\Large\textbf{loop6.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop6.stch}
+
+\newpage
+\Large\textbf{loop7.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop7.stch}
+
+\newpage
+\Large\textbf{loop8.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/loop8.stch}
+
+\newpage
+\Large\textbf{return1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ptests/return1.stch}
+\newpage
+
+\Large\textbf{Runtime}\\
+
+\newpage
+\Large\textbf{Makefile}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../runtime/Makefile}
+\newpage
+
+\Large\textbf{stch\_headers.c}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../runtime/stch_headers.c}
+\newpage
+
+\Large\textbf{stch\_headers.h}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../runtime/stch_headers.h}
+\newpage
+
+\Large\textbf{Demo}\\
+\newpage
+\Large\textbf{image\_contrast2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../presentation/demo/image_contrast2.stch}
+\newpage
+
+\Large\textbf{image\_invert2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../presentation/demo/image_invert2.stch}
+\newpage
 
 \end{document}
