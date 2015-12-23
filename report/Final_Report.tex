@@ -40,6 +40,18 @@
   escapechar=,
 }
 
+\lstdefinestyle{ocaml}{
+  backgroundcolor=\color{backcolour},
+  breakatwhitespace=false,         
+  breaklines=true,  
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,
+  basicstyle=\scriptsize,
+  tabsize=2,
+  keepspaces=false
+}
+
 \lstdefinestyle{customc}{
   backgroundcolor=\color{backcolour},   
   keywordstyle=\bfseries\color{codegreen},
@@ -320,5 +332,46 @@ Tests were added by all members of our team as they were needed. The test script
 \newpage
 \LARGE\textbf{Code}\\[2em]
 \normalsize
+\tab\\[2em]
 
+\newpage
+\Large\textbf{stch\_scanner.mll}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/stch_scanner.mll}
+\newpage
+
+\Large\textbf{stch\_parser.mly}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/stch_parser.mly}
+\newpage
+
+\Large\textbf{stch\_ast.ml}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/stch_ast.ml}
+\newpage
+
+\Large\textbf{stch\_semantic.ml}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/stch_semantic.ml}
+\newpage
+
+\Large\textbf{stch\_cast.ml}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/stch_cast.mli}
+\newpage
+
+\Large\textbf{c\_generator.ml}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/c_generator.ml}
+\newpage
+
+\Large\textbf{stitch.ml}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/stitch.ml}
+\newpage
+
+\Large\textbf{Makefile}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../ocaml/Makefile}
+\newpage
 \end{document}
