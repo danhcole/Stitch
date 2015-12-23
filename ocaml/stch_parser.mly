@@ -1,9 +1,3 @@
-(* 
-Stitch Parser
-December 2015
-Authors: Dan Cole, Rashedul Haydar, Megan Skrypek, & Tim Waterman
-
-*)
 
 %{ open Stch_ast %}
 
