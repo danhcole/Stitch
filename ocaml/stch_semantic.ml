@@ -1,7 +1,7 @@
 (* 
 Semantic Analyzer
 December 2015
-Authors: Dan Cole, Tim Waterman
+Authors: Dan Cole & Tim Waterman
 
 Takes the AST and runs semantic analysis on it, turning it into
 a C_AST

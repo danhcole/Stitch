@@ -1,3 +1,11 @@
+// 
+// Matrix Multiplication Target
+// December 2015
+// Author: Tim Waterman
+
+// Target C code to compile to showing matrix multiplication
+//
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

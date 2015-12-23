@@ -1,5 +1,6 @@
 #!/bin/sh
-#Stich complier toolchain
+#Stitch complier toolchain
+#Author: Dan Cole
 
 FILENAME=`basename $1 | cut -d'.' -f1`
 
