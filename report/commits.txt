@@ -1,3 +1,132 @@
+commit cd61ad15d799b3c848abf3cacf1b19cd2d38f73c
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 20:48:11 2015 -0500
+
+    report completed
+
+commit d6117f957c67a41310908e75750c2ad2a90597c7
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 22 20:04:30 2015 -0500
+
+    File cleanup
+
+commit b10828ff0c50c5f7e9705c6775098f40b58e6782
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 20:02:52 2015 -0500
+
+    fixing typos
+
+commit cfdf3f7ec575162b49e6883d0b36a4eda41854ec
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 22 20:02:30 2015 -0500
+
+    I am an idiot. Fixed Parser
+
+commit 053d1d2117373fd4d3f4f377c4cd16ba13bd87e0
+Merge: 9fc63fc 0a2fb12
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 19:51:47 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 9fc63fc67b305e7167d898b01784ca56546c59da
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 19:51:42 2015 -0500
+
+    updated final report
+
+commit 0a2fb12900961023e23890bda253d608569a5f1d
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 22 19:27:20 2015 -0500
+
+    Commented more
+
+commit e50e0fe7d8557df1ea698168a3a27f8a1349c991
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 19:20:17 2015 -0500
+
+    updated report
+
+commit 2a8776a437e59963d5ae5066ec8efb832c0c7300
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 22 19:17:01 2015 -0500
+
+    More comments on ocaml code
+
+commit af8fe1122a7242ad0999397076aaf1782275ac3f
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 19:16:17 2015 -0500
+
+    cleanup
+
+commit 1eb891b15c5ad3e89be1f221f99471fb9680bcbb
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 18:42:35 2015 -0500
+
+    updated to report
+
+commit 7353b9bcd8d581496b5228b13e50626f5365859e
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Tue Dec 22 18:39:23 2015 -0500
+
+    added hello.stch to report/
+
+commit 9119d7ac942988df55458717f8d397b2b7240a11
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Tue Dec 22 18:37:39 2015 -0500
+
+    matmult.stch added to report/
+
+commit baf587c24475d8279b4d309bec2b64ef7682b3bd
+Merge: f72b800 27f805c
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 22 18:31:03 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit f72b8001d554b63f50ffe8fdcf6bc28a1015b301
+Author: Tim Waterman <watermantium@gmail.com>
+Date:   Tue Dec 22 18:30:54 2015 -0500
+
+    Commented and cleaned up some code
+
+commit 27f805c324ffe009f0a70cb365c7b719866238f3
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 18:23:19 2015 -0500
+
+    updated final report
+
+commit 98d430414861c7baddd117a97f9c378e8b313448
+Merge: 381d482 968e899
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 17:35:21 2015 -0500
+
+    Merge branch 'master' of https://github.com/danhcole/4115_lang
+
+commit 381d482dd45bc80a7a4a10a0b2bf7a959f558831
+Author: Daniel Cole <takeitfromthedan@gmail.com>
+Date:   Tue Dec 22 17:35:17 2015 -0500
+
+    added final report
+
+commit 968e8992644beaa4c61da6ad1f8a489cdca523a1
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Tue Dec 22 16:48:41 2015 -0500
+
+    added a generic singer to home directory
+
+commit ceac58d2f21a21d54fa1d0a920c6e4b01d86be02
+Author: Rashedul Haydar <rh2712@columbia.edu>
+Date:   Tue Dec 22 16:41:21 2015 -0500
+
+    added tutorial files
+
+commit f831abec045bdd7920cd19460da78c0c3687e207
+Author: ms4985 <ms4985@columbia.edu>
+Date:   Tue Dec 22 15:59:17 2015 -0500
+
+    changed stmt syntax in accum1 test
+
 commit 14fcbbf36913eeba32454705951f590629df1ae1
 Merge: f86f952 cd73bf1
 Author: Daniel Cole <takeitfromthedan@gmail.com>
@@ -335,7 +464,7 @@ commit 3fe7525d89f8244769ddcc90b9679dc962286068
 Author: Rashedul Haydar <rh2712@columbia.edu>
 Date:   Sun Dec 20 16:01:57 2015 -0500
 
-    added _ntests/vardecl1.stch, cant identifier starting with _ or a number
+    added _ntests/vardecl1.stch, can't identifier starting with _ or a number
 
 commit 1446057a4c0c33c04434dd7ca02b9257908a0a92
 Merge: 29c3e59 1895079
@@ -428,7 +557,7 @@ commit 2557e441e0b3a4cc0c92b1d6a08ca9cadfb19c8a
 Author: Rashedul Haydar <rh2712@columbia.edu>
 Date:   Sat Dec 19 21:26:09 2015 -0500
 
-    added _ntests/arith3.stch, checks that you cant add chars to ints. Added _ntests/func2.stch, funcs w/o return type cause error.
+    added _ntests/arith3.stch, checks that you can't add chars to ints. Added _ntests/func2.stch, funcs w/o return type cause error.
 
 commit 0cd0268a41ddbcc67a8f5bb21ffc17ef5f168fc3
 Author: Daniel Cole <takeitfromthedan@gmail.com>
@@ -674,7 +803,7 @@ commit 5408089ef6734ef9c569f425aa10f316a1b54045
 Author: Tim Waterman <watermantium@gmail.com>
 Date:   Wed Dec 16 14:08:58 2015 -0700
 
-    Its going through syntactically, need to get variables passed in from headers
+    It's going through syntactically, need to get variables passed in from headers
 
 commit 64e35c5bfd99f33d705cd78041d642907d736c9d
 Author: Tim Waterman <watermantium@gmail.com>
@@ -692,7 +821,7 @@ commit fc59e0265f8298ab26ba60417a6db8edca7acb95
 Author: Tim Waterman <watermantium@gmail.com>
 Date:   Tue Dec 15 10:26:29 2015 -0500
 
-    Added thread blocking. Im an idiot
+    Added thread blocking. I'm an idiot
 
 commit 5faf89299826880b76d63d469365b98e1a370395
 Author: Tim Waterman <watermantium@gmail.com>
@@ -710,7 +839,7 @@ commit ed3d01241778a94fcc5fb2912f542c84030f7fce
 Author: Tim Waterman <watermantium@gmail.com>
 Date:   Mon Dec 14 23:29:43 2015 -0500
 
-    Need to figure out how to change the names of the variables in the stitch loops statement list
+    Need to figure out how to change the names of the variables in the stitch loop's statement list
 
 commit a051d852d2ab208436e673a6ec66e1a2e8f2a3af
 Author: Tim Waterman <watermantium@gmail.com>
@@ -747,7 +876,7 @@ Merge: 05e6fbb bce1cd4
 Author: Tim Waterman <watermantium@gmail.com>
 Date:   Fri Dec 11 21:43:51 2015 -0500
 
-    Merging with dans changes
+    Merging with dan's changes
 
 commit 05e6fbb5b5b9300a1abcd9b06e7100b22b1f83be
 Author: Tim Waterman <watermantium@gmail.com>
@@ -2332,7 +2461,7 @@ commit 30e38166da5a57f2c946d66312df0bb68760033c
 Author: Daniel Cole <takeitfromthedan@gmail.com>
 Date:   Tue Sep 15 11:52:48 2015 -0400
 
-    updated w/ links to last semesters projects
+    updated w/ links to last semester's projects
 
 commit 9ea75aaf3e11cdbeaf823e997ade807c76afe94c
 Author: Daniel Cole <takeitfromthedan@gmail.com>
