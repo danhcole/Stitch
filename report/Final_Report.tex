@@ -75,7 +75,7 @@
 
 \begin{center}
 \LARGE
-Stitch Language Final Reportd\\[2em]
+Stitch Language Final Report\\[2em]
 \Large 
 Daniel Cole (System Architect), Megan Skrypek (Tester), Rashedul Haydar (Manager), Tim Waterman (Language Guru)\\
 \large dhc2131, ms4985, rh2712, tbw2105\\[2em]
@@ -87,10 +87,10 @@ December 22, 2015\\[3em]
 
 \LARGE\textbf{Introduction}\\[2em]
 \normalsize
-Most "modern" programming languages trace their origins back decades to before the advent of cheap, general purpose multicore CPUs.  They were designed for a distinctly mono-threaded environment.  While libraries and enhancements to mainstay languages such as C/C++ and Java have added multithreading capabilities, it remains in many ways bolted on kludge.  While newer frameworks such as Node.js provide more integral support for asynchronous operations, they lack the depth of support and power of a fully compiled language.  With Stitch, we aim to build a language that has the power and flexibility of a fully compiled C style language, while having native threading support for modern multithreaded applications.  Our goal is to create a translator from Stitch to C.\\[.5em]
-Stitch is inspired by C, which has a very well known syntax, and has been one of the most widely used languages since it was released over forty years ago.  Stitch is a general purpose language that supports all standard mathematical and logical operations.  Like C, Stitch is strongly typed, and whitespace does not matter.  In addition to the standard C primitive types (\verb|int, double, char|, etc.)\\[.5em]
-Stitch is able to provide an easy to use, clear paradigm for multithreaded operations by strictly limiting when and how they can be invoked.  This is done through the \verb|stitch| loop.  The body of this loop is automatically split into multiple threads, and the program will not continue until all threads have returned.  Using a simple loop paradigm, similar to well know control structures like \verb|while| and \verb|for| loops, allows for an easy learning curve, and clear easy to read code.  It also allows the complier to easily see what code needs to be run in a threaded manner, and to efficiently generate the threaded code.\\[.5em]
-The underlying method by which Stitch runs multithreaded code is C's \verb|pthread| library.  The Stitch complier will wrap the body of the \verb|stitch| loop in a function.  This function will be executed in parallel using \verb|pthreads|.  Variable scoping inside the threads is also handled by the complier.  Each threads is passed a C \verb|struct| that contains all non-local variables needed by the block of code that is being multithreaded.  This prevents clobbering issues without needing to resort to \verb|mutex| locks.  The only exceptions to this rule are accumulators, which are very limited in scope, and arrays, which can be sliced and piecewise accessed by different threads concurrently.   
+Most "modern" programming languages trace their origins back decades to before the advent of cheap, general purpose multicore CPUs.  They were designed for a distinctly mono-threaded environment.  While libraries and enhancements to mainstay languages such as C/C++ and Java have added multithreading capabilities, it remains in many ways bolted on kludge.  While newer frameworks such as Node.js provide more integrated support for asynchronous operations, they lack the depth of support and power of a fully compiled language.  With Stitch, we aim to build a language that has the power and flexibility of a fully compiled C style language, while having native threading support for modern multithreaded applications.  Our goal was to create a translator from Stitch to C.\\[.5em]
+Stitch is inspired by C, which has a very well known syntax, and has been one of the most widely used languages since it was released over forty years ago.  Stitch is a general purpose language that supports all standard mathematical and logical operations.  Like C, Stitch is strongly typed, and whitespace does not matter.  Stitch supports the standard C primitive types \verb|int, double, char|.\\[.5em]
+Stitch is able to provide an easy to use, clear paradigm for multithreaded operations by strictly limiting when and how they can be invoked.  This is done through the \verb|stitch| loop.  The body of this loop is automatically split into multiple threads, and the program will not continue until all threads have returned.  Using a simple loop paradigm, similar to well known control structures like \verb|while| and \verb|for| loops, allows for an easy learning curve, and clear easy to read code.  It also allows the complier to easily see what code needs to be run in a threaded manner, and to efficiently generate the threaded code.\\[.5em]
+The underlying method by which Stitch runs multithreaded code is C's \verb|pthread| library.  The Stitch complier will wrap the body of the \verb|stitch| loop in a function.  This function will be executed in parallel using \verb|pthreads|.  Variable scoping inside the threads is also handled by the complier.  Each thread is passed a C \verb|struct| that contains all non-local variables needed by the block of code that is being multithreaded.  This prevents clobbering issues without needing to resort to \verb|mutex| locks.  The only exceptions to this rule are accumulators, which are very limited in scope, and arrays, which can be sliced and piecewise accessed by different threads concurrently.   
 
 \newpage
 
@@ -99,13 +99,13 @@ The underlying method by which Stitch runs multithreaded code is C's \verb|pthre
 
 \Large\textbf{Running The Stitch Compiler:}\\[1em]
 \normalsize
-\tab When inside the ocaml folder, type $ make all in order to generate the stitch executable. Running $ ./singer filename.stch  from the home directory will output a C program called filename.stch.c which gets compiled in singer with the appropriate C libraries and runtime headers into an executable of the same file name. Singer needs to be in the home directory in order to access the compiler executable and runtime headers correctly, if it needs to be moved then those directory accesses need to be updated.
+\tab When inside the ocaml folder, type \verb|$ make all| in order to generate the stitch executable. Running \verb|$ ./singer filename.stch|  from the home directory will output a C program called filename.stch.c which gets compiled in singer with the appropriate C libraries and runtime headers into an executable of the same file name. Singer needs to be in the home directory in order to access the compiler executable and runtime headers correctly, if it needs to be moved then those directory accesses need to be updated.  The file being compiled by \verb|singer| also needs to be in the home directory.
 
 \newpage
 
 \Large\textbf{Hello World}\\[1em]
 \normalsize
-\tab This is the popular ?hello world? program written in Stitch. As can be seen below, it?s almost identical to how it would be written in C, except without the \#include statement and the syntax of the print function.
+\tab This is the popular "hello world" program written in Stitch. As can be seen below, it's almost identical to how it would be written in C, except without the \#include statement and the syntax of the print function.
 \lstinputlisting[language=C, style=customc]{hello.stch}
 
 \newpage
@@ -153,8 +153,7 @@ The underlying method by which Stitch runs multithreaded code is C's \verb|pthre
 
 \Large\textbf{Planning}\\[1em]
 \normalsize
-We arranged weekly meetings with our language advisor Professor Edwards to discuss progress and issues that we countered. The immediate feedbacks we received from him were extremely helpful in the development of the language, especially when we were heading in the wrong directions. We had weekly meetings as well where all of us got together and worked on the project. During the meetings we split up the work, often two people working together on the same thing. Initially this worked really well since all of us were new with OCaml. \\
-In the final stages of the project, Dan and Tim worked on the semantic analyzer and the C generator components, while Megan and Rashedul worked on the tests used for the test suite and finalizing the LRM and the final report.  After the initial, non-semantic 'Hello World', Dan wrote most of the semantic analyzer.  Dan did most of the initial work on the C Generator, drawing from the work done of the pretty printer.  Tim added pretty much everything having to do with arrays, Dan took care of built in functions, as well as the initial stitch loop generation.  Tim did most of the pthread code generation, with Dan helping a bit with the architecture of collecting and storing \\[3em]
+We arranged weekly meetings with our language advisor Professor Edwards to discuss progress and issues that we countered. The immediate feedbacks we received from him were extremely helpful in the development of the language, especially when we were heading in the wrong directions. We had weekly meetings as well where all of us got together and worked on the project. During the meetings we split up the work, often two people working together on the same thing. Initially this worked really well since all of us were new with OCaml. \\[3em]
 \Large\textbf{Style Guide}\\[1em]
 \normalsize
 While programming our compiler we tried to follow these general guidelines:
@@ -187,7 +186,8 @@ Dan Cole & - & System Architect\\
 Megan Skrypek & - & Tester\\
 \end{tabular}\\
 
-While we had assigned roles, the responsibilities became much more fluid as the project progressed. During the initial planning phase we all discussed the structure and components of the language. Later on, we also worked together on the semantic analyzer, C generator, and the variety of tests used for the test suite.
+While we had assigned roles, the responsibilities became much more fluid as the project progressed. During the initial planning phase we all discussed the structure and components of the language. In the final stages of the project, Dan and Tim worked on the semantic analyzer and the C generator components, while Megan and Rashedul worked on the tests used for the test suite and finalizing the LRM and the final report.  After the initial, non-semantic 'Hello World', Dan wrote most of the semantic analyzer.  Dan did most of the initial work on the C Generator, drawing from the work done of the pretty printer.  Tim added pretty much everything having to do with arrays, Dan took care of built in functions, as well as the initial stitch loop generation.  Tim did most of the pthread code generation, with Dan helping a bit with the architecture of collecting and storing the stitch local variables.
+
 \newpage
 \Large\textbf{Software Development Environment}\\[1em]
 \normalsize
