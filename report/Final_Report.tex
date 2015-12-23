@@ -121,13 +121,40 @@ The underlying method by which Stitch runs multithreaded code is C's \verb|pthre
 \normalsize
 
 \newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
+\tab
+\newpage
 
 \LARGE\textbf{Project Plan}\\[2em]
 \normalsize
 
 \Large\textbf{Planning}\\[1em]
 \normalsize
-We arranged weekly meetings with our language advisor Professor Edwards to discuss progress and issues that we countered. The immediate feedbacks we received from him were extremely helpful in the development of the language, especially when we were heading in the wrong directions. We had weekly meetings as well where all of us got together and worked on the project. During the meetings we split up the work, often two people working together on the same thing. Initially this worked really well since all of us were new with OCaml. Later, we divided up the work on an individual level such as implementing some functionality or writing some specific tests.\\[3em]
+We arranged weekly meetings with our language advisor Professor Edwards to discuss progress and issues that we countered. The immediate feedbacks we received from him were extremely helpful in the development of the language, especially when we were heading in the wrong directions. We had weekly meetings as well where all of us got together and worked on the project. During the meetings we split up the work, often two people working together on the same thing. Initially this worked really well since all of us were new with OCaml. \\
+In the final stages of the project, Dan and Tim worked on the semantic analyzer and the C generator components, while Megan and Rashedul worked on the tests used for the test suite and finalizing the LRM and the final report.  After the initial, non-semantic 'Hello World', Dan wrote most of the semantic analyzer.  Dan did most of the initial work on the C Generator, drawing from the work done of the pretty printer.  Tim added pretty much everything having to do with arrays, Dan took care of built in functions, as well as the initial stitch loop generation.  Tim did most of the pthread code generation, with Dan helping a bit with the architecture of collecting and storing \\[3em]
 \Large\textbf{Style Guide}\\[1em]
 \normalsize
 While programming our compiler we tried to follow these general guidelines:
@@ -374,4 +401,379 @@ Tests were added by all members of our team as they were needed. The test script
 \normalsize
 \lstinputlisting[style=ocaml]{../ocaml/Makefile}
 \newpage
+
+\Large\textbf{stch\_ptestSuite.sh}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../testing/stch_ptestSuite.sh}
+\newpage
+
+\Large\textbf{stch\_testSuite.sh}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../testing/stch_testSuite.sh}
+\newpage
+
+\Large\textbf{singer}\\[1em]
+\normalsize
+\lstinputlisting[style=ocaml]{../testing/toolkit/singer}
+\newpage
+
+\newpage
+\Large\textbf{arith3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/arith3.stch}
+
+\newpage
+\Large\textbf{array2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/array2.stch}
+
+\newpage
+\Large\textbf{array3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/array3.stch}
+
+\newpage
+\Large\textbf{array4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/array4.stch}
+
+\newpage
+\Large\textbf{arrayinit1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/arrayinit1.stch}
+
+\newpage
+\Large\textbf{arrayinit2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/arrayinit2.stch}
+
+\newpage
+\Large\textbf{char1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/char1.stch}
+
+\newpage
+\Large\textbf{comment2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/comment2.stch}
+
+\newpage
+\Large\textbf{comment4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/comment4.stch}
+
+\newpage
+\Large\textbf{error.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/error.stch}
+
+\newpage
+\Large\textbf{exit2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/exit2.stch}
+
+\newpage
+\Large\textbf{file1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/file1.stch}
+
+\newpage
+\Large\textbf{float1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/float1.stch}
+
+\newpage
+\Large\textbf{func1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/func1.stch}
+
+\newpage
+\Large\textbf{func2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/func2.stch}
+
+\newpage
+\Large\textbf{globalvar1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/globalvar1.stch}
+
+\newpage
+\Large\textbf{if1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/if1.stch}
+
+\newpage
+\Large\textbf{if2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/if2.stch}
+
+\newpage
+\Large\textbf{matrixinit.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/matrixinit.stch}
+
+\newpage
+\Large\textbf{matrixinit2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/matrixinit2.stch}
+
+\newpage
+\Large\textbf{negate2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/negate2.stch}
+
+\newpage
+\Large\textbf{negate3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/negate3.stch}
+
+\newpage
+\Large\textbf{print.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/print.stch}
+
+\newpage
+\Large\textbf{sem1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/sem1.stch}
+
+\newpage
+\Large\textbf{sem3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/sem3.stch}
+
+\newpage
+\Large\textbf{stitch1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/stitch1.stch}
+
+\newpage
+\Large\textbf{stitch4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/stitch4.stch}
+
+\newpage
+\Large\textbf{unfunc.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/unfunc.stch}
+
+\newpage
+\Large\textbf{vardecl1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/vardecl1.stch}
+
+\newpage
+\Large\textbf{void1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_ntests/void1.stch}
+
+\newpage
+\Large\textbf{accum1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/accum1.stch}
+
+\newpage
+\Large\textbf{arith1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/arith1.stch}
+
+\newpage
+\Large\textbf{arith2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/arith2.stch}
+
+\newpage
+\Large\textbf{array1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/array1.stch}
+
+\newpage
+\Large\textbf{arrayassign.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/arrayassign.stch}
+
+\newpage
+\Large\textbf{break1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/break1.stch}
+
+\newpage
+\Large\textbf{collatz.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/collatz.stch}
+
+\newpage
+\Large\textbf{collatz2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/collatz2.stch}
+
+\newpage
+\Large\textbf{comment1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/comment1.stch}
+
+\newpage
+\Large\textbf{comment3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/comment3.stch}
+
+\newpage
+\Large\textbf{escape.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/escape.stch}
+
+\newpage
+\Large\textbf{exit1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/exit1.stch}
+\newpage
+
+\Large\textbf{file1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/file1.stch}
+\newpage
+
+\Large\textbf{file2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/file2.stch}
+\newpage
+
+\Large\textbf{for1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/for1.stch}
+\newpage
+
+\Large\textbf{func1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/func1.stch}
+\newpage
+
+\Large\textbf{func2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/func2.stch}
+\newpage
+
+\Large\textbf{func4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/func4.stch}
+\newpage
+
+\Large\textbf{func5.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/func5.stch}
+\newpage
+
+\Large\textbf{gcd.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/gcd.stch}
+\newpage
+
+\Large\textbf{hello1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/hello1.stch}
+
+\newpage
+\Large\textbf{hello2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/hello2.stch}
+
+\newpage
+\Large\textbf{if1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/if1.stch}
+\newpage
+
+\Large\textbf{if2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/if2.stch}
+\newpage
+
+\Large\textbf{if3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/if3.stch}
+\newpage
+
+\Large\textbf{main.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/main.stch}
+\newpage
+
+\Large\textbf{matmult.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/matmult.stch}
+
+\newpage
+\Large\textbf{matrix1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/matrix1.stch}
+
+\newpage
+\Large\textbf{matrixinit.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/matrixinit.stch}
+
+\newpage
+\Large\textbf{matrixstitch.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/matrixstitch.stch}
+
+\newpage
+\Large\textbf{negate.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/negate.stch}
+
+\newpage
+\Large\textbf{ops1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/ops1.stch}
+\newpage
+
+\Large\textbf{ops2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/ops2.stch}
+\newpage
+
+\Large\textbf{sem2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/sem2.stch}
+\newpage
+
+\Large\textbf{stitch1.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch1.stch}
+
+\newpage
+\Large\textbf{stitch2.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch2.stch}
+
+\newpage
+\Large\textbf{stitch3.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch3.stch}
+
+\newpage
+\Large\textbf{stitch4.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch4.stch}
+
+\newpage
+\Large\textbf{stitch5.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch5.stch}
+
+\newpage
+\Large\textbf{stitch6.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch6.stch}
+
+\newpage
+\Large\textbf{stitch7.stch}\\[1em]
+\normalsize
+\lstinputlisting[language=C, style=customc]{../testing/_tests/stitch7.stch}
+
+
+
+
+
 \end{document}
