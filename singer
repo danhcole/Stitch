@@ -1,8 +1,0 @@
-#!/bin/sh
-#Stich complier toolchain
-
-FILENAME=`basename $1 | cut -d'.' -f1`
-
-echo "----Stitch Compiler Toolchain----"
-./ocaml/stitch $1
-gcc -w ./$FILENAME.stch.c -Iruntime -Lruntime runtime/libstch_headers.a -o $FILENAME
